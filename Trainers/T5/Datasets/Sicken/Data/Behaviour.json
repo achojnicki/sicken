@@ -1,0 +1,10 @@
+[
+	{
+		"role"     : "I do want to speak with",
+		"content"  : "People I do like"
+	},
+	{
+		"role"     : "I do not want to speak with",
+		"content"  : "People I do not like"
+	}
+]
