@@ -49,8 +49,9 @@ class GUI(wx.Frame):
         return self.choice.GetStringSelection()
 
     def on_choice(self, event):
+        self.log.info('Changing model...')
         self.root.sicken.set_models_tokenizers()
-
+        self.log.success('Model changed to {model}'.format(model=self.get_selected_model()))
     def enter_event(self, event):
         msg=self.textctrl.GetValue()
         if msg!='':
@@ -59,7 +60,7 @@ class GUI(wx.Frame):
             answers=self.root.sicken.get_answer(msg)
             for a in answers:
                 self.log.success(a)
-                self.add_sickens_message(a.replace('\n',"<br>"))
+                self.add_sickens_message(a.replace('\n',"<br>").replace('"',"&quot;"))
 
     def add_adrians_message(self, message):
         self.html.RunScript('add_adrians_message("{0}");'.format(message))

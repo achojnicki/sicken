@@ -4,8 +4,9 @@ class Sicken_Dataset:
 	dataset_name="Sicken"
 
 	def load_dataset(self):
-		self.dataset=load_dataset(
-			"json", 
+		self.train_dataset=load_dataset(
+			"json",
+			split='train',
 			data_files={
 				"train" : [
 					"Datasets/Sicken/Data/Sicken.json",
@@ -17,7 +18,7 @@ class Sicken_Dataset:
 				} 
 		)
 
-	def process_function(self, data, rank):
+	def process_function(self, data):
 		roles=data['role']
 		contents=data['content']
 

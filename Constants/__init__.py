@@ -1,6 +1,8 @@
 from pathlib import Path
+
 class Sicken:
-	models_path=Path("Models")
+	sicken_path=Path('/opt/Sicken AI')
+	models_path=sicken_path / "Models"
 	
 class GUI:
-	chat_template_path=Path("GUI/Assets/Chat_Template.html")
+	chat_template_path=Sicken.sicken_path / "GUI" / "Assets" / "Chat_Template.html"
