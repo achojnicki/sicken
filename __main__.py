@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from Sicken import Sicken
 from GUI import GUI
 from adislog import adislog

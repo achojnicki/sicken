@@ -1,19 +1,20 @@
 from datasets import load_dataset
 
-class Sicken_Dataset:
-	dataset_name="Sicken"
+class Oxford_Dictionary:
+	dataset_name="Oxford_Dictionary"
 
 	def load_dataset(self):
-		self.dataset=load_dataset(
-			"json", 
+		self.train_dataset=load_dataset(
+			"json",
+			split='train', 
 			data_files={
 				"train" : [
-					"Datasets/Sicken/Data/Oxford_Dictionary.json"
+					"Datasets/Oxford_Dictionary/Data/Oxford_Dictionary.json"
 					]
 				} 
 		)
 
-	def process_function(self, data, rank):
+	def process_function(self, data):
 		roles=data['word']
 		contents=data['definition']
 

@@ -1,18 +1,17 @@
-from os import listdir
+#!/usr/bin/env python3
+from os import listdir, environ
 from multiprocess import set_start_method, freeze_support
 from typing import List, Optional, Tuple
 from transformers import AutoConfig, AutoTokenizer, AutoModelForSeq2SeqLM, Seq2SeqTrainer, Seq2SeqTrainingArguments, DataCollatorForSeq2Seq
-from platform import platform
+from pathlib import Path
+from argparse import ArgumentParser
 
-import torch
-import argparse
 import Datasets
 
 
-PROJECT_DIR="/Users/adrian/Dev/Sicken AI/" if 'macOS' in platform() else "/home/adrian/Dev/Sicken AI/"
-MODELS_DIR=PROJECT_DIR+"Models/T5/"
-DATASETS_DIR=PROJECT_DIR+"/Trainers/T5/Datasets"
-
+PROJECT_DIR=Path("/opt/Sicken AI")
+MODELS_DIR=PROJECT_DIR / "Models" / "T5"
+DATASETS_DIR=PROJECT_DIR / "Trainers" / "T5" / "Datasets"
 
 class trainer_base:
 	def __init__(self, args, model, tokenizer, collator):
@@ -24,19 +23,26 @@ class trainer_base:
 
 		self.load_dataset()
 
+
 	def train(self):
-		self.train_dataset=self.dataset['train'].map(
+		self.train_dataset=self.train_dataset.map(
 			self.process_function,
-			num_proc=int(self.args.workers_number),
-			batched=True,
-			with_rank=True,
-			desc="Mapping Sicken on {dataset_name} dataset".format(dataset_name=self.dataset_name)
+			num_proc=self.args.num_workers,
+			desc="Mapping Sicken on the {dataset} dataset".format(dataset=self.dataset_name)
 			)
 
 		self.model_args=Seq2SeqTrainingArguments(
 			output_dir=self.get_model_dir(),
-			num_train_epochs=int(self.args.epochs),
-			weight_decay=0.01,
+			seed=76,
+			overwrite_output_dir=True,
+			weight_decay=self.args.weight_decay,
+			num_train_epochs=self.args.epochs,
+			per_device_train_batch_size=self.args.batch_size,
+			no_cuda=not self.args.use_cuda,
+			use_cpu=self.args.use_cpu,
+			use_ipex=self.args.use_ipex,
+			fp16=True if self.args.use_ipex else False,
+			save_strategy="no",
 			)
 
 		self.trainer=Seq2SeqTrainer(
@@ -46,48 +52,97 @@ class trainer_base:
 			tokenizer=self.tokenizer,
 			data_collator=self.data_collator,
 			)
+
 		self.trainer.train()
-		self.trainer.save_model(self._model_dir())
+		self.trainer.save_model(self.get_model_dir())
 
 	def get_model_dir(self):
-		return MODELS_DIR+self.args.model_name
+		return MODELS_DIR / self.args.model_name
 
 class t5trainer:
 	def __init__(self):
-		arg=argparse.ArgumentParser(
-			prog="Sicken T5 Trainer"
-			)
+		self.args=self.parse_args()
+
+		if self.args.use_cuda:
+			environ['PYTORCH_CUDA_ALLOC_CONF']='garbage_collection_threshold:0.6,max_split_size_mb:32'
+			freeze_support()
+			set_start_method('spawn', force=True)
+
+		self.load_model_tokenizer_collator()
+
+
+
+	def parse_args(self):
+		arg=ArgumentParser(
+				prog="sicken_t5_trainer"
+				)
+
 		arg.add_argument(
-			"model_name",
-			help="Name of the model to be placed into the models directory"
+			"--model_name",
+			required=True,
+			help="name of the new model"
 			)
+
+		arg.add_argument(
+			"--model_base",
+			required=True,
+			choices=self.list_all_models(),
+			help="base model"
+			)
+
+		arg.add_argument(
+			"--dataset",
+			required=True,
+			choices=self.list_all_datasets(),
+			help="dataset to use",
+			)
+
+		arg.add_argument(
+			"--num_workers",
+			default=1,
+			type=int,
+			help="number of workers processes"
+			)
+
 		arg.add_argument(
 			"--epochs",
 			default=1,
-			help="Number of epochs"
+			type=int,
+			help="number of epochs"
 			)
+
 		arg.add_argument(
-			"--workers_number",
+			"--batch_size",
 			default=1,
-			help="Number of workers"
-			)
+			type=int,
+			help="size of the batch")
+
 		arg.add_argument(
-			"--model_template",
-			default="Sicken_Base",
-			help="Base model"
+			"--weight_decay",
+			default=0.01,
+			type=float,
+			help="weight decay")
+
+		gr=arg.add_mutually_exclusive_group()
+
+		gr.add_argument(
+			'--use_cpu',
+			action='store_true',
+			help='use CPU to train'
 			)
+
+		gr.add_argument(
+			'--use_cuda',
+			action='store_true',
+			help='use CUDA to train'
+			)
+
 		arg.add_argument(
-			"--dataset",
-			choices=self.list_all_datasets(),
-			help="Datasets to use.",
-
+			'--use_ipex',
+			action='store_true',
+			help='use IPEX'
 			)
-
-		self.args=arg.parse_args()
-
-		self.device=torch.device("cuda" if torch.cuda.is_available() else 'cpu')
-		self.load_model_tokenizer_collator()
-
+		return arg.parse_args()
 
 	def load_model_tokenizer_collator(self):
 		self.config = AutoConfig.from_pretrained(
@@ -106,22 +161,26 @@ class t5trainer:
 		self.data_collator=DataCollatorForSeq2Seq(
 			self.tokenizer
 			)
-		self.model.to(self.device)
-
 
 	def get_base_model_dir(self):
-		return MODELS_DIR+self.args.model_template
+		return MODELS_DIR / self.args.model_base
 
 	def list_all_datasets(self):
-			datasets=listdir(DATASETS_DIR)
-			if ".DS_Store" in datasets:
-			    datasets.remove(".DS_Store")
-			if "__init__.py" in datasets:
-				datasets.remove('__init__.py')
-			if "__pycache__" in datasets:
-				datasets.remove("__pycache__")
+		datasets=listdir(DATASETS_DIR)
+		if ".DS_Store" in datasets:
+		    datasets.remove(".DS_Store")
+		if "__init__.py" in datasets:
+			datasets.remove('__init__.py')
+		if "__pycache__" in datasets:
+			datasets.remove("__pycache__")
 
-			return datasets
+		return datasets
+
+	def list_all_models(self):
+	    models=listdir(MODELS_DIR)
+	    if ".DS_Store" in models:
+	        models.remove(".DS_Store")
+	    return models
 
 	def return_trainer_class(self, dataset_class):
 		class trainer(trainer_base, dataset_class):
@@ -134,9 +193,6 @@ class t5trainer:
 		t.train()
 
 if __name__=="__main__":
-	freeze_support()
-	set_start_method('spawn', force=True)
-
 	app=t5trainer()
 	app.start()
 
