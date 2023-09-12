@@ -1,1 +1,10 @@
 Models/*
+__pycache__
+__pycache__/*
+**/__pycache__
+**/__pycache__/*
+
+.DS_Store
+**/.DS_Store
+
+Trainers/T5/Datasets/*/Data/*.json
