@@ -9,11 +9,11 @@ class Sicken_Dataset:
 			split='train',
 			data_files={
 				"train" : [
-					"Datasets/Sicken/Data/Sicken.json",
-					"Datasets/Sicken/Data/Relations.json",
-					"Datasets/Sicken/Data/Adrian_Chojnicki.json",
-					"Datasets/Sicken/Data/Preferences.json",
-					"Datasets/Sicken/Data/ESP_knowledge.json",
+					self.return_dataset_file_path("Sicken.json"),
+					self.return_dataset_file_path("Relations.json"),
+					self.return_dataset_file_path("Adrian_Chojnicki.json"),
+					self.return_dataset_file_path("Preferences.json"),
+					self.return_dataset_file_path("ESP_knowledge.json"),
 					]
 				} 
 		)

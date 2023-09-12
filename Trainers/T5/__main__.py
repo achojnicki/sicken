@@ -1,20 +1,17 @@
 #!/usr/bin/env python3
 from os import listdir, environ
 from multiprocess import set_start_method, freeze_support
-from typing import List, Optional, Tuple
 from transformers import AutoConfig, AutoTokenizer, AutoModelForSeq2SeqLM, Seq2SeqTrainer, Seq2SeqTrainingArguments, DataCollatorForSeq2Seq
-from pathlib import Path
 from argparse import ArgumentParser
+
+from Constants import T5_Trainer_Constants
 
 import Datasets
 
 
-PROJECT_DIR=Path("/opt/Sicken AI")
-MODELS_DIR=PROJECT_DIR / "Models" / "T5"
-DATASETS_DIR=PROJECT_DIR / "Trainers" / "T5" / "Datasets"
-
 class trainer_base:
-	def __init__(self, args, model, tokenizer, collator):
+	def __init__(self, constants,  args, model, tokenizer, collator):
+		self.constants=constants
 		self.args=args
 
 		self.model=model
@@ -23,6 +20,10 @@ class trainer_base:
 
 		self.load_dataset()
 
+
+
+	def return_dataset_file_path(self, file):
+		return str(self.constants.datasets_dir / self.dataset_name / "Data" / file)
 
 	def train(self):
 		self.train_dataset=self.train_dataset.map(
@@ -41,7 +42,7 @@ class trainer_base:
 			no_cuda=not self.args.use_cuda,
 			use_cpu=self.args.use_cpu,
 			use_ipex=self.args.use_ipex,
-			fp16=True if self.args.use_ipex else False,
+			fp16=False if self.args.use_ipex else True,
 			save_strategy="no",
 			)
 
@@ -57,10 +58,11 @@ class trainer_base:
 		self.trainer.save_model(self.get_model_dir())
 
 	def get_model_dir(self):
-		return MODELS_DIR / self.args.model_name
+		return self.constants.models_dir / self.args.model_name
 
-class t5trainer:
+class T5_Trainer:
 	def __init__(self):
+		self.constants=T5_Trainer_Constants
 		self.args=self.parse_args()
 
 		if self.args.use_cuda:
@@ -163,10 +165,10 @@ class t5trainer:
 			)
 
 	def get_base_model_dir(self):
-		return MODELS_DIR / self.args.model_base
+		return self.constants.models_dir / self.args.model_base
 
 	def list_all_datasets(self):
-		datasets=listdir(DATASETS_DIR)
+		datasets=listdir(self.constants.datasets_dir)
 		if ".DS_Store" in datasets:
 		    datasets.remove(".DS_Store")
 		if "__init__.py" in datasets:
@@ -177,7 +179,7 @@ class t5trainer:
 		return datasets
 
 	def list_all_models(self):
-	    models=listdir(MODELS_DIR)
+	    models=listdir(self.constants.models_dir)
 	    if ".DS_Store" in models:
 	        models.remove(".DS_Store")
 	    return models
@@ -189,11 +191,11 @@ class t5trainer:
 
 	def start(self):
 		t=self.return_trainer_class(Datasets.datasets[self.args.dataset])
-		t=t(self.args, self.model, self.tokenizer, self.data_collator)
+		t=t(self.constants, self.args, self.model, self.tokenizer, self.data_collator)
 		t.train()
 
 if __name__=="__main__":
-	app=t5trainer()
+	app=T5_Trainer()
 	app.start()
 
 

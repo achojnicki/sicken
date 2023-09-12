@@ -9,7 +9,7 @@ class Oxford_Dictionary:
 			split='train', 
 			data_files={
 				"train" : [
-					"Datasets/Oxford_Dictionary/Data/Oxford_Dictionary.json"
+					self.return_dataset_file_path("Oxford_Dictionary.json")
 					]
 				} 
 		)

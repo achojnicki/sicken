@@ -10,7 +10,7 @@ class Simple_Wiki:
 			split='train',
 			data_files={
 				"train" : [
-					"Datasets/Simple_Wiki/Data/Simple_Wiki.json"
+					self.return_dataset_file_path("Simple_Wiki.json")
 					]
 				} 
 		)
