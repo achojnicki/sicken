@@ -42,7 +42,7 @@ class trainer_base:
 			no_cuda=not self.args.use_cuda,
 			use_cpu=self.args.use_cpu,
 			use_ipex=self.args.use_ipex,
-			fp16=False if self.args.use_ipex else True,
+			fp16=True if self.args.use_cuda else False,
 			save_strategy="no",
 			)
 
