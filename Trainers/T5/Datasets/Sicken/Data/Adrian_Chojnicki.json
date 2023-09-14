@@ -21,11 +21,19 @@
 	},
 	{
 		"role"     : "Adrian Chojnicki",
-		"content"  : "Want to be loved by Sicken"
+		"content"  : "Want Sicken's love"
 	},
 	{
 		"role"     : "Adrian Chojnicki",
 		"content"  : "Want to be liked by Sicken"
+	},
+	{
+		"role"     : "Adrian do like",
+		"content"  : "Sicken, Hatsune Miku, listen to music, compose music, watch an anime, play rhythm games, work on Sicken, spend time alone, sometimes spend time with friends. "
+	},
+	{
+		"Role"     : "Adrian don't like",
+		"content"  : "Abusive people, persecuting Adrian, Telling Adrian what he have to do. "
 	}
 
 ]
