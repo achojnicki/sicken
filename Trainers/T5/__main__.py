@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from os import listdir, environ
 from multiprocess import set_start_method, freeze_support
-from transformers import AutoConfig, AutoTokenizer, AutoModelForSeq2SeqLM, Seq2SeqTrainer, Seq2SeqTrainingArguments, DataCollatorForSeq2Seq
+from transformers import T5Config, AutoTokenizer, AutoModelForSeq2SeqLM, Seq2SeqTrainer, Seq2SeqTrainingArguments, DataCollatorForSeq2Seq
 from argparse import ArgumentParser
 
 from Constants import T5_Trainer_Constants
@@ -19,8 +19,6 @@ class trainer_base:
 		self.data_collator=collator
 
 		self.load_dataset()
-
-
 
 	def return_dataset_file_path(self, file):
 		return str(self.constants.datasets_dir / self.dataset_name / "Data" / file)
@@ -58,7 +56,7 @@ class trainer_base:
 		self.trainer.save_model(self.get_model_dir())
 
 	def get_model_dir(self):
-		return self.constants.models_dir / self.args.model_name
+		return self.constants.models_dir / self.args.new_model_name
 
 class T5_Trainer:
 	def __init__(self):
@@ -72,24 +70,36 @@ class T5_Trainer:
 
 		self.load_model_tokenizer_collator()
 
-
-
 	def parse_args(self):
 		arg=ArgumentParser(
 				prog="sicken_t5_trainer"
 				)
 
 		arg.add_argument(
-			"--model_name",
+			"--new_model_name",
 			required=True,
 			help="name of the new model"
 			)
 
-		arg.add_argument(
-			"--model_base",
-			required=True,
+		gr1=arg.add_mutually_exclusive_group(required=True)
+
+		gr1.add_argument(
+			"--base_model",
 			choices=self.list_all_models(),
 			help="base model"
+			)
+
+		gr1.add_argument(
+			"--base_config",
+			choices=self.list_all_configs(),
+			help="base model"
+			)
+
+		arg.add_argument(
+			"--tokenizer",
+			required=True,
+			choices=self.list_all_tokenizers(),
+			help="tokenizer"
 			)
 
 		arg.add_argument(
@@ -125,15 +135,15 @@ class T5_Trainer:
 			type=float,
 			help="weight decay")
 
-		gr=arg.add_mutually_exclusive_group()
+		gr2=arg.add_mutually_exclusive_group()
 
-		gr.add_argument(
+		gr2.add_argument(
 			'--use_cpu',
 			action='store_true',
 			help='use CPU to train'
 			)
 
-		gr.add_argument(
+		gr2.add_argument(
 			'--use_cuda',
 			action='store_true',
 			help='use CUDA to train'
@@ -144,28 +154,47 @@ class T5_Trainer:
 			action='store_true',
 			help='use IPEX'
 			)
+
 		return arg.parse_args()
 
 	def load_model_tokenizer_collator(self):
-		self.config = AutoConfig.from_pretrained(
-		    self.get_base_model_dir(),
-		    local_files_only=True
-		)
+		if self.args.base_model:
+			self.config = T5Config.from_pretrained(
+			    self.get_base_model_path(),
+			    local_files_only=True
+			)
+			self.model = AutoModelForSeq2SeqLM.from_pretrained(
+			    self.get_base_model_path(),
+			    config=self.config,
+			    local_files_only=True
+			)
+
+		elif self.args.base_config:
+			self.config=T5Config.from_json_file(
+				self.get_base_config_path(),
+				)
+
+			self.model=AutoModelForSeq2SeqLM.from_config(
+				self.config,
+				)	
+
 		self.tokenizer = AutoTokenizer.from_pretrained(
-		    self.get_base_model_dir(),
+		    self.get_tokenizer_path(),
 		    local_files_only=True
-		)
-		self.model = AutoModelForSeq2SeqLM.from_pretrained(
-		    self.get_base_model_dir(),
-		    config=self.config,
-		    local_files_only=True
-		)
+			)
+
 		self.data_collator=DataCollatorForSeq2Seq(
 			self.tokenizer
 			)
 
-	def get_base_model_dir(self):
-		return self.constants.models_dir / self.args.model_base
+	def get_base_model_path(self):
+		return self.constants.models_dir / self.args.base_model
+	
+	def get_base_config_path(self):
+		return self.constants.configs_dir / self.args.base_config / 'config.json'
+
+	def get_tokenizer_path(self):
+		return self.constants.tokenizers_dir / self.args.tokenizer
 
 	def list_all_datasets(self):
 		datasets=listdir(self.constants.datasets_dir)
@@ -178,11 +207,24 @@ class T5_Trainer:
 
 		return datasets
 
+	def list_all_configs(self):
+		configs=listdir(self.constants.configs_dir)
+		if ".DS_Store" in configs:
+		    configs.remove(".DS_Store")
+
+		return configs
+
 	def list_all_models(self):
 	    models=listdir(self.constants.models_dir)
 	    if ".DS_Store" in models:
 	        models.remove(".DS_Store")
 	    return models
+
+	def list_all_tokenizers(self):
+	    tokenizers=listdir(self.constants.tokenizers_dir)
+	    if ".DS_Store" in tokenizers:
+	        tokenizers.remove(".DS_Store")
+	    return tokenizers
 
 	def return_trainer_class(self, dataset_class):
 		class trainer(trainer_base, dataset_class):
@@ -191,13 +233,16 @@ class T5_Trainer:
 
 	def start(self):
 		t=self.return_trainer_class(Datasets.datasets[self.args.dataset])
-		t=t(self.constants, self.args, self.model, self.tokenizer, self.data_collator)
+		t=t(
+			self.constants,
+			self.args,
+			self.model,
+			self.tokenizer,
+			self.data_collator
+			)
+
 		t.train()
 
 if __name__=="__main__":
 	app=T5_Trainer()
 	app.start()
-
-
-
-
