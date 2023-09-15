@@ -13,13 +13,22 @@ class GUI(wx.Frame):
 
         self.sizer=wx.BoxSizer(wx.VERTICAL)
 
-        self.choice=wx.Choice(self,
+        self.model_choice=wx.Choice(self,
             id=wx.ID_ANY,
             pos=wx.DefaultPosition,
             size=wx.DefaultSize,
             choices=self.root.sicken.get_t5_models_list(),
             style=0
             )
+
+        self.tokenizer_choice=wx.Choice(self,
+            id=wx.ID_ANY,
+            pos=wx.DefaultPosition,
+            size=wx.DefaultSize,
+            choices=self.root.sicken.get_t5_tokenizers_list(),
+            style=0
+            )
+        
 
         self.html= wx.html2.WebView.New(self)
         self.html.SetPage(self.chat_template,"")
@@ -34,24 +43,39 @@ class GUI(wx.Frame):
             )
 
         self.sizer.Add(self.html, 1, wx.EXPAND)
-        self.sizer.Add(self.choice, 0, wx.ALIGN_RIGHT)
+        self.sizer_choices=wx.BoxSizer(wx.HORIZONTAL)
+        self.sizer_choices.Add(self.model_choice)
+        self.sizer_choices.Add(self.tokenizer_choice)
+        self.sizer.Add(self.sizer_choices, 0, wx.ALIGN_RIGHT)
         self.sizer.Add(self.textctrl, 0, wx.EXPAND)
         self.SetSizer(self.sizer)
 
         self.SetBackgroundColour((32,34,39))
     
         self.textctrl.Bind(wx.EVT_TEXT_ENTER, self.enter_event)
-        self.choice.Bind(wx.EVT_CHOICE, self.on_choice)
+        self.model_choice.Bind(wx.EVT_CHOICE, self.on_model_choice)
+        self.tokenizer_choice.Bind(wx.EVT_CHOICE, self.on_tokenizer_choice)
+
         
         self.Show(True)
 
     def get_selected_model(self):
-        return self.choice.GetStringSelection()
+        return self.model_choice.GetStringSelection()
+    
+    def get_selected_tokenizer(self):
+        return self.tokenizer_choice.GetStringSelection()
 
-    def on_choice(self, event):
+    def on_model_choice(self, event):
         self.log.info('Changing model...')
-        self.root.sicken.set_models_tokenizers()
+        self.root.sicken.set_model()
         self.log.success('Model changed to {model}'.format(model=self.get_selected_model()))
+    
+    def on_tokenizer_choice(self, event):
+        self.log.info('Changing tokenizer...')
+        self.root.sicken.set_tokenizer()
+        self.log.success('Tokenizer changed to {tokenizer}'.format(tokenizer=self.get_selected_tokenizer()))
+
+
     def enter_event(self, event):
         msg=self.textctrl.GetValue()
         if msg!='':
