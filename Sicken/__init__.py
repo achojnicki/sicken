@@ -40,8 +40,8 @@ class Sicken:
 
     def get_answer(self, question):
         d=[]
-        input_ids=self.t5_tokenizer(question, return_tensors="pt").input_ids
-        gen_outputs=self.t5_model.generate(input_ids, max_new_tokens=100000)
+        features=self.t5_tokenizer(question, return_tensors="pt")
+        gen_outputs=self.t5_model.generate(features.input_ids, attention_mask=features.attention_mask, max_new_tokens=100000)
         for a in gen_outputs:
             d.append(self.t5_tokenizer.decode(a, skip_special_tokens=True))
         return d
