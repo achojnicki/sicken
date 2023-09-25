@@ -1,6 +1,7 @@
 import wx
 import wx.html2
 import wx.stc
+
 import Constants
 
 class GUI(wx.Frame):
