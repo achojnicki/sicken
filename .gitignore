@@ -8,4 +8,4 @@ __pycache__/*
 .DS_Store
 **/.DS_Store
 
-Trainers/T5/Datasets/*/Data/*.json
+/Datasets/*/*.json

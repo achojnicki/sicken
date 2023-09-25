@@ -21,7 +21,7 @@ class trainer_base:
 		self.load_dataset()
 
 	def return_dataset_file_path(self, file):
-		return str(self.constants.datasets_dir / self.dataset_name / "Data" / file)
+		return str(self.constants.datasets_dir / self.dataset_name / file)
 
 	def train(self):
 		self.train_dataset=self.train_dataset.map(
@@ -41,6 +41,7 @@ class trainer_base:
 			use_cpu=self.args.use_cpu,
 			use_ipex=self.args.use_ipex,
 			fp16=True if self.args.use_cuda else False,
+			use_mps_device=self.args.use_mps,
 			save_strategy="no",
 			)
 
@@ -135,7 +136,7 @@ class T5_Trainer:
 			type=float,
 			help="weight decay")
 
-		gr2=arg.add_mutually_exclusive_group()
+		gr2=arg.add_mutually_exclusive_group(required=True)
 
 		gr2.add_argument(
 			'--use_cpu',
@@ -148,6 +149,11 @@ class T5_Trainer:
 			action='store_true',
 			help='use CUDA to train'
 			)
+
+		gr2.add_argument(
+			'--use_mps',
+			action='store_true',
+			help='Use MPS device to train')
 
 		arg.add_argument(
 			'--use_ipex',

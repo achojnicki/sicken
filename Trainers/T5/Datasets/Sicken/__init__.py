@@ -18,6 +18,7 @@ class Sicken_Dataset:
 				} 
 		)
 
+
 	def process_function(self, data):
 		roles=data['role']
 		contents=data['content']

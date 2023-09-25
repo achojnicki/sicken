@@ -7,5 +7,5 @@ class T5_Trainer_Constants:
 	tokenizers_dir=project_dir/ "Tokenizers" / "T5"
 
 	configs_dir=project_dir / "Trainers" / "T5" / "Configs"
-	datasets_dir=project_dir / "Trainers" / "T5" / "Datasets"
+	datasets_dir=project_dir / "Datasets"
 	
