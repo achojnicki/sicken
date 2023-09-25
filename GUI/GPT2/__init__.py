@@ -10,7 +10,7 @@ class GUI(wx.Frame):
 
         self.root=root
         self.log=root.log
-        self.chat_template=open(Constants.GUI.views_path / "chat.html",'r').read()
+        self.chat_template=open(Constants.GUI.views_path / "chat.view",'r').read()
 
 
         self.sizer=wx.BoxSizer(wx.VERTICAL)
