@@ -1,6 +1,7 @@
 import wx
 import wx.html2
 import wx.stc
+
 import Constants
 
 class GUI(wx.Frame):
@@ -9,7 +10,8 @@ class GUI(wx.Frame):
 
         self.root=root
         self.log=root.log
-        self.chat_template=open(Constants.GUI.chat_template_gpt2_path,'r').read()
+        self.chat_template=open(Constants.GUI.views_path / "chat.html",'r').read()
+
 
         self.sizer=wx.BoxSizer(wx.VERTICAL)
 
@@ -28,8 +30,6 @@ class GUI(wx.Frame):
             choices=self.root.sicken.get_gpt2_tokenizers_list(),
             style=0
             )
-        
-
         self.html= wx.html2.WebView.New(self)
         self.html.SetPage(self.chat_template,"")
         self.html.EnableContextMenu(False)

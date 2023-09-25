@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-from Sicken.GPT2 import Sicken
-from GUI.GPT2 import GUI
+from Sicken.T5 import Sicken
+from GUI.T5 import GUI
 from adislog import adislog
 
 import wx
