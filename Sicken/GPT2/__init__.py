@@ -12,8 +12,6 @@ class Sicken:
         self.set_model()
         self.set_tokenizer()
 
-        self.device=torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
         self.chat_history_ids=None
 
 
@@ -44,8 +42,8 @@ class Sicken:
         return Constants.Sicken.tokenizers_path / "GPT2" /  tokenizer
 
     def get_answer(self, question):
-        new_user_input_ids=self.gpt2_tokenizer.encode(question, return_tensors='pt')
-        bot_input_ids=torch.cat([self.chat_history_ids, new_user_input_ids], dim=-1) if self.chat_history_ids is not None else new_user_input_ids
+        new_input_ids=self.gpt2_tokenizer(question, return_tensors='pt')
+        bot_input_ids=torch.cat([self.chat_history_ids, new_input_ids], dim=-1) if self.chat_history_ids is not None else new_input_ids
         self.chat_history_ids=self.gpt2_model.generate(
             bot_input_ids,
             do_sample = True,

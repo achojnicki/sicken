@@ -1,7 +1,7 @@
 from pathlib import Path
 
 class Sicken:
-	sicken_path=Path('/opt/Sicken AI')
+	sicken_path=Path('/opt/SickenAI')
 	models_path=sicken_path / "Models"
 	tokenizers_path=sicken_path / "Tokenizers"
 	
