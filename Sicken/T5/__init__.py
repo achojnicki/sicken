@@ -1,6 +1,6 @@
 from os import listdir
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
-import Constants
+import constants
 
 class Sicken:
     def __init__(self, root):
@@ -11,13 +11,13 @@ class Sicken:
         self.set_tokenizer()
 
     def get_t5_models_list(self):
-        models=listdir(Constants.Sicken.models_path / "T5")
+        models=listdir(constants.Sicken.models_path / "t5")
         if ".DS_Store" in models:
             models.remove(".DS_Store")
         return models
 
     def get_t5_tokenizers_list(self):
-        tokenizers=listdir(Constants.Sicken.tokenizers_path / "T5")
+        tokenizers=listdir(constants.Sicken.tokenizers_path / "t5")
         if ".DS_Store" in tokenizers:
             tokenizers.remove(".DS_Store")
         return tokenizers
@@ -30,11 +30,11 @@ class Sicken:
 
     def get_t5_model(self):
         model=self.root.gui.get_selected_model() if hasattr(self.root,'gui') else self.get_t5_models_list()[0]
-        return Constants.Sicken.models_path / "T5" /  model
+        return constants.Sicken.models_path / "t5" /  model
 
     def get_t5_tokenizer(self):
         tokenizer=self.root.gui.get_selected_tokenizer() if hasattr(self.root,'gui') else self.get_t5_tokenizers_list()[0]
-        return Constants.Sicken.tokenizers_path / "T5" /  tokenizer
+        return constants.Sicken.tokenizers_path / "t5" /  tokenizer
 
     def get_answer(self, question):
         d=[]

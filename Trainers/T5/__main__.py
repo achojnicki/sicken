@@ -4,9 +4,9 @@ from multiprocess import set_start_method, freeze_support
 from transformers import T5Config, AutoTokenizer, AutoModelForSeq2SeqLM, Seq2SeqTrainer, Seq2SeqTrainingArguments, DataCollatorForSeq2Seq
 from argparse import ArgumentParser
 
-from Constants import T5_Trainer_Constants
+from constants import T5_Trainer_Constants
 
-import Datasets
+import sickens_datasets
 
 
 class trainer_base:
@@ -73,7 +73,7 @@ class T5_Trainer:
 
 	def parse_args(self):
 		arg=ArgumentParser(
-				prog="sicken_t5_trainer"
+				prog="sickenstrainer_t5"
 				)
 
 		arg.add_argument(
@@ -238,7 +238,7 @@ class T5_Trainer:
 		return trainer
 
 	def start(self):
-		t=self.return_trainer_class(Datasets.datasets[self.args.dataset])
+		t=self.return_trainer_class(sickens_datasets.datasets[self.args.dataset])
 		t=t(
 			self.constants,
 			self.args,

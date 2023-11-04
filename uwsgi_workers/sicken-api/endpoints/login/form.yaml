@@ -1,0 +1,7 @@
+user_email:
+  required: true
+  allow_empty: false
+
+user_password:
+  required: true
+  allow_empty: false

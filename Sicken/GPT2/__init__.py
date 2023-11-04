@@ -1,7 +1,7 @@
 from os import listdir
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-import Constants
+import constants
 import torch
 
 class Sicken:
@@ -16,13 +16,13 @@ class Sicken:
 
 
     def get_gpt2_models_list(self):
-        models=listdir(Constants.Sicken.models_path / "GPT2")
+        models=listdir(constants.Sicken.models_path / "gpt2")
         if ".DS_Store" in models:
             models.remove(".DS_Store")
         return models
 
     def get_gpt2_tokenizers_list(self):
-        tokenizers=listdir(Constants.Sicken.tokenizers_path / "GPT2")
+        tokenizers=listdir(constants.Sicken.tokenizers_path / "gpt2")
         if ".DS_Store" in tokenizers:
             tokenizers.remove(".DS_Store")
         return tokenizers
@@ -35,17 +35,19 @@ class Sicken:
 
     def get_gpt2_model(self):
         model=self.root.gui.get_selected_model() if hasattr(self.root,'gui') else self.get_gpt2_models_list()[0]
-        return Constants.Sicken.models_path / "GPT2" /  model
+        return constants.Sicken.models_path / "gpt2" /  model
 
     def get_gpt2_tokenizer(self):
         tokenizer=self.root.gui.get_selected_tokenizer() if hasattr(self.root,'gui') else self.get_gpt2_tokenizers_list()[0]
-        return Constants.Sicken.tokenizers_path / "GPT2" /  tokenizer
+        return constants.Sicken.tokenizers_path / "gpt2" /  tokenizer
 
     def get_answer(self, question):
-        new_input_ids=self.gpt2_tokenizer(question, return_tensors='pt')
+        new_input_ids=self.gpt2_tokenizer.encode(question+ self.gpt2_tokenizer.eos_token, return_tensors='pt')
         bot_input_ids=torch.cat([self.chat_history_ids, new_input_ids], dim=-1) if self.chat_history_ids is not None else new_input_ids
+        
         self.chat_history_ids=self.gpt2_model.generate(
             bot_input_ids,
+            #pad_token_id=self.gpt2_tokenizer.eos_token,
             do_sample = True,
             top_k = 1,
             top_p = 0.67,

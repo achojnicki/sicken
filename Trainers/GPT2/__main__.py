@@ -3,9 +3,9 @@ from os import listdir, environ
 from multiprocess import set_start_method, freeze_support
 from transformers import GPT2Config, AutoTokenizer, GPT2LMHeadModel, Trainer, TrainingArguments
 from argparse import ArgumentParser
-from Constants import GPT2_Trainer_Constants
+from constants import GPT2_Trainer_Constants
 
-import Datasets
+import sickens_datasets
 
 class trainer_base:
 	def __init__(self, constants,  args, model, tokenizer):
@@ -69,7 +69,7 @@ class GPT2_Trainer:
 
 	def parse_args(self):
 		arg=ArgumentParser(
-				prog="sicken_gpt2_trainer"
+				prog="sickenstrainer_gpt2"
 				)
 
 		arg.add_argument(
