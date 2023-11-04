@@ -1,0 +1,7 @@
+session_uuid:
+  required: true
+  allow_empty: false
+
+user_email:
+  required: true
+  allow_empty: false
