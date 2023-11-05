@@ -1,7 +1,7 @@
 from datasets import load_dataset
 
 class Oxford_Dictionary:
-	dataset_name="Oxford_Dictionary"
+	dataset_name="oxford_dictionary"
 
 	def load_dataset(self):
 		self.train_dataset=load_dataset(

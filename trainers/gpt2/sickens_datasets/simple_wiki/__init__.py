@@ -2,7 +2,7 @@ from datasets import load_dataset
 import torch
 
 class Simple_Wiki:
-	dataset_name="Simple_Wiki"
+	dataset_name="simple_wiki"
 
 	def load_dataset(self):
 		self.train_dataset=load_dataset(

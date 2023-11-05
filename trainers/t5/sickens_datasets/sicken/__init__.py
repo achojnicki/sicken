@@ -1,7 +1,7 @@
 from datasets import load_dataset
 
 class Sicken:
-	dataset_name="Sicken"
+	dataset_name="sicken"
 
 	def load_dataset(self):
 		self.train_dataset=load_dataset(
