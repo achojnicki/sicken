@@ -93,7 +93,7 @@ class T5_Trainer:
 		gr1.add_argument(
 			"--base_config",
 			choices=self.list_all_configs(),
-			help="base model"
+			help="base config"
 			)
 
 		arg.add_argument(

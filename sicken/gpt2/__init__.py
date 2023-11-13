@@ -50,7 +50,7 @@ class Sicken:
             #pad_token_id=self.gpt2_tokenizer.eos_token,
             do_sample = True,
             top_k = 1,
-            top_p = 0.67,
+            top_p = 0.20,
             max_length=1000,
             no_repeat_ngram_size=2, 
             temperature=0.76,

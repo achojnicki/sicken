@@ -89,7 +89,7 @@ class GPT2_Trainer:
 		gr1.add_argument(
 			"--base_config",
 			choices=self.list_all_configs(),
-			help="base model config"
+			help="base config"
 			)
 
 		arg.add_argument(
