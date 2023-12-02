@@ -1,13 +1,10 @@
 from sicken import constants
-
 from adisconfig import adisconfig
 from log import Log
-
 from pymongo import MongoClient
 from pika import BlockingConnection, ConnectionParameters, PlainCredentials
-from json import loads
+from json import loads, dumps
 from uuid import uuid4
-
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 
 class Worker_T5:
@@ -72,19 +69,34 @@ class Worker_T5:
 		return constants.Sicken.tokenizers_path / "t5" /  tokenizer
 
 	def _get_answer(self, question):
-		d=[]
-		features=self.t5_tokenizer(question, return_tensors="pt")
-		gen_outputs=self.t5_model.generate(features.input_ids, attention_mask=features.attention_mask, max_new_tokens=100000)
-		for a in gen_outputs:
-			d.append(self.t5_tokenizer.decode(a, skip_special_tokens=True))
-		return d
+		features=self._t5_tokenizer(question, return_tensors="pt")
+		gen_outputs=self._t5_model.generate(features.input_ids, attention_mask=features.attention_mask, max_new_tokens=100000)
+		return self._t5_tokenizer.decode(gen_outputs[0], skip_special_tokens=True)
+
+	def _build_response_message(self, user_uuid, chat_uuid, socketio_session_id, message):
+		return dumps({
+			"user_uuid": user_uuid,
+			"chat_uuid": chat_uuid,
+			"socketio_session_id": socketio_session_id,
+			"message": message
+		})
+
 
 	def _callback(self, channel, method, properties, body):
-
 		msg=body.decode('utf-8')
 		msg=loads(msg)
+		response=self._get_answer(msg['message'])
 
-		print(msg)
+		msg=self._build_response_message(
+			user_uuid="95a952c4-0deb-4382-9a51-1932c31c9bc0",
+			chat_uuid=msg['chat_uuid'],
+			socketio_session_id=msg['socketio_session_id'],
+			message=response)
+
+		self._rabbitmq_channel.basic_publish(
+			exchange="",
+			routing_key="sicken-responses",
+			body=msg)
 
 
 	def start(self):
