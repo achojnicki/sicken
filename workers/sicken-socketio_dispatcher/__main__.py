@@ -3,14 +3,11 @@ from adisconfig import adisconfig
 from log import Log
 from pika import BlockingConnection, PlainCredentials, ConnectionParameters
 from threading import Thread
-from pprint import pprint
 from json import loads, dumps
 from flask import Flask, render_template, request
 from flask_socketio import SocketIO
 
-import eventlet
 import functools
-import time
 
 monkey_patch()
 
@@ -64,7 +61,6 @@ class socketio_dispatcher:
 
             self.socketio.run(self.application, host=self.config.socketio.host, port=self.config.socketio.port)
         except:
-            raise
             self.stop()
 
     def stop(self):
@@ -91,7 +87,7 @@ class socketio_dispatcher:
 if __name__=="__main__":
     app = Flask(__name__)
     #app.config['SECRET_KEY'] = 'secret!'
-    socketio = SocketIO(app)
+    socketio = SocketIO(app, cors_allowed_origins="*")
 
     socketio_dispatcher=socketio_dispatcher(app, socketio)
     socketio_dispatcher.start()
