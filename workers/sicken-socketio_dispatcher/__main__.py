@@ -2,7 +2,6 @@ from eventlet import wsgi, monkey_patch
 from adisconfig import adisconfig
 from log import Log
 from pika import BlockingConnection, PlainCredentials, ConnectionParameters
-from threading import Thread
 from json import loads, dumps
 from flask import Flask, render_template, request
 from flask_socketio import SocketIO
@@ -41,7 +40,7 @@ class socketio_dispatcher:
         self.rabbitmq_channel = self.rabbitmq_conn.channel()
 
         self.rabbitmq_channel.basic_consume(
-            queue='sicken-responses',
+            queue='sicken-responses_chat',
             auto_ack=True,
             on_message_callback=self.response_process
         )
@@ -58,7 +57,6 @@ class socketio_dispatcher:
     def start(self):
         try:
             self.socketio.start_background_task(target=self.rabbitmq_channel.start_consuming)
-
             self.socketio.run(self.application, host=self.config.socketio.host, port=self.config.socketio.port)
         except:
             self.stop()
@@ -66,11 +64,10 @@ class socketio_dispatcher:
     def stop(self):
         self.rabbitmq_channel.stop_consuming()
 
-
     def message(self, message):
         message['socketio_session_id']=request.sid
         if message['model']=='sicken-t5':
-            q='sicken-requests_t5'
+            q='sicken-requests_t5_chat'
 
         message=dumps(message)
 
@@ -87,7 +84,9 @@ class socketio_dispatcher:
 if __name__=="__main__":
     app = Flask(__name__)
     #app.config['SECRET_KEY'] = 'secret!'
-    socketio = SocketIO(app, cors_allowed_origins="*")
+    socketio = SocketIO(
+        app,
+        cors_allowed_origins="*")
 
     socketio_dispatcher=socketio_dispatcher(app, socketio)
     socketio_dispatcher.start()

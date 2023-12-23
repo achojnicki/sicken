@@ -11,3 +11,4 @@ __pycache__/*
 **/.DS_Store
 
 /sickens_datasets/*/*.json
+/sickens_datasets/*/*.txt

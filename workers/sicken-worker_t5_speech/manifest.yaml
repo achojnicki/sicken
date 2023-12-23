@@ -1,5 +1,5 @@
-enabled: True
-name: sicken-workerio_dispatcher
+enabled: true
+name: sicken-worker_t5_chat
 exec: /opt/homebrew/Cellar/python@3.11/3.11.6_1/bin/python3
 script: __main__.py
 workers: 1
