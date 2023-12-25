@@ -106,6 +106,7 @@
   "extra_ids": 100,
   "model_max_length": 512,
   "pad_token": "<pad>",
+  "sp_model_kwargs": {},
   "tokenizer_class": "T5Tokenizer",
   "unk_token": "<unk>"
 }
