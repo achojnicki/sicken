@@ -37,11 +37,10 @@ class trainer_base:
 			weight_decay=self.args.weight_decay,
 			num_train_epochs=self.args.epochs,
 			per_device_train_batch_size=self.args.batch_size,
-			no_cuda=not self.args.use_cuda,
-			use_cpu=self.args.use_cpu,
+			no_cuda=True if not self.args.use_cuda else False,
+			use_cpu=True if not self.args.use_cuda and self.args.use_cpu else False,
 			use_ipex=self.args.use_ipex,
 			fp16=True if self.args.use_cuda else False,
-			use_mps_device=self.args.use_mps,
 			save_strategy="no",
 			)
 
