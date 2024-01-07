@@ -41,7 +41,7 @@ class trainer_base:
 			no_cuda=True if not self.args.use_cuda else False,
 			use_cpu=True if not self.args.use_cuda and self.args.use_cpu else False,
 			use_ipex=self.args.use_ipex,
-			fp16=True if self.args.use_cuda else False,
+			fp16=True if self.args.fp16 else False,
 			save_strategy="no",
 			)
 
@@ -161,6 +161,12 @@ class T5_Trainer:
 			'--use_ipex',
 			action='store_true',
 			help='use IPEX'
+			)
+
+		arg.add_argument(
+			'--use_fp16',
+			action='store_true',
+			help='use BFLOAT16'
 			)
 
 		return arg.parse_args()
