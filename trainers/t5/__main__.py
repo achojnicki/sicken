@@ -5,6 +5,7 @@ from transformers import T5Config, AutoTokenizer, AutoModelForSeq2SeqLM, Seq2Seq
 from argparse import ArgumentParser
 
 from constants import T5_Trainer_Constants
+from pagen import Pagen
 
 import sickens_datasets
 
@@ -18,16 +19,16 @@ class trainer_base:
 		self.tokenizer=tokenizer
 		self.data_collator=collator
 
-		self.load_dataset()
+		self.pagen=Pagen()
 
 	def return_dataset_file_path(self, file):
 		return str(self.constants.datasets_dir / self.dataset_name / file)
 
-	def train(self):
+	def train(self, epochs=None):
 		self.train_dataset=self.train_dataset.map(
 			self.process_function,
 			num_proc=self.args.num_workers,
-			desc="Mapping Sicken on the {dataset} dataset".format(dataset=self.dataset_name)
+			desc=f"Mapping Sicken on the {self.dataset_name} dataset"
 			)
 
 		self.model_args=Seq2SeqTrainingArguments(
@@ -35,7 +36,7 @@ class trainer_base:
 			seed=76,
 			overwrite_output_dir=True,
 			weight_decay=self.args.weight_decay,
-			num_train_epochs=self.args.epochs,
+			num_train_epochs=epochs if epochs else self.args.epochs,
 			per_device_train_batch_size=self.args.batch_size,
 			no_cuda=True if not self.args.use_cuda else False,
 			use_cpu=True if not self.args.use_cuda and self.args.use_cpu else False,
@@ -53,6 +54,8 @@ class trainer_base:
 			)
 
 		self.trainer.train()
+
+	def save_model(self):
 		self.trainer.save_model(self.get_model_dir())
 
 	def get_model_dir(self):
@@ -189,7 +192,8 @@ class T5_Trainer:
 			)
 
 		self.data_collator=DataCollatorForSeq2Seq(
-			self.tokenizer
+			tokenizer=self.tokenizer,
+			model=self.model
 			)
 
 	def get_base_model_path(self):
@@ -237,7 +241,7 @@ class T5_Trainer:
 		return trainer
 
 	def start(self):
-		t=self.return_trainer_class(sickens_datasets.datasets[self.args.dataset])
+		t=self.return_trainer_class(sickens_datasets.all_datasets[self.args.dataset])
 		t=t(
 			self.constants,
 			self.args,
@@ -246,7 +250,13 @@ class T5_Trainer:
 			self.data_collator
 			)
 
-		t.train()
+		if t.dataset_type == "simple":
+			t.train()
+
+		elif t.dataset_type =='sequence':
+			t.training_sequence()
+
+		t.save_model()
 
 if __name__=="__main__":
 	app=T5_Trainer()

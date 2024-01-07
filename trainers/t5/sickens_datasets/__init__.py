@@ -1,9 +1,9 @@
-import sickens_datasets.sicken
-import sickens_datasets.oxford_dictionary
-import sickens_datasets.simple_wiki
+from sickens_datasets.sicken import Sicken
+from sickens_datasets.oxford_dictionary import Oxford_Dictionary
+from sickens_datasets.simple_wiki import Simple_Wiki
 
-datasets={
-	"sicken"            : sickens_datasets.sicken.Sicken,
-	"oxford_dictionary" : sickens_datasets.oxford_dictionary.Oxford_Dictionary,
-	"simple_wiki"       : sickens_datasets.simple_wiki.Simple_Wiki
+all_datasets = {
+	"sicken": Sicken,
+	"oxford_dictionary": Oxford_Dictionary,
+	"simple_wiki": Simple_Wiki
 	}
