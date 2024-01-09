@@ -183,7 +183,7 @@ class GPT2_Trainer:
 
 		if self.tokenizer.pad_token is None:
 			self.tokenizer.add_special_tokens({'pad_token':'[PAD]'})
-			self.model.resize_token_embeddings(len(self.tokenizer))
+			#self.model.resize_token_embeddings(len(self.tokenizer))
 			
 
 	def get_base_model_path(self):
