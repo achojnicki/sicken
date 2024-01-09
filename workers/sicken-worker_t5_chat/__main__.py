@@ -83,7 +83,7 @@ class Worker_T5:
 			no_repeat_ngram_size=2,
 			length_penalty=2
 			)
-		return self._t5_tokenizer.decode(gen_outputs[0], skip_special_tokens=True)
+		return self._t5_tokenizer.decode(gen_outputs[0])
 
 	def _build_response_message(self, user_uuid, chat_uuid, socketio_session_id, message):
 		return dumps({

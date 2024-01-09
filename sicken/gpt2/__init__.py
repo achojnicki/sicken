@@ -1,5 +1,5 @@
 from os import listdir
-from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers import AutoModelForCausalLM, AutoTokenizer,
 
 import constants
 import torch

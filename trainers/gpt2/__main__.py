@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 from os import listdir, environ
 from multiprocess import set_start_method, freeze_support
-from transformers import GPT2Config, AutoTokenizer, GPT2LMHeadModel, Trainer, TrainingArguments
+from transformers import GPT2Config, AutoTokenizer, AutoModelForCausalLM, Trainer, TrainingArguments
 from argparse import ArgumentParser
+
 from constants import GPT2_Trainer_Constants
+from pagen import Pagen
 
 import sickens_datasets
 
@@ -15,23 +17,24 @@ class trainer_base:
 		self.model=model
 		self.tokenizer=tokenizer
 
-		self.load_dataset()
+		self.pagen=Pagen()
+
 
 	def return_dataset_file_path(self, file):
 		return str(self.constants.datasets_dir / self.dataset_name / file)
 
-	def train(self):
+	def train(self, epochs=None):
 		self.model_args=TrainingArguments(
 			output_dir=self.get_model_dir(),
 			seed=76,
 			overwrite_output_dir=True,
 			weight_decay=self.args.weight_decay,
-			num_train_epochs=self.args.epochs,
+			num_train_epochs=epochs if epochs else self.args.epochs,
 			per_device_train_batch_size=self.args.batch_size,
-			use_cpu=self.args.use_cpu,
+			no_cuda=True if not self.args.use_cuda else False,
+			use_cpu=True if not self.args.use_cuda and self.args.use_cpu else False,
 			use_ipex=self.args.use_ipex,
-			fp16=True if self.args.use_cuda else False,
-			use_mps_device=self.args.use_mps,
+			fp16=True if self.args.use_fp16 else False,
 			save_strategy="no",
 			)
 
@@ -50,7 +53,6 @@ class trainer_base:
 			)
 
 		self.trainer.train()
-		self.trainer.save_model(self.get_model_dir())
 
 	def get_model_dir(self):
 		return self.constants.models_dir / self.args.new_model_name
@@ -65,7 +67,7 @@ class GPT2_Trainer:
 			freeze_support()
 			set_start_method('spawn', force=True)
 
-		self.load_model_tokenizer_collator()
+		self.load_model_tokenizer()
 
 	def parse_args(self):
 		arg=ArgumentParser(
@@ -158,15 +160,21 @@ class GPT2_Trainer:
 			help='use IPEX'
 			)
 
+		arg.add_argument(
+			'--use_fp16',
+			action='store_true',
+			help='use BFLOAT16'
+			)
+
 		return arg.parse_args()
 
-	def load_model_tokenizer_collator(self):
+	def load_model_tokenizer(self):
 		if self.args.base_model:
 			self.config = GPT2Config.from_pretrained(
 			    self.get_base_model_path(),
 			    local_files_only=True
 			)
-			self.model = GPT2LMHeadModel.from_pretrained(
+			self.model = AutoModelForCausalLM.from_pretrained(
 			    self.get_base_model_path(),
 			    config=self.config,
 			    local_files_only=True
@@ -177,7 +185,7 @@ class GPT2_Trainer:
 				self.get_base_config_path(),
 				)
 
-			self.model=AutoModelForSeq2SeqLM.from_config(
+			self.model=AutoModelForCausalLM.from_config(
 				self.config,
 				)	
 
@@ -236,7 +244,7 @@ class GPT2_Trainer:
 		return trainer
 
 	def start(self):
-		t=self.return_trainer_class(Datasets.datasets[self.args.dataset])
+		t=self.return_trainer_class(sickens_datasets.datasets[self.args.dataset])
 		t=t(
 			self.constants,
 			self.args,
@@ -244,7 +252,13 @@ class GPT2_Trainer:
 			self.tokenizer,
 			)
 
-		t.train()
+		if t.dataset_type == "simple":
+			t.train()
+
+		elif t.dataset_type =='sequence':
+			t.training_sequence()
+
+		t.save_model()
 
 if __name__=="__main__":
 	app=GPT2_Trainer()
