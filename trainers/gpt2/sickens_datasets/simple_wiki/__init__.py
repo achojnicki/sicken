@@ -3,6 +3,7 @@ import torch
 
 class Simple_Wiki:
 	dataset_name="simple_wiki"
+	dataset_type="simple"
 
 	def load_dataset(self):
 		self.train_dataset=load_dataset(

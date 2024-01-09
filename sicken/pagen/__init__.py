@@ -28,13 +28,12 @@ class Pagen:
 
 
 	def __call__(self, data):
-		if type(data['content']) is list or type(data['content']) is tuple:
-			if data['type'] == 'bullet':
-				data['content']=self.generate_bullet_points(data['content'])
-			elif data['type'] =='number':
-				data['content']=self.generate_numbered_points(data['content'])
+		if data['type'] == 'bullet':
+			data['content']=self.generate_bullet_points(data['content'])
+		elif data['type'] =='number':
+			data['content']=self.generate_numbered_points(data['content'])
 
-		elif type(data['content']) is str:
+		elif data['type']=='paragraph':
 			data['content']=data['content'].replace("\n","\n\t")
 			data['content']=f"\t{data['content']}"
 

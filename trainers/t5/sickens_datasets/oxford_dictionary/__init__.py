@@ -2,6 +2,7 @@ from datasets import load_dataset
 
 class Oxford_Dictionary:
 	dataset_name="oxford_dictionary"
+	dataset_type="simple"
 
 	def load_dataset(self):
 		self.train_dataset=load_dataset(
