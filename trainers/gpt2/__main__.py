@@ -240,6 +240,7 @@ class GPT2_Trainer:
 			)
 
 		if t.dataset_type == "simple":
+			t.load_dataset()
 			t.train()
 
 		elif t.dataset_type =='sequence':
