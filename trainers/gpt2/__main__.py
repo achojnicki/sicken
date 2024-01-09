@@ -54,6 +54,9 @@ class trainer_base:
 
 		self.trainer.train()
 
+	def save_model(self):
+		self.trainer.save_model(self.get_model_dir())
+
 	def get_model_dir(self):
 		return self.constants.models_dir / self.args.new_model_name
 
