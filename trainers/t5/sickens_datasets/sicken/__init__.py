@@ -38,9 +38,14 @@ class Sicken:
 
 
 	def process_function(self, data):
+		title=data['title']
+		description=data['content']
+
+		title=self.tokenizer(title)
 		description=self.pagen(data)
 
 		description=self.tokenizer(description)
 
+		description['labels']=title['input_ids']
 		return description
 
