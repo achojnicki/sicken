@@ -7,7 +7,7 @@ class Sicken:
 	def training_sequence(self):
 		#inculcating categories
 		self.load_categories()
-		self.train(epochs=50)
+		self.train(epochs=100)
 
 		#inculcating Sicken's self
 		self.load_self()
@@ -38,9 +38,14 @@ class Sicken:
 
 
 	def process_function(self, data):
-		description=self.pagen(data)
+		description=data['content']
 
+		description=self.pagen(data)
 		description=self.tokenizer(description)
 
+		resp={}
+
+		description['labels']=description['input_ids']
 		return description
+
 

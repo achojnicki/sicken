@@ -25,6 +25,15 @@ class T5_Trainer_Constants:
 
 	configs_dir=project_dir / "trainers" / "t5" / "configs"
 	datasets_dir=project_dir / "sickens_datasets"
+
+class BERT_Trainer_Constants:
+	project_dir=Sicken.sicken_path
+	
+	models_dir=project_dir / "models" / "bert"
+	tokenizers_dir=project_dir/ "tokenizers" / "bert"
+
+	configs_dir=project_dir / "trainers" / "bert" / "configs"
+	datasets_dir=project_dir / "sickens_datasets"
 	
 class Generator_Constants:
 	system_message="Your task is to provide the steps requested by the user."
