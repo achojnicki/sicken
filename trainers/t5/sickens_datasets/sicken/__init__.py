@@ -7,11 +7,15 @@ class Sicken:
 	def training_sequence(self):
 		#inculcating categories
 		self.load_categories()
-		self.train(epochs=50)
+		self.train(epochs=100)
 
 		#inculcating Sicken's self
 		self.load_self()
 		self.train()
+
+		#inculcating rules
+		self.load_rules()
+		self.train(epochs=100)
 
 	def load_categories(self):
 		self.train_dataset=load_dataset(
@@ -20,6 +24,17 @@ class Sicken:
 			data_files={
 				"train" : [
 					self.return_dataset_file_path("categories.json")
+					]
+				} 
+		)
+
+	def load_rules(self):
+		self.train_dataset=load_dataset(
+			"json",
+			split='train', 
+			data_files={
+				"train" : [
+					self.return_dataset_file_path("rules.json")
 					]
 				} 
 		)
