@@ -71,6 +71,6 @@ class Pagen:
 			elif main_content['type']=='bullets':
 				result+=self.generate_bullets(main_content['content'])
 		
-		if 'categories' in data and data['categoires']:
+		if 'categories' in data and data['categories']:
 			result+=self.generate_categories(data['categories'])
 		return result
