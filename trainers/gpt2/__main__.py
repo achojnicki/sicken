@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from os import listdir, environ
 from multiprocess import set_start_method, freeze_support
-from transformers import GPT2Config, AutoTokenizer, GPT2LMHeadModel, Trainer, TrainingArguments
+from transformers import GPT2Config, AutoTokenizer, AutoModelForCausalLM, Trainer, TrainingArguments
 from argparse import ArgumentParser
 
 from constants import GPT2_Trainer_Constants
@@ -83,11 +83,18 @@ class GPT2_Trainer:
 			help="name of the new model"
 			)
 
-		arg.add_argument(
+		gr1=arg.add_mutually_exclusive_group(required=True)
+
+		gr1.add_argument(
 			"--base_model",
 			choices=self.list_all_models(),
-			required=True,
 			help="base model"
+			)
+
+		gr1.add_argument(
+			"--base_config",
+			choices=self.list_all_configs(),
+			help="base config"
 			)
 
 		arg.add_argument(
@@ -165,16 +172,25 @@ class GPT2_Trainer:
 		return arg.parse_args()
 
 	def load_model_tokenizer(self):
-		self.config = GPT2Config.from_pretrained(
-		    self.get_base_model_path(),
-		    local_files_only=True
-		)
-		self.model = GPT2LMHeadModel.from_pretrained(
-		    self.get_base_model_path(),
-		    config=self.config,
-		    local_files_only=True
-		)
+		if self.args.base_model:
+			self.config = GPT2Config.from_pretrained(
+			    self.get_base_model_path(),
+			    local_files_only=True
+			)
+			self.model = AutoModelForCausalLM.from_pretrained(
+			    self.get_base_model_path(),
+			    config=self.config,
+			    local_files_only=True
+			)
 
+		elif self.args.base_config:
+			self.config=GPT2Config.from_json_file(
+				self.get_base_config_path(),
+				)
+
+			self.model=AutoModelForCausalLM.from_config(
+				self.config,
+				)	
 
 		self.tokenizer = AutoTokenizer.from_pretrained(
 		    self.get_tokenizer_path(),
