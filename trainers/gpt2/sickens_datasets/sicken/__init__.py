@@ -58,8 +58,6 @@ class Sicken:
 		description=self.pagen(data)
 		description=self.tokenizer(description)
 
-		resp={}
-
 		description['labels']=description['input_ids']
 		return description
 

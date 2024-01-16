@@ -1,7 +1,0 @@
-enabled: false
-name: sicken-speech_synth
-exec: /opt/homebrew/Cellar/python@3.11/3.11.6_1/bin/python3
-script: __main__.py
-workers: 1
-uid: 7676
-gid: 7676
