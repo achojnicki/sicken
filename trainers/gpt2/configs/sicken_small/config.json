@@ -24,7 +24,7 @@
   "task_specific_params": {
     "text-generation": {
       "do_sample": true,
-      "max_length": 50
+      "max_length": 20000
     }
   },
   "vocab_size": 50257
