@@ -191,6 +191,9 @@ class GPT2_Trainer:
 			    local_files_only=True
 			)
 
+			self.model.resize_token_embeddings(self.tokenizer.vocab_size, 32)
+
+
 		elif self.args.base_config:
 			self.config=GPT2Config.from_json_file(
 				self.get_base_config_path(),
@@ -200,6 +203,7 @@ class GPT2_Trainer:
 			self.model=AutoModelForCausalLM.from_config(
 				self.config,
 				)	
+			self.model.resize_token_embeddings(self.tokenizer.vocab_size, 32)
 
 		
 
