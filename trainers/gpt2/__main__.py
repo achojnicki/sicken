@@ -176,13 +176,14 @@ class GPT2_Trainer:
 		    self.get_tokenizer_path(),
 		    local_files_only=True
 			)
+		self.tokenizer.add_special_tokens({'pad_token':'<|PAD|>'})
 
 		if self.args.base_model:
 			self.config = GPT2Config.from_pretrained(
 			    self.get_base_model_path(),
 			    local_files_only=True
 			)
-			self.config.vocab_size=tokenizer.vocab_size
+			self.config.vocab_size=len(self.tokenizer)
 
 			self.model = AutoModelForCausalLM.from_pretrained(
 			    self.get_base_model_path(),
@@ -194,8 +195,8 @@ class GPT2_Trainer:
 			self.config=GPT2Config.from_json_file(
 				self.get_base_config_path(),
 				)
-			
-			self.config.vocab_size=tokenizer.vocab_size
+
+			self.config.vocab_size=len(self.tokenizer)
 			self.model=AutoModelForCausalLM.from_config(
 				self.config,
 				)	
@@ -205,17 +206,8 @@ class GPT2_Trainer:
 		print(f"self.model.transformer.wte.weight.shape[0]:{self.model.transformer.wte.weight.shape[0]}")
 		print(f"self.tokenizer.vocab_size{self.tokenizer.vocab_size}")
 		print(f"len(self.tokenizer):{len(self.tokenizer)}")
-		print('---')
+		print('---')	
 
-		if self.tokenizer.pad_token is None:
-			self.tokenizer.add_special_tokens({'pad_token':'<|PAD|>'})
-			self.model.resize_token_embeddings(self.tokenizer.vocab_size, 32)
-			self.model.config.		
-
-		print(f"self.model.transformer.wte.weight.shape[0]:{self.model.transformer.wte.weight.shape[0]}")
-		print(f"self.tokenizer.vocab_size{self.tokenizer.vocab_size}")
-		print(f"len(self.tokenizer):{len(self.tokenizer)}")
-		print('---')
 	def get_base_model_path(self):
 		return self.constants.models_dir / self.args.base_model
 	
