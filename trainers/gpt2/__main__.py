@@ -192,7 +192,7 @@ class GPT2_Trainer:
 			    ignore_mismatched_sizes=True
 			)
 
-			self.model.resize_token_embeddings(self.tokenizer.vocab_size, 32)
+			#self.model.resize_token_embeddings(self.tokenizer.vocab_size, 32)
 
 
 		elif self.args.base_config:
@@ -204,7 +204,7 @@ class GPT2_Trainer:
 			self.model=AutoModelForCausalLM.from_config(
 				self.config,
 				)	
-			self.model.resize_token_embeddings(self.tokenizer.vocab_size, 32)
+			#self.model.resize_token_embeddings(self.tokenizer.vocab_size, 32)
 
 		
 
