@@ -188,7 +188,8 @@ class GPT2_Trainer:
 			self.model = AutoModelForCausalLM.from_pretrained(
 			    self.get_base_model_path(),
 			    config=self.config,
-			    local_files_only=True
+			    local_files_only=True,
+			    ignore_mismatched_sizes=True
 			)
 
 			self.model.resize_token_embeddings(self.tokenizer.vocab_size, 32)
