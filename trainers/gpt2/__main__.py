@@ -198,7 +198,7 @@ class GPT2_Trainer:
 			)
 
 
-		#if self.tokenizer.pad_token is None:
+		if self.tokenizer.pad_token is None:
 			self.tokenizer.pad_token=self.tokenizer.eos_token
 			self.model.resize_token_embeddings(len(self.tokenizer), 32)
 		
