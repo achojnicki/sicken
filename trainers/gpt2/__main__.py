@@ -53,7 +53,7 @@ class trainer_base:
 			tokenizer=self.tokenizer,
 			)
 
-		self.trainer.train()
+		self.trainer.train(resume_from_checkpoint=True)
 
 	def save_model(self):
 		self.trainer.save_model(self.get_model_dir())
