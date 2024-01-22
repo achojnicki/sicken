@@ -53,7 +53,7 @@ class trainer_base:
 			tokenizer=self.tokenizer,
 			)
 
-		self.trainer.train(resume_from_checkpoint=True)
+		self.trainer.train(resume_from_checkpoint=self.args.resume_from_checkpoint)
 
 	def save_model(self):
 		self.trainer.save_model(self.get_model_dir())
@@ -169,6 +169,10 @@ class GPT2_Trainer:
 			action='store_true',
 			help='use BFLOAT16'
 			)
+		arg.add_argument(
+			'--resume_from_checkpoint',
+			action="store_true",
+			help="resume from checkpoint")
 
 		return arg.parse_args()
 
