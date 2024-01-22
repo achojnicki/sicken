@@ -172,40 +172,35 @@ class GPT2_Trainer:
 		return arg.parse_args()
 
 	def load_model_tokenizer(self):
-		self.tokenizer = AutoTokenizer.from_pretrained(
-		    self.get_tokenizer_path(),
-		    local_files_only=True
-			)
-		self.tokenizer.add_special_tokens({'pad_token':'<|PAD|>'})
-
 		if self.args.base_model:
 			self.config = GPT2Config.from_pretrained(
 			    self.get_base_model_path(),
 			    local_files_only=True
 			)
-			self.config.vocab_size=len(self.tokenizer)
-
 			self.model = AutoModelForCausalLM.from_pretrained(
 			    self.get_base_model_path(),
 			    config=self.config,
-			    local_files_only=True,
-			    ignore_mismatched_sizes=True
+			    local_files_only=True
 			)
-
-			#self.model.resize_token_embeddings(self.tokenizer.vocab_size, 32)
-
 
 		elif self.args.base_config:
 			self.config=GPT2Config.from_json_file(
 				self.get_base_config_path(),
 				)
 
-			self.config.vocab_size=len(self.tokenizer)
 			self.model=AutoModelForCausalLM.from_config(
 				self.config,
 				)	
-			#self.model.resize_token_embeddings(self.tokenizer.vocab_size, 32)
 
+		self.tokenizer = AutoTokenizer.from_pretrained(
+		    self.get_tokenizer_path(),
+		    local_files_only=True
+			)
+
+
+		#if self.tokenizer.pad_token is None:
+		#	self.tokenizer.add_special_tokens({'pad_token':'<|PAD|>'})
+		#	self.model.resize_token_embeddings(self.tokenizer.vocab_size, 32)
 		
 
 		print(f"self.model.transformer.wte.weight.shape[0]:{self.model.transformer.wte.weight.shape[0]}")
