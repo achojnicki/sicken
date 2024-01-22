@@ -203,11 +203,6 @@ class GPT2_Trainer:
 		#	self.model.resize_token_embeddings(self.tokenizer.vocab_size, 32)
 		
 
-		print(f"self.model.transformer.wte.weight.shape[0]:{self.model.transformer.wte.weight.shape[0]}")
-		print(f"self.tokenizer.vocab_size{self.tokenizer.vocab_size}")
-		print(f"len(self.tokenizer):{len(self.tokenizer)}")
-		print('---')	
-
 	def get_base_model_path(self):
 		return self.constants.models_dir / self.args.base_model
 	
