@@ -35,7 +35,8 @@ class trainer_base:
 			use_cpu=True if not self.args.use_cuda and self.args.use_cpu else False,
 			use_ipex=self.args.use_ipex,
 			fp16=True if self.args.use_fp16 else False,
-			save_strategy="no",
+			save_strategy="steps",
+			save_steps=5000
 			)
 
 		self.train_dataset=self.train_dataset.map(
