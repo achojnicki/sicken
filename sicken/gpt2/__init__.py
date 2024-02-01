@@ -12,8 +12,6 @@ class Sicken:
         self.set_model()
         self.set_tokenizer()
 
-        self.chat_history_ids=None
-
 
     def get_gpt2_models_list(self):
         models=listdir(constants.Sicken.models_path / "gpt2")
@@ -42,19 +40,22 @@ class Sicken:
         return constants.Sicken.tokenizers_path / "gpt2" /  tokenizer
 
     def get_answer(self, question):
-        new_input_ids=self.gpt2_tokenizer.encode(question+ self.gpt2_tokenizer.eos_token, return_tensors='pt')
-        bot_input_ids=torch.cat([self.chat_history_ids, new_input_ids], dim=-1) if self.chat_history_ids is not None else new_input_ids
-        
-        self.chat_history_ids=self.gpt2_model.generate(
-            bot_input_ids,
-            #pad_token_id=self.gpt2_tokenizer.eos_token,
-            do_sample = True,
-            top_k = 1,
-            top_p = 0.20,
-            max_length=1000,
-            no_repeat_ngram_size=2, 
-            temperature=0.76,
-            early_stopping=True
-            )
+        features=self.gpt2_tokenizer(question, return_tensors='pt')
 
-        return [self.gpt2_tokenizer.decode(self.chat_history_ids[:, bot_input_ids.shape[-1]:][0], skip_special_tokens=True)]
+        gen_outputs=self.gpt2_model.generate(
+            **features,
+            return_dict_in_generate=True,
+            output_scores=True,
+            #max_new_tokens=100000,
+            num_beams=2,
+            min_length=20,
+            max_length=100,
+            temperature=0.76,
+            do_sample=True,
+            early_stopping=True,
+            no_repeat_ngram_size=2,
+            length_penalty=2,            
+
+            ) 
+
+        return [self.gpt2_tokenizer.decode(gen_outputs[0][0], skip_special_tokens=True)]

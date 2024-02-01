@@ -5,7 +5,7 @@ from transformers import GPT2Config, AutoTokenizer, AutoModelForCausalLM, Traine
 from argparse import ArgumentParser
 
 from constants import GPT2_Trainer_Constants
-from pagen import Pagen
+from sicken.pagen import Pagen
 
 import sickens_datasets
 
@@ -23,7 +23,7 @@ class trainer_base:
 	def return_dataset_file_path(self, file):
 		return str(self.constants.datasets_dir / self.dataset_name / file)
 
-	def train(self, epochs=None):
+	def train(self, epochs=None, map_function=None):
 		self.model_args=TrainingArguments(
 			output_dir=self.get_model_dir(),
 			seed=76,
@@ -40,7 +40,7 @@ class trainer_base:
 			)
 
 		self.train_dataset=self.train_dataset.map(
-			self.process_function,
+			self.map_pagen if not map_function else map_function,
 			num_proc=self.args.num_workers,
 			desc="Mapping Sicken on the {dataset} dataset".format(dataset=self.dataset_name)
 			)
@@ -205,6 +205,7 @@ class GPT2_Trainer:
 
 		if self.tokenizer.pad_token is None:
 			self.tokenizer.pad_token=self.tokenizer.eos_token
+
 			self.model.resize_token_embeddings(len(self.tokenizer), 32)
 		
 

@@ -1,7 +1,5 @@
 from pprint import pprint
 
-
-
 class Pagen:
 	def __init__(self):
 		pass
