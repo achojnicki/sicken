@@ -102,6 +102,6 @@ class Sicken:
 		data=self.tokenizer(description)
 
 		data['labels']=data['input_ids']
-		return description
+		return data
 
 
