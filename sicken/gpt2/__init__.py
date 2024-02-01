@@ -12,6 +12,10 @@ class Sicken:
         self.set_model()
         self.set_tokenizer()
 
+        self.chat=[
+                    {"role": "system", "content": "You are a Sicken. An AI made by Adrian Chojnicki."}
+                ]
+
 
     def get_gpt2_models_list(self):
         models=listdir(constants.Sicken.models_path / "gpt2")
@@ -40,10 +44,11 @@ class Sicken:
         return constants.Sicken.tokenizers_path / "gpt2" /  tokenizer
 
     def get_answer(self, question):
-        features=self.gpt2_tokenizer(question, return_tensors='pt')
+        self.chat.append({"role": "user", "content": question})
+        input_ids=self.gpt2_tokenizer.apply_chat_template(question, return_tensors='pt')
 
         gen_outputs=self.gpt2_model.generate(
-            **features,
+            input_ids,
             return_dict_in_generate=True,
             output_scores=True,
             #max_new_tokens=100000,
@@ -58,4 +63,6 @@ class Sicken:
 
             ) 
 
-        return [self.gpt2_tokenizer.decode(gen_outputs[0][0], skip_special_tokens=True)]
+        output=self.gpt2_tokenizer.decode(gen_outputs[0][0], skip_special_tokens=True)
+        self.chat.append({"role":"assistant", "content": "output"})
+        return [output]

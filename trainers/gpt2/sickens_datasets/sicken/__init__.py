@@ -11,19 +11,19 @@ class Sicken:
 
 		#inculcating categories
 		self.load_categories()
-		self.train(epochs=100)
+		self.train(epochs=10)
 
 		#inculcating Sicken's self
 		self.load_self()
-		self.train()
+		self.train(epochs=500)
 
 		#inculcating rules
 		self.load_rules()
-		self.train(epochs=100)
+		self.train(epochs=50)
 
 		#finetune
 		self.load_finetune()
-		self.train(epochs=1000, map_function=self.map_finetune)
+		self.train(epochs=50, map_function=self.map_finetune)
 
 
 	def load_dictionary(self):
@@ -83,25 +83,25 @@ class Sicken:
 
 
 	def map_dictionary(self, data):
-		description=f"{data['word']} - {data['definition']}"
-		description=self.tokenizer(description)
+		example=f"{data['word']} - {data['definition']}"
+		example=self.tokenizer(description)
 
-		description['labels']=description['input_ids']
-		return description
+		example['labels']=example['input_ids']
+		return example
 
 
 	def map_finetune(self, data):
-		description=f"{data['reply_type']}\n\n{data['reply']}"
-		description=self.tokenizer(description)
+		example=f"{data['reply_type']}\n\n{data['reply']}"
+		example=self.tokenizer(example)
 
-		description['labels']=description['input_ids']
-		return description
+		example['labels']=example['input_ids']
+		return example
 
 	def map_pagen(self, data):
-		description=self.pagen(data)
-		data=self.tokenizer(description)
+		example=self.pagen(data)
+		example=self.tokenizer(example)
 
-		data['labels']=data['input_ids']
-		return data
+		example['labels']=example['input_ids']
+		return example
 
 
