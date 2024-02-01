@@ -84,7 +84,7 @@ class Sicken:
 
 	def map_dictionary(self, data):
 		example=f"{data['word']} - {data['definition']}"
-		example=self.tokenizer(description)
+		example=self.tokenizer(example)
 
 		example['labels']=example['input_ids']
 		return example
