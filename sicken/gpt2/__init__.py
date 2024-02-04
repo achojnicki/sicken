@@ -3,6 +3,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 
 import constants
 import torch
+import html
 
 class Sicken:
     def __init__(self, root):
@@ -65,4 +66,5 @@ class Sicken:
 
         output=self.gpt2_tokenizer.decode(gen_outputs[0][0], skip_special_tokens=True)
         self.chat.append({"role":"assistant", "content": "output"})
+        output=html.escape(output)
         return [output]

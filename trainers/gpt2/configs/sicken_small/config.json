@@ -14,7 +14,7 @@
   "n_embd": 768,
   "n_head": 12,
   "n_layer": 12,
-  "n_positions": 10240,
+  "n_positions": 30000,
   "resid_pdrop": 0.1,
   "summary_activation": null,
   "summary_first_dropout": 0.1,
