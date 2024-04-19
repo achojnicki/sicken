@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from sicken.gpt2 import Sicken
+from sicken.gemma import Sicken
 from gui import GUI
 from adislog import adislog
 

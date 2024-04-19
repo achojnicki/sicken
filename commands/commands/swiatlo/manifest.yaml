@@ -1,0 +1,9 @@
+name: swiatlo
+description: światło
+commands: 
+  - zapal światło w [lokalizacja] na [flat]
+  - zgaś światło w [lokalizacja] na [flat]
+  - zapal światło w [lokalizacja]
+  - zgaś światło w [lokalizacja]
+  - zapal światło
+  - zgaś światło

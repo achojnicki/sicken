@@ -16,7 +16,7 @@ class Terminal(Base_Class):
 		{
 			"name": "print_to_terminal",
 			"description" : "Print data to terminal.",
-			"callback": print_to_terminal, 
+			"callable": print_to_terminal, 
 			"args":[
 				{"name":"data", "type":"str"},
 				]
@@ -24,7 +24,7 @@ class Terminal(Base_Class):
 		{
 			"name": "pprint_to_terminal",
 			"description" : "Pretty print data to terminal.",
-			"callback": pprint_to_terminal, 
+			"callable": pprint_to_terminal, 
 			"args":[
 				{"name":"data", "type":"str"},
 				]

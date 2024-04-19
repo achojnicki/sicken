@@ -23,7 +23,7 @@ class Actions:
 	def _pop_callback(self, data):
 		data=copy.deepcopy(data)
 		for a in data:
-			a.pop('callback')
+			a.pop('callable')
 		return data
 
 	def get_actions_group(self, action_group):
@@ -64,7 +64,7 @@ class Actions:
 		action_group=self.get_actions_group(actions_group)
 		for a in action_group['functions']:
 			if a['name']==function:
-				return a['callback'](action_group['instance'],**data)
+				return a['callable'](action_group['instance'],**data)
 		raise FunctionNotFound
 
 	def execute(self, data):
@@ -85,5 +85,5 @@ class Actions:
 		 	"instance"  : None,
 		 	"functions" : Terminal.Terminal.functions
 		},
-]
+	]
 

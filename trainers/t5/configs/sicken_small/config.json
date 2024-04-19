@@ -17,7 +17,7 @@
   "is_gated_act": true,
   "layer_norm_epsilon": 1e-06,
   "model_type": "t5",
-  "n_positions": 512,
+  "n_positions": 4096,
   "num_decoder_layers": 12,
   "num_heads": 12,
   "num_layers": 12,

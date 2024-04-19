@@ -23,6 +23,7 @@ class Sicken:
         return tokenizers
 
     def set_model(self):
+        print(self.get_t5_model())
         self.t5_model=AutoModelForSeq2SeqLM.from_pretrained(self.get_t5_model(), local_files_only=True)
 
     def set_tokenizer(self):
@@ -39,7 +40,19 @@ class Sicken:
     def get_answer(self, question):
         d=[]
         features=self.t5_tokenizer(question, return_tensors="pt")
-        gen_outputs=self.t5_model.generate(features.input_ids, attention_mask=features.attention_mask, max_new_tokens=100000)
+        gen_outputs=self.t5_model.generate(
+            features.input_ids,
+            attention_mask=features.attention_mask,
+            max_new_tokens=1,
+            #num_beams=2,
+            #min_length=20,
+            #max_length=2000,
+            #temperature=0.1,
+            #do_sample=True,
+            #early_stopping=True,
+            #no_repeat_ngram_size=2,
+            #length_penalty=1
+            )
         for a in gen_outputs:
             d.append(self.t5_tokenizer.decode(a, skip_special_tokens=True))
         return d

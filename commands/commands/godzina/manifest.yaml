@@ -1,0 +1,5 @@
+name: godzina
+description: Aktualny czas
+commands: 
+  - która godzina
+  - jaki czas

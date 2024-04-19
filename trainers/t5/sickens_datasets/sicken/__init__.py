@@ -1,5 +1,7 @@
 from datasets import load_dataset
 
+import numpy
+
 class Sicken:
 	dataset_name="sicken"
 	dataset_type="sequence"
@@ -51,6 +53,11 @@ class Sicken:
 		)
 
 
+	def compute_metrics(self, data):
+		print(data)
+		logits, labels = data
+		predictions = numpy.argmax(logits, axis=-1)
+		return self.metric_acc.compute(predictions=predictions, references=labels)
 
 	def process_function(self, data):
 		title=data['title']

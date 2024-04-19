@@ -5,9 +5,10 @@ from transformers import T5Config, AutoTokenizer, AutoModelForSeq2SeqLM, Seq2Seq
 from argparse import ArgumentParser
 
 from constants import T5_Trainer_Constants
-from pagen import Pagen
+from sicken.pagen import Pagen
 
 import sickens_datasets
+import evaluate
 
 
 class trainer_base:
@@ -20,6 +21,9 @@ class trainer_base:
 		self.data_collator=collator
 
 		self.pagen=Pagen()
+
+		self.metric_acc=evaluate.load('accuracy')
+
 
 	def return_dataset_file_path(self, file):
 		return str(self.constants.datasets_dir / self.dataset_name / file)
@@ -43,14 +47,17 @@ class trainer_base:
 			use_ipex=self.args.use_ipex,
 			fp16=True if self.args.use_fp16 else False,
 			save_strategy="no",
+			optim='adafactor'
 			)
 
 		self.trainer=Seq2SeqTrainer(
 			model=self.model,
 			args=self.model_args,
-			train_dataset=self.train_dataset,
-			tokenizer=self.tokenizer,
 			data_collator=self.data_collator,
+			train_dataset=self.train_dataset,
+			#eval_dataset=self.eval_dataset,
+			tokenizer=self.tokenizer,
+			compute_metrics=self.compute_metrics
 			)
 
 		self.trainer.train()
@@ -249,11 +256,11 @@ class T5_Trainer:
 	def start(self):
 		t=self.return_trainer_class(sickens_datasets.all_datasets[self.args.dataset])
 		t=t(
-			self.constants,
-			self.args,
-			self.model,
-			self.tokenizer,
-			self.data_collator
+			constants=self.constants,
+			args=self.args,
+			model=self.model,
+			tokenizer=self.tokenizer,
+			collator=self.data_collator
 			)
 
 		if t.dataset_type == "simple":

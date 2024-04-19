@@ -25,7 +25,7 @@ class Generator:
 		
 		self.append_message(
 			role="user",
-			content="Avaiable functions:  {functions}".format(functions=av_functions)
+			content=f"Avaiable functions:  {av_functions}"
 		)
 		
 		self.append_message(
