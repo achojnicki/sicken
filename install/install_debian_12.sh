@@ -48,7 +48,7 @@ print 'Installing Sicken...'
 run cd /opt/sicken
 
 print "Updating \$PATH"
-export PATH=$PATH:/sbin:/usr/sbin:/usr/local/sbin
+export PATH=$PATH:/sbin:/usr/sbin:/usr/local/sbin:/opt/adistools/sicken/install
 
 print "Updating local APT cache"
 run "apt-get update"
@@ -148,6 +148,13 @@ run "rabbitmqctl set_topic_permissions sicken-microphone_input '' '.*'' '.*'"
 run "rabbitmqctl set_topic_permissions sicken-vtube_plugin '' '.*'' '.*'"
 run "rabbitmqctl set_topic_permissions sicken-openai_llm '' '.*'' '.*'"
 run "rabbitmqctl set_topic_permissions admin '' '.*'' '.*'"
+
+print 'Creating RabbitMQ Queues'
+run 'create_queue.py sicken-logs'
+run 'create_queue.py sicken-response_requests'
+run 'create_queue.py sicken-speech_requests'
+run 'create_queue.py sicken-vtube_plugin_speech_generation_finished'
+run 'create_queue.py sicken-vtube_plugin_speech_requests'
 
 
 print "Enable RabbitMQ Managment plugin"
