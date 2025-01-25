@@ -1,0 +1,19 @@
+api:
+    results_per_page: 39
+    
+log:
+    debug: True
+    
+mongo:
+    host: localhost
+    port: 27017
+    db: sicken
+
+rabbitmq:
+    host: localhost
+    port: 5672
+    user: sicken-api
+    password: password
+
+directories:
+    endpoints_directory: /opt/adistools/uwsgi_workers/sicken-api/endpoints

@@ -1,0 +1,6 @@
+session_uuid:
+  required: true
+  allow_empty: false
+chat_uuid:
+  required: true
+  allow_empty: true

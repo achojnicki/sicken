@@ -1,0 +1,10 @@
+mongo:
+    host: localhost
+    port: 27017
+    db: sicken
+    
+rabbitmq:
+    host: localhost
+    port: 5672
+    user: adistools-log_worker
+    password: password

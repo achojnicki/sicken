@@ -1,0 +1,61 @@
+#!/usr/bin/env python3
+
+from adistools.log import Log
+from adistools.adisconfig import adisconfig
+from adistools.events import events
+
+from sicken.DB import DB
+
+from pika import BlockingConnection, PlainCredentials, ConnectionParameters
+from uuid import uuid4
+from time import time
+
+class text_input:
+    project_name="sicken-text_input"
+    def __init__(self):
+        self._active=True
+
+        self._config = adisconfig('/opt/sicken/configs/sicken-text_input.yaml')
+        self._log = Log(
+            parent=self,
+            rabbitmq_host=self._config.rabbitmq.host,
+            rabbitmq_port=self._config.rabbitmq.port,
+            rabbitmq_user=self._config.rabbitmq.user,
+            rabbitmq_passwd=self._config.rabbitmq.password,
+            debug=self._config.log.debug,
+        )
+
+        self._events=events(self)
+        self._db=DB(self)
+
+
+    def start(self):
+        self.listen()
+    
+    def stop(self):
+        self.active=False
+
+
+    def listen(self):
+        chat_uuid=str(uuid4())
+        self._db.create_chat(
+            chat_uuid=chat_uuid,
+            chat_created=time()
+            )
+
+        while self._active:
+            text=input("Message: ")
+            if text:
+                self._events.event(
+                    event_name="message_entered",
+                    event_data={
+                        "chat_uuid": chat_uuid,
+                        "message_author": "Message from sicken-text_input command line tool",
+                        "message": text 
+                        }
+                    )
+
+
+if __name__=="__main__":
+    worker=text_input()
+    worker.start()

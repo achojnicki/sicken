@@ -1,0 +1,28 @@
+general:
+    daemonize: false
+    start_workers: true
+    start_uwsgi_workers: true
+
+log:
+    debug: true
+    print_log: true
+    print_log_mode: colorful
+    save_to_file: true
+    #only for the daemon
+    report_to_systemd: true
+
+daemon:
+    pid_file: /opt/sicken/sicken-concurrent.pid
+
+uwsgi:
+    uwsgi_executable_path: /usr/local/bin/uwsgi
+
+scheduler:
+    interval: 0.1
+
+directories:
+    main_directory: /opt/sicken
+    workers_directory: /opt/sicken/workers
+    logs_directory: /opt/sicken/logs
+    ini_directory: /opt/sicken/uwsgi_inis
+    modules_directory: /opt/sicken/modules

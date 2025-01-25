@@ -1,0 +1,31 @@
+sicken-log_worker:
+  enable: true
+  workers_count: 1
+  uid: 7676
+  gid: 7676
+
+sicken-events:
+  enable: true
+  workers_count: 1
+  uid: 7676
+  gid: 7676
+
+sicken-openai_llm:
+  enable: true
+  workers_count: 1
+  uid: 7676
+  gid: 7676
+
+sicken-speech_generator:
+  enable: true
+  workers_count: 1
+  uid: 7676
+  gid: 7676
+
+sicken-vtube_plugin:
+  enable: true
+  workers_count: 1
+  uid: 7676
+  gid: 7676
+
+

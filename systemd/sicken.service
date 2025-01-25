@@ -1,0 +1,13 @@
+[Unit]
+Description=Sicken-Concurrent
+After=network.target nss-lookup.target mongod.service redis-server.service
+
+[Service]
+Type=forking
+PIDFile=/opt/sicken/sicken-concurrent.pid
+ExecStart=/opt/sicken/bin/sicken-concurrent
+ExecStop=-/sbin/start-stop-daemon --quiet --stop --retry TERM/30/QUIT/5 --pidfile /opt/sicken/sicken-concurrent.pid
+TimeoutStopSec=35
+
+[Install]
+WantedBy=multi-user.target

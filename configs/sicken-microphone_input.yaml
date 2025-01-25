@@ -1,0 +1,16 @@
+openai:
+    api_key: api_key_here
+
+log:
+    debug: true
+
+mongo:
+    host: localhost
+    port: 27017
+    db: sicken
+
+rabbitmq:
+    host: localhost
+    port: 5672
+    user: sicken-microphone_input
+    password: password

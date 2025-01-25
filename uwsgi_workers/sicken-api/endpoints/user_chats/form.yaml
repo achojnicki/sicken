@@ -1,0 +1,3 @@
+session_uuid:
+  required: true
+  allow_empty: false

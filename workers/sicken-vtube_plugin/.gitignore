@@ -1,0 +1,14 @@
+models/*
+tokenizers/*
+__pycache__
+__pycache__/*
+**/__pycache__
+**/__pycache__/*
+**/node_modules
+**/node_modules/*
+
+.DS_Store
+**/.DS_Store
+
+/sickens_datasets/*/*.json
+/sickens_datasets/*/*.txt
