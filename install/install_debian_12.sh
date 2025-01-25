@@ -119,12 +119,41 @@ run "apt-get install rabbitmq-server -y --fix-missing"
 print "Creating RabbitMQ users"
 run "rabbitmqctl add_user sicken-logs password"
 run "rabbitmqctl add_user sicken-events password"
+run "rabbitmqctl add_user sicken-openai_llm password"
+run "rabbitmqctl add_user sicken-speech_generator password"
+run "rabbitmqctl add_user sicken-text_input password"
+run "rabbitmqctl add_user sicken-microphone-input password"
+run "rabbitmqctl add_user sicken-vtube_plugin password"
+run "rabbitmqctl add_user sicken-openai_llm password"
 run "rabbitmqctl add_user admin sicken"
 
 
 print "Setting RabbitMQ users permissions"
+run "rabbitmqctl set_user_tags admin administrator"
 run "rabbitmqctl set_permissions -p / sicken-logs '.*' '.*' '.*'"
 run "rabbitmqctl set_permissions -p / sicken-events '.*' '.*' '.*'"
+run "rabbitmqctl set_permissions -p / sicken-openai_llm '.*' '.*' '.*'"
+run "rabbitmqctl set_permissions -p / sicken-speech_generator '.*' '.*' '.*'"
+run "rabbitmqctl set_permissions -p / sicken-text_input '.*' '.*' '.*'"
+run "rabbitmqctl set_permissions -p / sicken-microphone '.*' '.*' '.*'"
+run "rabbitmqctl set_permissions -p / sicken-vtube_plugin '.*' '.*' '.*'"
+run "rabbitmqctl set_permissions -p / sicken-openai_llm '.*' '.*' '.*'"
+run "rabbitmqctl set_permissions -p / admin '.*' '.*' '.*'"
+
+run "rabbitmqctl set_topic_permissions sicken-logs '' '.*'' '.*'"
+run "rabbitmqctl set_topic_permissions sicken-events '' '.*'' '.*'"
+run "rabbitmqctl set_topic_permissions sicken-openai_llm '' '.*'' '.*'"
+run "rabbitmqctl set_topic_permissions sicken-speech_generator '' '.*'' '.*'"
+run "rabbitmqctl set_topic_permissions sicken-text_input '' '.*'' '.*'"
+run "rabbitmqctl set_topic_permissions sicken-microphone '' '.*'' '.*'"
+run "rabbitmqctl set_topic_permissions sicken-vtube_plugin '' '.*'' '.*'"
+run "rabbitmqctl set_topic_permissions sicken-openai_llm '' '.*'' '.*'"
+run "rabbitmqctl set_topic_permissions admin '' '.*'' '.*'"
+
+
+
+
+
 
 print "Enable RabbitMQ Managment plugin"
 run "rabbitmq-plugins enable rabbitmq_management"
