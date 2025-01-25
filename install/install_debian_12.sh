@@ -175,6 +175,7 @@ run "rabbitmq-plugins enable rabbitmq_management"
 #print "Start adistools daemon"
 #run "service adistools start"
 
+run "mkdir /opt/sicken/logs"
 run "touch /opt/sicken/logs/sicken-concurrent.log"
 run "chmod 777 /opt/sicken/logs/sicken-concurrent.log"
 
