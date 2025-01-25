@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
-from adistools.log import Log
 from adistools.adisconfig import adisconfig
-from adistools.events import events
+from sicken.events import events
+from sicken.log import Log
+
 
 from sicken.DB import DB
 

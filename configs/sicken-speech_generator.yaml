@@ -19,4 +19,4 @@ rabbitmq:
     password: password
 
 directories:
-    speech: /opt/adistools/files/sicken/speech
+    speech: /opt/sicken/files/sicken/speech

@@ -77,7 +77,7 @@ class events:
 		self._open_rabbitmq_connection()
 		self._rabbitmq_channel.basic_publish(
 			exchange="",
-			routing_key="adistools-events",
+			routing_key="sicken-events",
 			body=json_dumps(msg)
 		)
 		self._close_rabbitmq_connection()
