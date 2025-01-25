@@ -1,0 +1,156 @@
+from adistools.adisconfig import adisconfig
+
+from sicken.log import Log
+from sicken.events import events
+from sicken.DB import DB
+from sicken.exceptions import ChatNotFoundException
+
+from constants import SYSTEM_MESSAGE
+
+from openai import OpenAI
+from pika import BlockingConnection, PlainCredentials, ConnectionParameters
+from json import loads, dumps
+from pprint import pprint
+from pathlib import Path
+from uuid import uuid4
+from time import time
+
+
+
+class OpenAI_LLM:
+	project_name="sicken-openai_llm"
+
+	def __init__(self):
+		self._config=adisconfig('/opt/adistools/configs/sicken-openai_llm.yaml')
+
+		self._log=Log(
+			parent=self,
+			rabbitmq_host=self._config.rabbitmq.host,
+			rabbitmq_port=self._config.rabbitmq.port,
+			rabbitmq_user=self._config.rabbitmq.user,
+			rabbitmq_passwd=self._config.rabbitmq.password,
+			debug=self._config.log.debug,
+			)
+
+
+		self._rabbitmq_conn = BlockingConnection(
+			ConnectionParameters(
+				host=self._config.rabbitmq.host,
+				port=self._config.rabbitmq.port,
+				credentials=PlainCredentials(
+					self._config.rabbitmq.user,
+					self._config.rabbitmq.password
+				)
+			)
+		)
+
+		self._response_requests_channel = self._rabbitmq_conn.channel()
+		self._response_requests_channel.basic_consume(
+			queue='sicken-response_requests',
+			auto_ack=True,
+			on_message_callback=self._response_request
+		)
+
+		self._db=DB(self)
+		self._events=events(self)
+
+		self._openai=OpenAI(api_key=self._config.openai.api_key)
+
+	def _build_prompt(self, chat_uuid, msg, msg_author):
+		try:
+			prompt=[]
+			prompt.append(
+				{"role": "system", "content": SYSTEM_MESSAGE}
+				)
+
+			previous_messages=self._db.get_chat_messages(
+				chat_uuid=chat_uuid
+				)
+
+
+			for message in previous_messages:
+				if message['message_author'] == 'Sicken.ai':
+					prompt.append(
+						{"role": "assistant", "content": message['message']}
+						)
+				else:
+					prompt.append(
+						{"role": "user", "content": message['message']}
+						)
+
+			self._db.add_chat_message(
+				chat_uuid=chat_uuid,
+				message_author=msg_author,
+				message=msg
+				)
+
+			prompt.append({"role": "user", "content": msg})
+
+			return prompt
+		except:
+			self._log.exception('Exception ocured in the build_prompt')
+			raise
+
+
+	def _get_model_response(self, chat_uuid, message_author, prompt):
+		completion=self._openai.chat.completions.create(
+			model=self._config.sicken.model,
+			seed=self._config.sicken.seed,
+			frequency_penalty=self._config.sicken.frequency_penalty,
+			presence_penalty=self._config.sicken.presence_penalty,
+			top_p=self._config.sicken.top_p,
+			top_logprobs=self._config.sicken.top_logprobs,
+			messages=prompt
+		)
+
+	   
+		resp=completion.choices[0].message.content
+		return resp
+
+	def _response_request(self, channel, method, properties, body):
+		message=loads(body.decode('utf8'))
+
+		if message:
+			print(message)
+			response_uuid=str(uuid4())
+
+			prompt=self._build_prompt(
+				chat_uuid=message['chat_uuid'],
+				msg_author=message['message_author'],
+				msg=message['message']
+				)
+			print(prompt)
+
+			response=loads(
+				self._get_model_response(
+					chat_uuid=message['chat_uuid'],
+					message_author=message['message_author'],
+					prompt=prompt
+				)
+			)
+			print(response)
+			self._events.event(
+				event_name="request_responded",
+				event_data={
+					"response_uuid": response_uuid,
+					"chat_uuid": message['chat_uuid'],
+					"message_author":message['message_author'],
+					"message": message['message'],
+					"response_speech": response['response_speech'],
+					"response_gesture": response['response_gesture']
+					}
+				)
+			
+
+
+	def start(self):
+		self._response_requests_channel.start_consuming()
+
+
+	def stop(self):
+		self._response_requests_channel.stop_consuming()
+
+
+if __name__=="__main__":
+	openai_llm=OpenAI_LLM()
+	openai_llm.start()

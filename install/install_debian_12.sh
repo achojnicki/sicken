@@ -150,10 +150,6 @@ run "rabbitmqctl set_topic_permissions sicken-openai_llm '' '.*'' '.*'"
 run "rabbitmqctl set_topic_permissions admin '' '.*'' '.*'"
 
 
-
-
-
-
 print "Enable RabbitMQ Managment plugin"
 run "rabbitmq-plugins enable rabbitmq_management"
 
