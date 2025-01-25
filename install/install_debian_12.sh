@@ -117,7 +117,7 @@ print "Installing RabbitMQ"
 run "apt-get install rabbitmq-server -y --fix-missing"
 
 print "Creating RabbitMQ users"
-run "rabbitmqctl del_user guest"
+run "rabbitmqctl delete_user guest"
 run "rabbitmqctl add_user sicken-logs password"
 run "rabbitmqctl add_user sicken-events password"
 run "rabbitmqctl add_user sicken-openai_llm password"
@@ -129,7 +129,7 @@ run "rabbitmqctl add_user admin sicken"
 
 
 print "Setting RabbitMQ users permissions"
-run "rabbitmqctl set_user_tags sicken administrator"
+run "rabbitmqctl set_user_tags admin administrator"
 run "rabbitmqctl set_permissions -p / sicken-logs '.*' '.*' '.*'"
 run "rabbitmqctl set_permissions -p / sicken-events '.*' '.*' '.*'"
 run "rabbitmqctl set_permissions -p / sicken-openai_llm '.*' '.*' '.*'"
