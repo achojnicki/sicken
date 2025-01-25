@@ -151,6 +151,7 @@ rabbitmqctl set_topic_permissions sicken-openai_llm "" ".*" ".*"
 rabbitmqctl set_topic_permissions admin "" ".*" ".*"
 
 print 'Creating RabbitMQ Queues'
+run 'create_queue.py sicken-events'
 run 'create_queue.py sicken-logs'
 run 'create_queue.py sicken-response_requests'
 run 'create_queue.py sicken-speech_requests'
