@@ -21,7 +21,7 @@ class OpenAI_LLM:
 	project_name="sicken-openai_llm"
 
 	def __init__(self):
-		self._config=adisconfig('/opt/adistools/configs/sicken-openai_llm.yaml')
+		self._config=adisconfig('/opt/sicken/configs/sicken-openai_llm.yaml')
 
 		self._log=Log(
 			parent=self,
