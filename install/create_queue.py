@@ -8,7 +8,7 @@ _rabbitmq_connection=BlockingConnection(
 		port=5672,
 		credentials=PlainCredentials(
 			'admin',
-			'admin'
+			'sicken'
 			)
 		))
 _rabbitmq_channel=_rabbitmq_connection.channel()

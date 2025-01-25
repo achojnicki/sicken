@@ -48,7 +48,7 @@ print 'Installing Sicken...'
 run cd /opt/sicken
 
 print "Updating \$PATH"
-export PATH=$PATH:/sbin:/usr/sbin:/usr/local/sbin:/opt/adistools/sicken/install
+export PATH=$PATH:/sbin:/usr/sbin:/usr/local/sbin:/opt/sicken/install
 
 print "Updating local APT cache"
 run "apt-get update"
