@@ -57,7 +57,7 @@ print "1st stage installation of dependencies"
 run "apt-get install curl gnupg apt-transport-https nmap python3 python3-pip nginx curl -y"
 
 print "2nd stage installation of dependencies"
-run "pip3 install --break-system-packages flask flask-socketio python-socketio psutil tabulate colored pymongo pyyaml pika uwsgi websockets"
+run "pip3 install --break-system-packages numpy openai flask flask-socketio python-socketio psutil tabulate colored pymongo pyyaml pika uwsgi websockets"
 
 print "Downloading and instaling MongoDB key"
 curl -fsSL https://www.mongodb.org/static/pgp/server-8.0.asc | gpg --dearmor -o /usr/share/keyrings/mongodb-server-8.0.gpg
