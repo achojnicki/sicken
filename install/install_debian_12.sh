@@ -129,26 +129,26 @@ run "rabbitmqctl add_user admin sicken"
 
 
 print "Setting RabbitMQ users permissions"
-run "rabbitmqctl set_user_tags admin administrator"
-run "rabbitmqctl set_permissions -p / sicken-logs '.*' '.*' '.*'"
-run "rabbitmqctl set_permissions -p / sicken-events '.*' '.*' '.*'"
-run "rabbitmqctl set_permissions -p / sicken-openai_llm '.*' '.*' '.*'"
-run "rabbitmqctl set_permissions -p / sicken-speech_generator '.*' '.*' '.*'"
-run "rabbitmqctl set_permissions -p / sicken-text_input '.*' '.*' '.*'"
-run "rabbitmqctl set_permissions -p / sicken-microphone_input '.*' '.*' '.*'"
-run "rabbitmqctl set_permissions -p / sicken-vtube_plugin '.*' '.*' '.*'"
-run "rabbitmqctl set_permissions -p / sicken-openai_llm '.*' '.*' '.*'"
-run "rabbitmqctl set_permissions -p / admin '.*' '.*' '.*'"
+run 'rabbitmqctl set_user_tags admin administrator'
+run 'rabbitmqctl set_permissions -p / sicken-logs ".*" ".*" ".*"'
+run 'rabbitmqctl set_permissions -p / sicken-events ".*" ".*" ".*"'
+run 'rabbitmqctl set_permissions -p / sicken-openai_llm ".*" ".*" ".*"'
+run 'rabbitmqctl set_permissions -p / sicken-speech_generator ".*" ".*" ".*"'
+run 'rabbitmqctl set_permissions -p / sicken-text_input ".*" ".*" ".*"'
+run 'rabbitmqctl set_permissions -p / sicken-microphone_input ".*" ".*" ".*"'
+run 'rabbitmqctl set_permissions -p / sicken-vtube_plugin ".*" ".*" ".*"'
+run 'rabbitmqctl set_permissions -p / sicken-openai_llm ".*" ".*" ".*"'
+run 'rabbitmqctl set_permissions -p / admin ".*" ".*" ".*"'
 
-run "rabbitmqctl set_topic_permissions sicken-logs '' '.*'' '.*'"
-run "rabbitmqctl set_topic_permissions sicken-events '' '.*'' '.*'"
-run "rabbitmqctl set_topic_permissions sicken-openai_llm '' '.*'' '.*'"
-run "rabbitmqctl set_topic_permissions sicken-speech_generator '' '.*'' '.*'"
-run "rabbitmqctl set_topic_permissions sicken-text_input '' '.*'' '.*'"
-run "rabbitmqctl set_topic_permissions sicken-microphone_input '' '.*'' '.*'"
-run "rabbitmqctl set_topic_permissions sicken-vtube_plugin '' '.*'' '.*'"
-run "rabbitmqctl set_topic_permissions sicken-openai_llm '' '.*'' '.*'"
-run "rabbitmqctl set_topic_permissions admin '' '.*'' '.*'"
+run 'rabbitmqctl set_topic_permissions sicken-logs "" ".*" ".*"'
+run 'rabbitmqctl set_topic_permissions sicken-events "" ".*" ".*"'
+run 'rabbitmqctl set_topic_permissions sicken-openai_llm "" ".*" ".*"'
+run 'rabbitmqctl set_topic_permissions sicken-speech_generator "" ".*" ".*"'
+run 'rabbitmqctl set_topic_permissions sicken-text_input "" ".*" ".*"'
+run 'rabbitmqctl set_topic_permissions sicken-microphone_input "" ".*" ".*"'
+run 'rabbitmqctl set_topic_permissions sicken-vtube_plugin "" ".*" ".*"'
+run 'rabbitmqctl set_topic_permissions sicken-openai_llm "" ".*" ".*"'
+run 'rabbitmqctl set_topic_permissions admin "" ".*" ".*"'
 
 print 'Creating RabbitMQ Queues'
 run 'create_queue.py sicken-logs'
