@@ -185,11 +185,8 @@ class Workers_manager:
 
 
                     if "\n" in self._stderr_line_buffer[process['worker_uuid']]:
-                        if not self._workers[process['name']]['stderr_as_info']:
-                            self._log.error(project_name=process['name'], log_item=self._stderr_line_buffer[process['worker_uuid']])
-                        else:
-                            self._log.info(project_name=process['name'], log_item=self._stderr_line_buffer[process['worker_uuid']])
-                            del self._stderr_line_buffer[process['worker_uuid']]
+                        self._log.error(project_name=process['name'], log_item=self._stderr_line_buffer[process['worker_uuid']])
+                        del self._stderr_line_buffer[process['worker_uuid']]
 
     def task(self):
         for process in self._active_workers:
