@@ -17,6 +17,5 @@ try:
 	_rabbitmq_channel.queue_declare(queue=sys.argv[1])
 	sys.exit(0)
 except:
-	raise
 	sys.exit(1)
 
