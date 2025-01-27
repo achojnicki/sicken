@@ -6,6 +6,8 @@ from yaml import safe_load
 from copy import deepcopy
 from select import select
 from time import sleep
+from uuid import uuid4
+
 def demote(uid, gid):
     def prepare_process():
         setgid(gid)
@@ -22,8 +24,8 @@ class Workers_manager:
     _workers={}
     _active_workers=[]
 
-    _stdout_line_buffer=""
-    _stderr_line_buffer=""
+    _stdout_line_buffer={}
+    _stderr_line_buffer={}
 
     def __init__(self, root):
         self._root=root
@@ -51,6 +53,7 @@ class Workers_manager:
     
     def _start_worker(self,name):
         self._log.info('Starting worker: '+name)
+        worker_uuid=str(uuid4())
         worker=self._workers[name]
 
         env=environ.copy()
@@ -75,6 +78,7 @@ class Workers_manager:
         set_blocking(p.stderr.fileno(), False)
 
         self._active_workers.append({
+            "worker_uuid": worker_uuid,
             "name":name,
             'process_obj': p,
             'polled': False
@@ -164,21 +168,28 @@ class Workers_manager:
 
             if data:
                 if stream=='stdout':
-                    self._stdout_line_buffer+=data.decode('utf-8')
+                    if process['worker_uuid'] in self._stdout_line_buffer:
+                        self._stdout_line_buffer[process['worker_uuid']]+=data.decode('utf-8')
+                    else:
+                        self._stdout_line_buffer[process['worker_uuid']]=data.decode('utf-8')
 
-                    if "\n" in self._stdout_line_buffer:
-                        self._log.info(project_name=process['name'], log_item=self._stdout_line_buffer)
-                        self._stdout_line_buffer=""
+                    if "\n" in self._stdout_line_buffer[process]:
+                        self._log.info(project_name=process['name'], log_item=self._stdout_line_buffer[process['worker_uuid']])
+                        del self._stdout_line_buffer[process['worker_uuid']]
                     
                 else:
-                    self._stderr_line_buffer+=data.decode('utf-8')
+                    if process['worker_uuid'] in self._stderr_line_buffer:
+                        self._stderr_line_buffer[process['worker_uuid']]+=data.decode('utf-8')
+                    else:
+                        self._stderr_line_buffer[process['worker_uuid']]=data.decode('utf-8')
 
-                    if "\n" in self._stderr_line_buffer:
+
+                    if "\n" in self._stderr_line_buffer[process['worker_uuid']]:
                         if not self._workers[process['name']]['stderr_as_info']:
-                            self._log.error(project_name=process['name'], log_item=self._stderr_line_buffer)
+                            self._log.error(project_name=process['name'], log_item=self._stderr_line_buffer[process['worker_uuid']])
                         else:
-                            self._log.info(project_name=process['name'], log_item=self._stderr_line_buffer)
-                            self._stderr_line_buffer=""
+                            self._log.info(project_name=process['name'], log_item=self._stderr_line_buffer[process['worker_uuid']])
+                            del self._stderr_line_buffer[process['worker_uuid']]
 
     def task(self):
         for process in self._active_workers:
