@@ -173,7 +173,7 @@ class Workers_manager:
                     else:
                         self._stdout_line_buffer[process['worker_uuid']]=data.decode('utf-8')
 
-                    if "\n" in self._stdout_line_buffer[process]:
+                    if "\n" in self._stdout_line_buffer[process['worker_uuid']]:
                         self._log.info(project_name=process['name'], log_item=self._stdout_line_buffer[process['worker_uuid']])
                         del self._stdout_line_buffer[process['worker_uuid']]
                     
