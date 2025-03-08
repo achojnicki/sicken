@@ -13,7 +13,8 @@ To install Sicken on a MacOS machine you'll need:
 1. **Download and install Homebrew on your Mac:** [https://brew.sh/](https://brew.sh/)
 2. **Clone Sicken's Git Repository to the /opt/sicken directory**.
 
-	```sudo bash
+	```
+ 	sudo bash
 	cd /opt/
 	git clone https://github.com/achojnicki/sicken.git
  	chown -R "$USER":admin /opt/sicken
