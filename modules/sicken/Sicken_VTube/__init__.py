@@ -314,13 +314,13 @@ class Animation_Seq:
 		return l
 
 	def _generate_shock_range(self, start, stop, step):
-		l=list(range(start,stop+(step*2),step))
+		l=list(range(start,stop,step))
 
 		x=ceil(int(self._duration/FRAME))
 		for _ in range(x):
 			l.append(stop)
 
-		l=l+list(range(start,stop-(step*2),-step))
+		l=l+list(range(stop,start,-step))
 		l.append(start)
 		return l
 
@@ -459,12 +459,12 @@ class Animation_Seq:
 				self._sequence[self._actions[action]['action_name']]={"ShockSign": ra}
 
 			elif action=='shock':
-				ra=self._generate_shock_range(0, 80, 40)
+				ra=self._generate_shock_range(0, 80, 10)
 
 				self._sequence[self._actions[action]['action_name']]={"Shock": ra}
 
 			elif action=='posessed_look':
-				ra=self.generate_possessed_look_range(100,0,20)
+				ra=self.generate_possessed_look_range(100,0,10)
 
 				self._sequence[self._actions[action]['action_name']]={"PosessedLook": ra}
 
