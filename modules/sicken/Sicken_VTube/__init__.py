@@ -251,37 +251,6 @@ class API_Connection(
 	def _connect(self, host, port):
 		self._connection=connect(f"ws://{host}:{port}")
 
-
-MOUTH_LETTERS_MOUTH_OPEN={
-	"a": 35,
-	"o": 30,
-	"e": 32,
-	"u": 5,
-	"h": 10,
-	"u": 18,
-	"i": 15,
-	"w": 8,
-	"y": 20,
-	"n": 3,
-	"p": 0,
-	"b": 0,
-	"m": 0,
-	"t": 10,
-	"l": 5,
-	"w": 5,
-	"f": 7,
-	"s": 25,
-	'h': 15,
-	'j': 14,
-	'd': 15,
-	'g': 20,
-	'l': 10,
-	'c': 15,
-	'r': 7
-	
-}
-
-
 class Animation_Seq:
 	_frame=0.035
 	def __init__(self, root):
@@ -363,29 +332,15 @@ class Model:
 		self._models.append(model_id)
 
 
+		for custom_parameter in self._live2d_model_manifest['custom_parameters']:
 
-		self._api_connection.add_custom_parameter(
-			model_id=model_id,
-			parameter_name='ShockSign',
-			val_min=0.0,
-			val_max=1.0,
-			default=0.0
-			)
-
-		self._api_connection.add_custom_parameter(
-			model_id=model_id,
-			parameter_name='Shock',
-			val_min=0.0,
-			val_max=1.0,
-			default=0.0
-			)
-		self._api_connection.add_custom_parameter(
-			model_id=model_id,
-			parameter_name='PosessedLook',
-			val_min=0.0,
-			val_max=1.0,
-			default=1.0
-			)
+			self._api_connection.add_custom_parameter(
+				model_id=model_id,
+				parameter_name=custom_parameter,
+				val_min=self._live2d_model_manifest['custom_parameters'][custom_parameter]['min'],
+				val_max=self._live2d_model_manifest['custom_parameters'][custom_parameter]['min'],
+				default=self._live2d_model_manifest['custom_parameters'][custom_parameter]['default']
+				)
 		sleep(3)
 
 
@@ -403,11 +358,6 @@ class Model:
 		self._actions={}
 		self._processed_actions=[]
 		
-		gene={}
-		for action in self._live2d_model_manifest['actions']:
-			for prop in self._live2d_model_manifest['actions'][action]:
-				gene[self._live2d_model_manifest['actions'][action][prop]['generator']]=self._live2d_model_manifest['actions'][action][prop]['generator']
-
 		af=self._generators.generators(self._root)
 
 		for action in actions:
@@ -429,30 +379,8 @@ class Model:
 			for action in self._actions:
 				for prop in self._actions[action]:
 					if len(self._actions[action][prop])>=index:
-						if action=='speak':
+						if self._live2d_model_manifest['actions'][action][prop]['mode']=='divine':
 							d={"action_name": action,"value":self._actions[action][prop][index-1]/100, 'prop': prop}
-
-						elif action=='angry_sign':
-							d={"action_name": action,"value":self._actions[action][prop][index-1]/100, 'prop': prop}
-
-						elif action=='possessed_look':
-							d={"action_name": action,"value":self._actions[action][prop][index-1]/100, 'prop': prop}
-
-						elif action=='shock_sign':
-							d={"action_name": action,"value":self._actions[action][prop][index-1]/100, 'prop': prop}
-
-						elif action=='shock':
-							d={"action_name": action,"value":self._actions[action][prop][index-1]/100, 'prop': prop}
-
-						elif action=='blink':
-							d={"action_name": action,"value":self._actions[action][prop][index-1]/100, 'prop': prop}
-
-						elif action=='wink_left_eye' or action=='wink_right_eye' or action=='wink_left_eye_tilt' or action=='wink_right_eye_tilt':
-							d={"action_name": action,"value":self._actions[action][prop][index-1]/100, 'prop': prop}
-
-						elif action=='tilt_head_left' or action=='tilt_head_right':
-							d={"action_name": action,"value":self._actions[action][prop][index-1]/100, 'prop': prop}
-
 						else:
 							d={"action_name": action,"value":self._actions[action][prop][index-1], 'prop': prop}
 
