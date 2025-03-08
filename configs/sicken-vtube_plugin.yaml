@@ -1,5 +1,5 @@
 model:
-  model_id: 31f896f000364f4fb02034761b2e9a3e
+  model: akari
 
 vtube:
   host: localhost
@@ -21,3 +21,4 @@ rabbitmq:
   
 directories:
   speech: /opt/sicken/files/sicken/speech
+  live2d_models: /opt/sicken/live2d_models
