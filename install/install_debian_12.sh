@@ -54,7 +54,7 @@ print "Updating local APT cache"
 run "apt-get update"
 
 print "1st stage installation of dependencies"
-run "apt-get install curl gnupg apt-transport-https nmap python3 python3-pip nginx curl -y"
+run "apt-get install curl gnupg apt-transport-https python3 python3-pip nginx curl -y"
 
 print "2nd stage installation of dependencies"
 run "pip3 install --break-system-packages numpy openai playsound flask flask-socketio python-socketio psutil tabulate colored pymongo pyyaml pika uwsgi websockets"
