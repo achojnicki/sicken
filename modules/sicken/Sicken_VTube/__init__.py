@@ -338,7 +338,7 @@ class Model:
 				model_id=model_id,
 				parameter_name=custom_parameter,
 				val_min=self._live2d_model_manifest['custom_parameters'][custom_parameter]['min'],
-				val_max=self._live2d_model_manifest['custom_parameters'][custom_parameter]['min'],
+				val_max=self._live2d_model_manifest['custom_parameters'][custom_parameter]['max'],
 				default=self._live2d_model_manifest['custom_parameters'][custom_parameter]['default']
 				)
 		sleep(3)
