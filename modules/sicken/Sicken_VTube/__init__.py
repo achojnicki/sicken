@@ -7,7 +7,8 @@ from time import time, sleep
 from math import ceil
 from pprint import pprint
 from random import randint
-import numpy as np
+import importlib.util
+from sys import modules
 
 SICKEN_IMAGE="Sicken.jpg"
 PLUGIN_NAME="Sicken.ai"
@@ -282,110 +283,16 @@ MOUTH_LETTERS_MOUTH_OPEN={
 
 
 class Animation_Seq:
-	def __init__(self):
+	_frame=0.035
+	def __init__(self, root):
+		self._root=root
+
+		self._live2d_model_manifest=self._root._live2d_model_manifest
+
 		self._actions={}
 		self._sequence={}
 		self._words=[]
-
 		self._duration=0.0
-
-	def _generate_wink_range(self, start, stop, step):
-		l=list(range(start,stop-(step*2),-step))+list(range(stop, start+step,step))
-		return l
-
-	def generate_possessed_look_range(self, start, stop, step):
-		l=list(range(start,stop,-step))
-
-		x=ceil(int(self._duration/FRAME))
-		for _ in range(x):
-			l.append(stop)
-
-		l=l+list(range(stop,start+(2*step),step))
-		return l
-
-	def _generate_angry_range(self, start, stop, step):
-		l=list(range(start,stop+(step*2),step))
-
-		x=ceil(int(self._duration/FRAME))
-		for _ in range(x):
-			l.append(stop)
-
-		l.append(start)
-		return l
-
-	def _generate_shock_range(self, start, stop, step):
-		l=list(range(start,stop,step))
-
-		x=ceil(int(self._duration/FRAME))
-		for _ in range(x):
-			l.append(stop)
-
-		l=l+list(range(stop,start,-step))
-		l.append(start)
-		return l
-
-	def _generate_shock_sign_range(self, start, stop, step):
-		l=list(range(start,stop+(step*2),step))
-
-		return l
-
-	def _generate_tilt_left_range(self, start, stop, step):
-		l=list(range(start,stop+step,step))+list(range(stop, start-step,-step))+[0]
-		return l
-
-	def _generate_tilt_right_range(self, start, stop, step):
-		l=list(range(start, stop+step,-step))+list(range(stop,start+step,step))+[0]
-		return l
-
-	def _generate_nod_range(self, start, stop, step):
-		return list(range(start, stop, step))+list(range(stop, -stop, -step))+list(range(-stop, start, step))+[0]
-
-	def _generate_speak_range_mouth_open(self, words):
-		seq=[]
-		for word_index in range(0,len(words)):
-			frame=0.035
-			print(words[word_index]['word'])
-			start=words[word_index]['start']
-			end=words[word_index]['end']
-			duration=end-start
-			word_len=len(words[word_index]['word'])
-
-			print(f'start: {start}, end: {end}, duration: {duration}, word_len: {word_len}')
-			for letter in words[word_index]['word']:
-				iters=(duration/word_len)/frame
-				
-				if letter.lower() in MOUTH_LETTERS_MOUTH_OPEN:
-					if iters>1:
-						path=np.linspace(
-							seq[-1] if len(seq)>0 else 0,
-							MOUTH_LETTERS_MOUTH_OPEN[letter.lower()],
-							ceil(iters)
-						)
-					else:
-						path=[MOUTH_LETTERS_MOUTH_OPEN[letter.lower()]]
-					print(f'path: {path}')
-
-					for repeat in range(0,ceil(iters)):
-						seq.append(int(path[repeat]))
-
-				else:
-					for repeats in range(0,ceil(iters)):
-						seq.append(seq[-1])
-
-				print(f'\tletter: {letter} iters: {iters}, seq[-1]:{seq[-1]}')
-
-			if (len(words)-1)>word_index:
-				pause_duration=words[word_index+1]['start']-words[word_index]['end']
-				print(f"pause_duration: {pause_duration}")
-				if pause_duration>frame:
-					iters=pause_duration*frame
-					print(f'\titers" {iters}')
-					for repeats in range(0, ceil(iters)):
-						seq.append(0)
-
-		seq.append(0)
-		return seq
-
 
 	def add_action(self, action):
 		print(action)
@@ -396,84 +303,46 @@ class Animation_Seq:
 	def sequence(self):
 		if 'speak' in self._actions:
 			self._duration=self._actions['speak']['duration']
+			data={}
 
-			ra=self._generate_speak_range_mouth_open(self._actions['speak']['words'])
-			self._sequence['speak']={'MouthOpen': ra}
+			for prop in self._live2d_model_manifest['actions']['speak']:
+				generator=generator=getattr(self, self._live2d_model_manifest['actions']['speak'][prop]['generator'])
+				data[prop]=generator(
+					self._actions['speak']['words'],
+					self._live2d_model_manifest['actions']['speak'][prop]['data']
+				)
+
+			self._sequence['speak']=data
 
 		else:
 			self._duration=1.0
 
 		for action in self._actions:
-			if action=='nod_yes':
-				ra=self._generate_nod_range(0,30,4)
+			if not action in self._live2d_model_manifest['actions']:
+				print('Action not defined in the manifest')
 
-				self._sequence[self._actions[action]['action_name']]={'FaceAngleY': ra}
-			elif action=='blink':
-				l=self._generate_wink_range(100,0,40)
-				self._sequence[self._actions[action]['action_name']]={'EyeOpenRight': l, 'EyeOpenLeft': l}
+			if action in self._live2d_model_manifest['actions'] and action != 'speak':
+				data={}
+				for prop in self._live2d_model_manifest['actions'][action]:
+					generator=getattr(self, self._live2d_model_manifest['actions'][action][prop]['generator'])
 
-			elif action=='nod_no':
-				ra=self._generate_nod_range(0,30,4)
+					data[prop]=generator(
+						start=self._live2d_model_manifest['actions'][action][prop]['start'],
+						stop=self._live2d_model_manifest['actions'][action][prop]['stop'],
+						step=self._live2d_model_manifest['actions'][action][prop]['step']
+						)
+				self._sequence[action]=data
 
-				self._sequence[self._actions[action]['action_name']]={'FaceAngleX': ra}
-
-			elif action=='wink_left_eye':
-				ra=self._generate_wink_range(100, 0, 20)
-
-				self._sequence[self._actions[action]['action_name']]={'EyeOpenLeft': ra,}
-
-			elif action=='wink_left_eye_tilt':
-				ra=self._generate_wink_range(100, 0, 20)
-				ti=self._generate_tilt_left_range(0, 1500, 200)
-
-				self._sequence[self._actions[action]['action_name']]={'EyeOpenLeft': ra, "FaceAngleZ": ti}
-
-			elif action=='wink_right_eye':
-				ra=self._generate_wink_range(100, 0, 20)
-				self._sequence[self._actions[action]['action_name']]={'EyeOpenRight': ra}
-
-			elif action=='wink_right_eye_tilt':
-				ra=self._generate_wink_range(100, 0, 20)
-				ti=self._generate_tilt_right_range(0, -1500, 200)
-
-				self._sequence[self._actions[action]['action_name']]={'EyeOpenRight': ra, "FaceAngleZ": ti}
-
-			elif action=='tilt_head_left':
-				ti=self._generate_tilt_left_range(0, 1500, 200)
-
-				self._sequence[self._actions[action]['action_name']]={"FaceAngleZ": ti}
-
-			elif action=='tilt_head_right':
-				ti=self._generate_tilt_right_range(0, -1500, 200)
-
-				self._sequence[self._actions[action]['action_name']]={"FaceAngleZ": ti}
-
-			elif action=='angry_sign':
-				ra=self._generate_angry_range(0, 100, 40)
-
-				self._sequence[self._actions[action]['action_name']]={"FaceAngry": ra}
-
-			elif action=='shock_sign':
-				ra=self._generate_shock_sign_range(0, 100, 40)
-
-				self._sequence[self._actions[action]['action_name']]={"ShockSign": ra}
-
-			elif action=='shock':
-				ra=self._generate_shock_range(0, 80, 10)
-
-				self._sequence[self._actions[action]['action_name']]={"Shock": ra}
-
-			elif action=='posessed_look':
-				ra=self.generate_possessed_look_range(100,0,10)
-
-				self._sequence[self._actions[action]['action_name']]={"PosessedLook": ra}
 
 		return self._sequence
 
 
-class Models:
+class Model:
 	def __init__(self, root):
 		self._root=root
+
+		self._live2d_model_manifest=self._root._live2d_model_manifest
+		self._generators_path=self._root._generators_path
 
 		self._models=[]
 		self._api_connection=self._root._api_connection
@@ -481,9 +350,19 @@ class Models:
 		self._actions={}
 		self._processed_actions=[]
 
+
+		spec = importlib.util.spec_from_file_location("generators", self._generators_path)
+		generators = importlib.util.module_from_spec(spec)
+		modules["generators"] = generators
+		spec.loader.exec_module(generators)
+
+		self._generators=generators
+
 	def load_model(self, model_id):
 		model_id=self._api_connection.load_model(model_id)
 		self._models.append(model_id)
+
+
 
 		self._api_connection.add_custom_parameter(
 			model_id=model_id,
@@ -524,7 +403,13 @@ class Models:
 		self._actions={}
 		self._processed_actions=[]
 		
-		af=Animation_Seq()
+		gene={}
+		for action in self._live2d_model_manifest['actions']:
+			for prop in self._live2d_model_manifest['actions'][action]:
+				gene[self._live2d_model_manifest['actions'][action][prop]['generator']]=self._live2d_model_manifest['actions'][action][prop]['generator']
+
+		af=self._generators.generators(self._root)
+
 		for action in actions:
 			af.add_action(action)
 

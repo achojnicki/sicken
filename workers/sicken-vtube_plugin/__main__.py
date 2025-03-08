@@ -3,7 +3,7 @@ from adistools.adisconfig import adisconfig
 from sicken.events import events
 from sicken.log import Log
 
-from sicken.Sicken_VTube import API_Connection, Models
+from sicken.Sicken_VTube import API_Connection, Model
 
 from pika import BlockingConnection, PlainCredentials, ConnectionParameters
 from time import sleep
@@ -11,6 +11,7 @@ from json import loads
 from pathlib import Path
 from threading import Thread
 from playsound import playsound
+from yaml import safe_load
 
 import sys
 
@@ -28,6 +29,11 @@ class Sicken_VTube_Plugin:
 			debug=self._config.log.debug,
 			)
 
+
+		self._model_path=Path(self._config.directories.live2d_models).joinpath(self._config.model.model).joinpath('model.yaml')
+		self._generators_path=Path(self._config.directories.live2d_models).joinpath(self._config.model.model).joinpath('generators.py')
+		with open(self._model_path, 'r') as file:
+			self._live2d_model_manifest=safe_load(file.read())
 
 		self.rabbitmq_conn = BlockingConnection(
 			ConnectionParameters(
@@ -54,7 +60,7 @@ class Sicken_VTube_Plugin:
 		)
 
 		self._api_connection=API_Connection(self)
-		self._models=Models(self)
+		self._model=Model(self)
 
 		self._speech_dir=Path(self._config.directories.speech)
 
@@ -89,8 +95,8 @@ class Sicken_VTube_Plugin:
 						"action_name":self._speeches[message['response_uuid']]['response_gesture']
 						})
 
-				self._models.set_actions(actions=actions)
-				self._models.play_actions(self._config.model.model_id)
+				self._model.set_actions(actions=actions)
+				self._model.play_actions(self._live2d_model_manifest['model']['model_id'])
 
 	def _generation_finished(self, channel, method, properties, body):
 		message=loads(body.decode('utf8'))
@@ -110,16 +116,16 @@ class Sicken_VTube_Plugin:
 						"action_name":self._speeches[message['response_uuid']]['response_gesture']
 						})
 
-				self._models.set_actions(actions=actions)
+				self._model.set_actions(actions=actions)
 				self.play_sound(self._speech_dir.joinpath(f"{message['response_uuid']}.mp3"))
-				self._models.play_actions(self._config.model.model_id)
+				self._model.play_actions(self._live2d_model_manifest['model']['model_id'])
 
 
 	def start(self):
 		self._api_connection.init_connection(
 			host=self._config.vtube.host,
 			port=self._config.vtube.port)
-		self._models.load_model(self._config.model.model_id)
+		self._model.load_model(self._live2d_model_manifest['model']['model_id'])
 		
 		self._speech_requests_channel.start_consuming()
 

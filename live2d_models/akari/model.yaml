@@ -1,0 +1,182 @@
+model:
+  name: Akari
+  model_id: 31f896f000364f4fb02034761b2e9a3e
+
+custom_parameters:
+  ShockSign:
+    min: 0.0
+    max: 1.0
+    default: 0.0
+
+  Shock:
+    min: 0.0
+    max: 1.0
+    default: 0.0
+
+  PosessedLook:
+    min: 0.0
+    max: 1.0
+    default: 1.0
+
+actions:
+  speak:
+    MouthOpen:
+      mode: divine
+      generator: _generate_speak_range
+      data: 
+        a: 35
+        o: 30
+        e: 32
+        u: 5
+        h: 10
+        u: 18
+        i: 15
+        w: 8
+        y: 20
+        n: 3
+        p: 0
+        b: 0
+        m: 0
+        t: 10
+        l: 5
+        w: 5
+        f: 7
+        s: 25
+        h: 15
+        j: 14
+        d: 15
+        g: 20
+        l: 10
+        c: 15
+        r: 7
+
+  nod_yes:
+    FaceAngleY:
+      mode: divine
+      generator: _generate_nod_range
+      start: 0
+      stop: 30
+      step: 4
+
+  nod_no:
+    FaceAngleY:
+      mode: divine
+      generator: _generate_nod_range
+      start: 0
+      stop: 30
+      step: 4
+
+  blink:
+    EyeOpenRight:
+      mode: divine
+      generator: _generate_wink_range
+      start: 100
+      stop: 0
+      step: 40
+    
+    EyeOpenLeft:
+      mode: divine
+      generator: _generate_wink_range
+      start: 100
+      stop: 0
+      step: 40
+
+  wink_left_eye:
+    EyeOpenLeft:
+      mode: divine
+      generator: _generate_wink_range
+      start: 100
+      stop: 0
+      step: 20
+
+  wink_left_eye_tilt:
+    EyeOpenLeft:
+      mode: divine
+      generator: _generate_wink_range
+      start: 100
+      stop: 0
+      step: 20
+
+    FaceAngleZ:
+      mode: divine
+      generator: _generate_tilt_left_range
+      start: 0
+      stop: 1500
+      step: 200
+
+  wink_right_eye:
+    EyeOpenRight:
+      mode: divine
+      generator: _generate_wink_range
+      start: 100
+      stop: 0
+      step: 20
+
+  wink_right_eye_tilt:
+    EyeOpenRight:
+      mode: divine
+      generator: _generate_wink_range
+      start: 100
+      stop: 0
+      step: 20
+
+    FaceAngleZ:
+      mode: divine
+      generator: _generate_tilt_right_range
+      start: 0
+      stop: -1500
+      step: 200
+
+  tilt_head_left:
+    FaceAngleZ:
+      mode: divine
+      generator: _generate_tilt_left_range
+      start: 0
+      stop: 1500
+      step: 200
+
+  tilt_head_right:
+    FaceAngleZ:
+      mode: divine
+      generator: _generate_tilt_right_range
+      start: 0
+      stop: -1500
+      step: 200
+
+  angry_sign:
+    FaceAngry:
+      mode: divine
+      generator: _generate_angry_range
+      start: 0
+      stop: 100
+      step: 40
+
+  shock:
+    Shock:
+      mode: divine
+      generator: _generate_shock_range
+      start: 0
+      stop: 80
+      step: 10
+
+  shock_sign:
+    ShockSign:
+      mode: divine
+      generator: _generate_shock_sign_range
+      start: 0
+      stop: 100
+      step: 10
+
+  posessed_look:
+    PosessedLook:
+      mode: divine
+      generator: generate_possessed_look_range
+      start: 100
+      stop: 0
+      step: 10
+
+
+
+
+
+
