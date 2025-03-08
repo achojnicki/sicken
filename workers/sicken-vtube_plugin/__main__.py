@@ -90,7 +90,7 @@ class Sicken_VTube_Plugin:
 						})
 
 				self._models.set_actions(actions=actions)
-				self._models.play_actions('05d689cff9b248398e45bcf40fd159f5')
+				self._models.play_actions(self._config.model.model_id)
 
 	def _generation_finished(self, channel, method, properties, body):
 		message=loads(body.decode('utf8'))
@@ -112,14 +112,14 @@ class Sicken_VTube_Plugin:
 
 				self._models.set_actions(actions=actions)
 				self.play_sound(self._speech_dir.joinpath(f"{message['response_uuid']}.mp3"))
-				self._models.play_actions('05d689cff9b248398e45bcf40fd159f5')
+				self._models.play_actions(self._config.model.model_id)
 
 
 	def start(self):
 		self._api_connection.init_connection(
 			host=self._config.vtube.host,
 			port=self._config.vtube.port)
-		self._models.load_model('05d689cff9b248398e45bcf40fd159f5')
+		self._models.load_model(self._config.model.model_id)
 		
 		self._speech_requests_channel.start_consuming()
 

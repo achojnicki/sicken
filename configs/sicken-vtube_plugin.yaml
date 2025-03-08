@@ -1,3 +1,6 @@
+model:
+  model_id: 31f896f000364f4fb02034761b2e9a3e
+
 vtube:
   host: localhost
   port: 8001
