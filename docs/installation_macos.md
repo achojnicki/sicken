@@ -16,6 +16,8 @@ To install Sicken on a MacOS machine you'll need:
 	```sudo bash
 	cd /opt/
 	git clone https://github.com/achojnicki/sicken.git
+ 	chown -R "$USER":admin /opt/sicken
+ 	exit
 	```
 3. **Run installation script**
 	```
