@@ -49,7 +49,8 @@ To install Sicken on a MacOS machine you'll need:
 	script: __main__.py
 	```
 
-5. **Populate an OpenAI API key in the config files.**
+5. **Populate an OpenAI API key in the config files.**  
+
 	Files to modify: 
 
 	* /opt/sicken/configs/sicken-openai_llm.yaml
