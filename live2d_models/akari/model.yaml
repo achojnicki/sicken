@@ -55,16 +55,16 @@ actions:
       mode: divine
       generator: _generate_nod_range
       start: 0
-      stop: 30
-      step: 4
+      stop: 3000
+      step: 400
 
   nod_no:
-    FaceAngleY:
+    FaceAngleX:
       mode: divine
       generator: _generate_nod_range
       start: 0
-      stop: 30
-      step: 4
+      stop: 3000
+      step: 400
 
   blink:
     EyeOpenRight:
