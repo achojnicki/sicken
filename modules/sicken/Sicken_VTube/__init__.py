@@ -14,8 +14,6 @@ SICKEN_IMAGE="Sicken.jpg"
 PLUGIN_NAME="Sicken.ai"
 PLUGIN_DEVELOPER="adrianchojnicki.me"
 
-FRAME=0.035
-
 
 class message_builder:
 	def __init__(self, root):
@@ -235,13 +233,13 @@ class API_Connection(
 		return request_id
 
 	def _request_response(self, request_data):
-		#pprint(loads(request_data))
+		pprint(loads(request_data))
 		t=time()
 		self._connection.send(request_data)
 		msg=loads(self._connection.recv())
-		#print(time()-t)
-		#pprint(msg)
-		#print('---')
+		print(time()-t)
+		pprint(msg)
+		print('---')
 		return msg
 
 	def init_connection(self, host, port):
@@ -252,10 +250,10 @@ class API_Connection(
 		self._connection=connect(f"ws://{host}:{port}")
 
 class Animation_Seq:
-	_frame=0.035
 	def __init__(self, root):
 		self._root=root
 
+		self._frame=self._root._config.vtube.frame_duration
 		self._live2d_model_manifest=self._root._live2d_model_manifest
 
 		self._actions={}
