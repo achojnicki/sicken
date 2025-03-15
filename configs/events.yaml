@@ -35,3 +35,9 @@ sicken-speech_generator:
       response_uuid: response_uuid
       speech_duration: speech_duration
       speech_words: speech_words
+sicken-vtube_plugin:
+  model_introduction:
+    sicken-model_introduction:
+      model_name: model_name
+      model_id: model_id
+      actions: actions
