@@ -222,9 +222,6 @@ class API_Connection(
 
 		self._auth_token=None
 
-
-
-
 	def _generate_request_id(self):
 		request_id=""
 		for char in range(32):
@@ -249,6 +246,8 @@ class API_Connection(
 	def _connect(self, host, port):
 		self._connection=connect(f"ws://{host}:{port}")
 
+
+
 class Animation_Seq:
 	def __init__(self, root):
 		self._root=root
@@ -272,11 +271,11 @@ class Animation_Seq:
 			self._duration=self._actions['speak']['duration']
 			data={}
 
-			for prop in self._live2d_model_manifest['actions']['speak']:
-				generator=generator=getattr(self, self._live2d_model_manifest['actions']['speak'][prop]['generator'])
+			for prop in self._live2d_model_manifest['actions']['speak']['parameters']:
+				generator=generator=getattr(self, self._live2d_model_manifest['actions']['speak']['parameters'][prop]['generator'])
 				data[prop]=generator(
 					self._actions['speak']['words'],
-					self._live2d_model_manifest['actions']['speak'][prop]['data']
+					self._live2d_model_manifest['actions']['speak']['parameters'][prop]['data']
 				)
 
 			self._sequence['speak']=data
@@ -290,13 +289,13 @@ class Animation_Seq:
 
 			if action in self._live2d_model_manifest['actions'] and action != 'speak':
 				data={}
-				for prop in self._live2d_model_manifest['actions'][action]:
-					generator=getattr(self, self._live2d_model_manifest['actions'][action][prop]['generator'])
+				for prop in self._live2d_model_manifest['actions'][action]['parameters']:
+					generator=getattr(self, self._live2d_model_manifest['actions'][action]['parameters'][prop]['generator'])
 
 					data[prop]=generator(
-						start=self._live2d_model_manifest['actions'][action][prop]['start'],
-						stop=self._live2d_model_manifest['actions'][action][prop]['stop'],
-						step=self._live2d_model_manifest['actions'][action][prop]['step']
+						start=self._live2d_model_manifest['actions'][action]['parameters'][prop]['start'],
+						stop=self._live2d_model_manifest['actions'][action]['parameters'][prop]['stop'],
+						step=self._live2d_model_manifest['actions'][action]['parameters'][prop]['step']
 						)
 				self._sequence[action]=data
 
@@ -377,7 +376,7 @@ class Model:
 			for action in self._actions:
 				for prop in self._actions[action]:
 					if len(self._actions[action][prop])>=index:
-						if self._live2d_model_manifest['actions'][action][prop]['mode']=='divine':
+						if self._live2d_model_manifest['actions'][action]['parameters'][prop]['mode']=='divine':
 							d={"action_name": action,"value":self._actions[action][prop][index-1]/100, 'prop': prop}
 						else:
 							d={"action_name": action,"value":self._actions[action][prop][index-1], 'prop': prop}

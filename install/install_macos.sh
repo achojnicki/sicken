@@ -111,6 +111,8 @@ run '/usr/local/bin/python3.12 create_queue.py sicken-response_requests'
 run '/usr/local/bin/python3.12 create_queue.py sicken-speech_requests'
 run '/usr/local/bin/python3.12 create_queue.py sicken-vtube_plugin_speech_generation_finished'
 run '/usr/local/bin/python3.12 create_queue.py sicken-vtube_plugin_speech_requests'
+run '/usr/local/bin/python3.12 create_queue.py sicken-model_introduction'
+
 
 
 print "Enable RabbitMQ Managment plugin"

@@ -50,17 +50,47 @@ class OpenAI_LLM:
 			auto_ack=True,
 			on_message_callback=self._response_request
 		)
+		
+		self._introduction_channel = self._rabbitmq_conn.channel()
+		self._introduction_channel.basic_consume(
+			queue='sicken-model_introduction',
+			auto_ack=True,
+			on_message_callback=self._introduction
+		)
+
 
 		self._db=DB(self)
 		self._events=events(self)
 
 		self._openai=OpenAI(api_key=self._config.openai.api_key)
 
+		self._model_name=None
+		self._model_id=None
+		self._actions=None
+
+	def _introduction(self, channel, method, properties, body):
+		message=loads(body)
+		if message:
+			print(message)
+			self._model_id=message['model_id']
+			self._model_name=message['model_name']
+			self._actions=message['actions']
+
+			self._gestures_string=self._build_gestures()
+
+
+	def _build_gestures(self):
+		data=[]
+		for action_name in self._actions:
+			if action_name!="speak":
+				data.append({"gesture_name": action_name, "gesture_description": self._actions[action_name]['description']})
+
+		return dumps(data)
 	def _build_prompt(self, chat_uuid, msg, msg_author):
 		try:
 			prompt=[]
 			prompt.append(
-				{"role": "system", "content": SYSTEM_MESSAGE}
+				{"role": "system", "content": SYSTEM_MESSAGE.replace('<!_gestures_!>', self._gestures_string)}
 				)
 
 			previous_messages=self._db.get_chat_messages(
@@ -110,7 +140,10 @@ class OpenAI_LLM:
 	def _response_request(self, channel, method, properties, body):
 		message=loads(body.decode('utf8'))
 
-		if message:
+		if not self._model_id and not self._model_name and not self._actions:
+			print('Recieved the message request, but the sicken-vtube_plugin didn\'t introduced model and it\'s features. Is the plugin running?')
+
+		if message and self._model_id:
 			print(message)
 			response_uuid=str(uuid4())
 
@@ -144,7 +177,8 @@ class OpenAI_LLM:
 
 
 	def start(self):
-		self._response_requests_channel.start_consuming()
+		self._introduction_channel.start_consuming()
+		
 
 
 	def stop(self):

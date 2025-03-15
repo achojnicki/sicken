@@ -62,10 +62,21 @@ class Sicken_VTube_Plugin:
 		self._api_connection=API_Connection(self)
 		self._model=Model(self)
 
+		self._events=events(self)
+
 		self._speech_dir=Path(self._config.directories.speech)
 
 
 		self._speeches={}
+
+		self._events.event(
+				event_name="model_introduction",
+				event_data={
+					"model_name": self._live2d_model_manifest['model']['name'],
+					"model_id": self._live2d_model_manifest['model']['model_id'],
+					"actions": self._live2d_model_manifest['actions']
+					}
+				)
 
 	def _play_sound(self, file):
 		playsound(file)
