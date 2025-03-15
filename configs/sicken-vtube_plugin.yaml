@@ -1,9 +1,10 @@
 model:
-  model: akari
+  model: mikuchibi
 
 vtube:
   host: localhost
   port: 8001
+  frame_duration: 0.016
 
 log:
   debug: true
