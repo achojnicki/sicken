@@ -1,12 +1,46 @@
 # Sicken
 
+An artifical VTuber based on OpenAI.
+
 ## Installation
 
-### Debian 12
+For installation guides see the docs directory.
+
+## Usage
+
+To operate Sicken you'll need:
+
+* Linux/Mac machine
+* VTube Studio installed
+* OpenAI API key and credit
+
+To start Sicken on Linux, you'll need to run a terminal instance and start the command:
 ```
-sudo bash
-cd /opt
-git clone https://github.com/achojnicki/sicken.git
-cd ./sicken/install
-bash ./install_debian_12.sh
+python3 /opt/sicken/concurrent
 ```
+on Mac:
+```
+python3.12 /opt/sicken/concurrent
+```
+
+To interact with Sicken you can use the sicken-text_input command in a new terminal window. To start it type:
+```
+python3 /opt/sicken/bin/sicken-text_input
+```
+or on Mac
+```
+python3.12 /opt/sicken/bin/sicken-text_input
+```
+
+This will start the process manager of Sicken which starts all the submodules.
+
+> [!NOTE]
+>
+> VTube Studio must be on and running before starting Sicken's Concurrent
+
+ 
+## Videos
+To see Sicken in action, see the TikTok videos below:  
+[https://www.tiktok.com/@adrianchojnicki/video/7479879733572898070](https://www.tiktok.com/@adrianchojnicki/video/7479879733572898070)
+[https://www.tiktok.com/@adrianchojnicki/video/7463930772307692822](https://www.tiktok.com/@adrianchojnicki/video/7463930772307692822)
+[https://www.tiktok.com/@adrianchojnicki/video/7463690318622362902](https://www.tiktok.com/@adrianchojnicki/video/7463690318622362902)
