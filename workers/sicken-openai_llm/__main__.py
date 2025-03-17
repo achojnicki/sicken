@@ -99,13 +99,15 @@ class OpenAI_LLM:
 
 
 			for message in previous_messages:
+				del message['_id']
+				del message['chat_uuid']
 				if message['message_author'] == 'Sicken.ai':
 					prompt.append(
 						{"role": "assistant", "content": message['message']}
 						)
 				else:
 					prompt.append(
-						{"role": "user", "content": message['message']}
+						{"role": "user", "content": dumps(message)}
 						)
 
 			self._db.add_chat_message(

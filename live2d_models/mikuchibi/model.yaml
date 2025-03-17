@@ -27,9 +27,9 @@ actions:
         mode: divine
         generator: _generate_speak_range
         data: 
-          a: 35
-          o: 30
-          e: 32
+          a: 45
+          o: 38
+          e: 40
           u: 5
           h: 10
           u: 18
@@ -44,7 +44,7 @@ actions:
           l: 5
           w: 5
           f: 7
-          s: 25
+          s: 15
           h: 15
           j: 14
           d: 15
@@ -155,7 +155,7 @@ actions:
         step: 200
 
   tilt_head_right:
-    description: Tilt head to right side"
+    description: Tilt head to right side
     parameters:
       FaceAngleZ:
         mode: divine

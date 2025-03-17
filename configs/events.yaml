@@ -29,6 +29,13 @@ sicken-text_input:
       message_author: message_author
       message: message
 
+sicken-twitch_chat:
+  message_entered:
+    sicken-response_requests:
+      chat_uuid: chat_uuid
+      message_author: message_author
+      message: message
+
 sicken-speech_generator:
   speech_generated:
     sicken-vtube_plugin_speech_generation_finished:

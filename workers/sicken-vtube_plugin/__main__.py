@@ -19,6 +19,7 @@ class Sicken_VTube_Plugin:
 	project_name="sicken-vtube_plugin"
 
 	def __init__(self):
+		self._active=True
 		self._config = adisconfig('/opt/sicken/configs/sicken-vtube_plugin.yaml')
 		self._log = Log(
 			parent=self,
@@ -66,8 +67,11 @@ class Sicken_VTube_Plugin:
 
 		self._speech_dir=Path(self._config.directories.speech)
 
-
 		self._speeches={}
+		self._is_speaking=False
+		self._awaiting=[]
+
+		self.awaiting_thread()
 
 		self._events.event(
 				event_name="model_introduction",
@@ -84,6 +88,26 @@ class Sicken_VTube_Plugin:
 	def play_sound(self, file):
 		t=Thread(target=self._play_sound, args=[file])
 		t.start()
+
+	def _awaiting_thread(self):
+		while self._active:
+			if not self._is_speaking:
+				for item in list(self._awaiting):
+					actions=self._speeches[item]['actions']
+
+					if not self._is_speaking:
+						self._model.set_actions(actions=actions)
+						self.play_sound(self._speech_dir.joinpath(f"{item}.mp3"))
+						self._model.play_actions(self._live2d_model_manifest['model']['model_id'])
+
+						del self._speeches[item]
+						del self._awaiting[self._awaiting.index(item)]
+					break
+			sleep(1)
+	def awaiting_thread(self):
+		t=Thread(target=self._awaiting_thread, args=[])
+		t.start()
+
 
 	def _speech_request(self, channel, method, properties, body):
 		message=loads(body.decode('utf8'))
@@ -105,9 +129,10 @@ class Sicken_VTube_Plugin:
 					actions.append({
 						"action_name":self._speeches[message['response_uuid']]['response_gesture']
 						})
-
+				self._is_speaking=True
 				self._model.set_actions(actions=actions)
 				self._model.play_actions(self._live2d_model_manifest['model']['model_id'])
+				self._is_speaking=False
 
 	def _generation_finished(self, channel, method, properties, body):
 		message=loads(body.decode('utf8'))
@@ -127,12 +152,22 @@ class Sicken_VTube_Plugin:
 						"action_name":self._speeches[message['response_uuid']]['response_gesture']
 						})
 
-				self._model.set_actions(actions=actions)
-				self.play_sound(self._speech_dir.joinpath(f"{message['response_uuid']}.mp3"))
-				self._model.play_actions(self._live2d_model_manifest['model']['model_id'])
+				self._speeches[message['response_uuid']]['actions']=actions
+				if not self._is_speaking:
+					self._is_speaking=True
+					self._model.set_actions(actions=actions)
+					self.play_sound(self._speech_dir.joinpath(f"{message['response_uuid']}.mp3"))
+					self._model.play_actions(self._live2d_model_manifest['model']['model_id'])
+					self._is_speaking=False
+
+					del self._speeches[message['response_uuid']]
+
+				else:
+					self._awaiting.append(message['response_uuid'])
 
 
 	def start(self):
+		self._active=True
 		self._api_connection.init_connection(
 			host=self._config.vtube.host,
 			port=self._config.vtube.port)
