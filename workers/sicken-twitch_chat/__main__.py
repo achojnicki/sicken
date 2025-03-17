@@ -13,6 +13,7 @@ from twitchAPI.chat import Chat, EventData, ChatMessage, ChatSub, ChatCommand
 from pika import BlockingConnection, PlainCredentials, ConnectionParameters
 from pika.adapters.asyncio_connection import AsyncioConnection
 from uuid import uuid4
+from time import time
 
 import asyncio
 
