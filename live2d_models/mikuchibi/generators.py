@@ -81,7 +81,6 @@ class generators(Animation_Seq):
 		x=ceil(int(self._duration/self._frame))
 		for _ in range(x):
 			l.append(stop)
-
 		l.append(start)
 		return l
 
@@ -92,6 +91,7 @@ class generators(Animation_Seq):
 		for _ in range(x):
 			l.append(stop)
 
+		l=l+list(range(stop,start,-step))
 		l.append(start)
 		return l
 
@@ -101,7 +101,8 @@ class generators(Animation_Seq):
 		x=ceil(int(self._duration/self._frame))
 		for _ in range(x):
 			l.append(stop)
-
+		
+		l=l+list(range(stop,start,-step))
 		l.append(start)
 		return l
 
@@ -116,6 +117,17 @@ class generators(Animation_Seq):
 		return l
 
 	def _generate_shock_range(self, start, stop, step):
+		l=list(range(start,stop,step))
+
+		x=ceil(int(self._duration/self._frame))
+		for _ in range(x):
+			l.append(stop)
+
+		l=l+list(range(stop,start,-step))
+		l.append(start)
+		return l
+
+	def _generate_cheeks_range(self, start, stop, step):
 		l=list(range(start,stop,step))
 
 		x=ceil(int(self._duration/self._frame))

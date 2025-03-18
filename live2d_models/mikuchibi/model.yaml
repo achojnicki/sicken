@@ -29,6 +29,11 @@ custom_parameters:
     max: 1.0
     default: 0.0
 
+  RedCheeks:
+    min: 0.0
+    max: 1.0
+    default: 0.0
+
 actions:
   speak:
     parameters:
@@ -232,7 +237,37 @@ actions:
         start: 0
         stop: 100
         step: 40
-        
+
+  slightly_red_cheeks:
+    description: Make the cheeks of the model slightly red
+    parameters:
+      RedCheeks:
+        mode: divine
+        generator: _generate_cheeks_range
+        start: 0
+        stop: 30
+        step: 5
+
+  moderately_red_cheeks:
+    description: Make the cheeks of the model moderately red
+    parameters:
+      RedCheeks:
+        mode: divine
+        generator: _generate_cheeks_range
+        start: 0
+        stop: 75
+        step: 8
+
+  boldly_red_cheeks:
+    description: Make the cheeks of the model boldly red
+    parameters:
+      RedCheeks:
+        mode: divine
+        generator: _generate_cheeks_range
+        start: 0
+        stop: 100
+        step: 25
+
 
 
 
