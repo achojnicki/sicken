@@ -68,10 +68,15 @@ class OpenAI_LLM:
 		self._model_id=None
 		self._actions=None
 
+		self._events.event(
+				event_name="model_introduction_request",
+				event_data={}
+				)
+
 	def _introduction(self, channel, method, properties, body):
 		message=loads(body)
 		if message:
-			print(message)
+			pprint(message)
 			self._model_id=message['model_id']
 			self._model_name=message['model_name']
 			self._actions=message['actions']
@@ -86,7 +91,7 @@ class OpenAI_LLM:
 				data.append({"gesture_name": action_name, "gesture_description": self._actions[action_name]['description']})
 
 		return dumps(data)
-	def _build_prompt(self, chat_uuid, msg, msg_author):
+	def _build_prompt(self, msg):
 		try:
 			prompt=[]
 			prompt.append(
@@ -94,16 +99,15 @@ class OpenAI_LLM:
 				)
 
 			previous_messages=self._db.get_chat_messages(
-				chat_uuid=chat_uuid
+				chat_uuid=msg['chat_uuid']
 				)
 
 
 			for message in previous_messages:
-				del message['_id']
 				del message['chat_uuid']
 				if message['message_author'] == 'Sicken.ai':
 					prompt.append(
-						{"role": "assistant", "content": message['message']}
+						{"role": "assistant", "content": dumps(message)}
 						)
 				else:
 					prompt.append(
@@ -111,12 +115,13 @@ class OpenAI_LLM:
 						)
 
 			self._db.add_chat_message(
-				chat_uuid=chat_uuid,
-				message_author=msg_author,
-				message=msg
+				chat_uuid=msg['chat_uuid'],
+				message_author=msg['message_author'],
+				message_source=msg['message_source'],
+				msg=msg['message']
 				)
 
-			prompt.append({"role": "user", "content": msg})
+			prompt.append({"role": "user", "content": dumps(msg)})
 
 			return prompt
 		except:
@@ -124,7 +129,7 @@ class OpenAI_LLM:
 			raise
 
 
-	def _get_model_response(self, chat_uuid, message_author, prompt):
+	def _get_model_response(self, prompt):
 		completion=self._openai.chat.completions.create(
 			model=self._config.sicken.model,
 			seed=self._config.sicken.seed,
@@ -144,26 +149,31 @@ class OpenAI_LLM:
 
 		if not self._model_id and not self._model_name and not self._actions:
 			print('Recieved the message request, but the sicken-vtube_plugin didn\'t introduced model and it\'s features. Is the plugin running?')
-
+		
 		if message and self._model_id:
-			print(message)
+			print('Queue message:')
+			pprint(message)
 			response_uuid=str(uuid4())
 
-			prompt=self._build_prompt(
-				chat_uuid=message['chat_uuid'],
-				msg_author=message['message_author'],
-				msg=message['message']
-				)
-			print(prompt)
+			prompt=self._build_prompt(msg=message)
+			print('Prompt:')
+			pprint(prompt)
 
 			response=loads(
 				self._get_model_response(
-					chat_uuid=message['chat_uuid'],
-					message_author=message['message_author'],
 					prompt=prompt
 				)
 			)
-			print(response)
+			print('Model response:')
+			pprint(response)
+			self._db.add_chat_message(
+				chat_uuid=message['chat_uuid'],
+				message_author='Sicken.ai',
+				message_source='OpenAI',
+				response_speech=response['response_speech'],
+				gestures=response['response_gesture']
+				)
+
 			self._events.event(
 				event_name="request_responded",
 				event_data={

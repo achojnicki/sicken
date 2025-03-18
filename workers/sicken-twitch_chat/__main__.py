@@ -17,7 +17,7 @@ from time import time
 
 import asyncio
 
-USER_SCOPE = [AuthScope.CHAT_READ, AuthScope.CHAT_EDIT]
+USER_SCOPE = [AuthScope.CHAT_READ]
 
 class Sicken_Twitch_Chat:
 	project_name="sicken-twitch_chat"
@@ -90,6 +90,7 @@ class Sicken_Twitch_Chat:
 			event_data={
 				"chat_uuid": self._chat_uuid,
 				"message_author":  msg.user.name,
+				"message_source": "Twitch",
 				"message": msg.text 
 				}
 			)

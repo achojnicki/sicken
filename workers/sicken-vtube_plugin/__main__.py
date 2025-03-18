@@ -60,6 +60,13 @@ class Sicken_VTube_Plugin:
 			on_message_callback=self._generation_finished
 		)
 
+		self._model_introduction_requests_channel = self.rabbitmq_conn.channel()
+		self._model_introduction_requests_channel.basic_consume(
+			queue='sicken-model_introduction_requests',
+			auto_ack=True,
+			on_message_callback=self._model_introduction_request
+		)
+
 		self._api_connection=API_Connection(self)
 		self._model=Model(self)
 
@@ -73,14 +80,7 @@ class Sicken_VTube_Plugin:
 
 		self.awaiting_thread()
 
-		self._events.event(
-				event_name="model_introduction",
-				event_data={
-					"model_name": self._live2d_model_manifest['model']['name'],
-					"model_id": self._live2d_model_manifest['model']['model_id'],
-					"actions": self._live2d_model_manifest['actions']
-					}
-				)
+		
 
 	def _play_sound(self, file):
 		playsound(file)
@@ -108,6 +108,15 @@ class Sicken_VTube_Plugin:
 		t=Thread(target=self._awaiting_thread, args=[])
 		t.start()
 
+	def _model_introduction_request(self, channel, method, properties, body):
+		self._events.event(
+				event_name="model_introduction",
+				event_data={
+					"model_name": self._live2d_model_manifest['model']['name'],
+					"model_id": self._live2d_model_manifest['model']['model_id'],
+					"actions": self._live2d_model_manifest['actions']
+					}
+				)
 
 	def _speech_request(self, channel, method, properties, body):
 		message=loads(body.decode('utf8'))

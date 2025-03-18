@@ -43,20 +43,30 @@ class DB:
 		cursor=self._chat_messages_collection.find(query)
 
 		for message in cursor:
+			del message['_id']
 			messages.append(message)
 
 		return messages
 
 
-	def add_chat_message(self, chat_uuid, message_author, message):
+	def add_chat_message(self, chat_uuid, message_author, message_source, response_speech=None, gestures=None, msg=None):
 		if not self.get_chat(chat_uuid):
 			raise ChatNotFoundException
 
 		message={
 			"chat_uuid": str(chat_uuid),
 			"message_author": message_author,
-			"message": message
+			"message_source": message_source,
 		}
+
+		if response_speech:
+			message['response_speech']=response_speech
+
+		if gestures:
+			message['gestures']=gestures
+
+		if msg:
+			message['message']=msg
 
 		self._chat_messages_collection.insert_one(message)
 

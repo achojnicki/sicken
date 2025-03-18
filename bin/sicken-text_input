@@ -51,7 +51,8 @@ class text_input:
                     event_name="message_entered",
                     event_data={
                         "chat_uuid": chat_uuid,
-                        "message_author": "Message from sicken-text_input command line tool",
+                        "message_author": "Unknown",
+                        "message_source": "sicken-text_input command line tool",
                         "message": text 
                         }
                     )

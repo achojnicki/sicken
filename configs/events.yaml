@@ -7,6 +7,7 @@ sicken-openai_llm:
       message: message
       response_speech: response_speech
       response_gesture: response_gesture
+
     sicken-vtube_plugin_speech_requests:
       response_uuid: response_uuid
       chat_uuid: chat_uuid
@@ -14,6 +15,9 @@ sicken-openai_llm:
       message: message
       response_speech: response_speech
       response_gesture: response_gesture
+  
+  model_introduction_request:
+    sicken-model_introduction_requests:
 
 sicken-microphone_input:
   speech_recognized:
@@ -27,6 +31,7 @@ sicken-text_input:
     sicken-response_requests:
       chat_uuid: chat_uuid
       message_author: message_author
+      message_source: message_source
       message: message
 
 sicken-twitch_chat:
