@@ -54,7 +54,7 @@ class generators(Animation_Seq):
 		l=list(range(start,stop-(step*2),-step))+list(range(stop, start+step,step))
 		return l
 
-	def generate_possessed_look_range(self, start, stop, step):
+	def _generate_possessed_look_range(self, start, stop, step):
 		l=list(range(start,stop,step))
 
 		x=ceil(int(self._duration/self._frame))
@@ -63,6 +63,46 @@ class generators(Animation_Seq):
 
 		l=l+list(range(stop,start,-step))
 		l+=[start]
+		return l
+
+	def _generate_angry_range(self, start, stop, step):
+		l=list(range(start,stop+(step*2),step))
+
+		x=ceil(int(self._duration/self._frame))
+		for _ in range(x):
+			l.append(stop)
+
+		l.append(start)
+		return l
+
+	def _generate_surprise_sign_range(self, start, stop, step):
+		l=list(range(start,stop+(step*2),step))
+
+		x=ceil(int(self._duration/self._frame))
+		for _ in range(x):
+			l.append(stop)
+
+		l.append(start)
+		return l
+
+	def _generate_music_notes_range(self, start, stop, step):
+		l=list(range(start,stop+(step*2),step))
+
+		x=ceil(int(self._duration/self._frame))
+		for _ in range(x):
+			l.append(stop)
+
+		l.append(start)
+		return l
+
+	def _generate_sweat_range(self, start, stop, step):
+		l=list(range(start,stop+(step*2),step))
+
+		x=ceil(int(self._duration/self._frame))
+		for _ in range(x):
+			l.append(stop)
+
+		l.append(start)
 		return l
 
 	def _generate_angry_range(self, start, stop, step):

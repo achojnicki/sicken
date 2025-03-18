@@ -4,11 +4,6 @@ model:
   author: IkuMiku96
 
 custom_parameters:
-  ShockSign:
-    min: 0.0
-    max: 1.0
-    default: 0.0
-
   Shock:
     min: 0.0
     max: 1.0
@@ -19,6 +14,20 @@ custom_parameters:
     max: 1.0
     default: 0.0
 
+  SurpriseSign:
+    min: 0.0
+    max: 1.0
+    default: 0.0
+
+  MusicNotes:
+    min: 0.0
+    max: 1.0
+    default: 0.0
+
+  Sweat:
+    min: 0.0
+    max: 1.0
+    default: 0.0
 
 actions:
   speak:
@@ -184,26 +193,46 @@ actions:
         stop: 80
         step: 10
 
-  shock_sign:
-    description: Shock Sign just like in the anime when the "crown" like object is appearing next to the head.
-    parameters:
-      ShockSign:
-        mode: divine
-        generator: _generate_shock_sign_range
-        start: 0
-        stop: 100
-        step: 10
-
   posessed_look:
     description: Look without any reflections of the light from the eye
     parameters:
       PosessedLook:
         mode: divine
-        generator: generate_possessed_look_range
+        generator: _generate_possessed_look_range
         start: 0
         stop: 100
         step: 10
 
+  music_notes:
+    description: Music notes apears next to model's head
+    parameters:
+      MusicNotes:
+        mode: divine
+        generator: _generate_music_notes_range
+        start: 0
+        stop: 100
+        step: 40
+
+  surprise_sign:
+    description: Surprise sign
+    parameters:
+      SurpriseSign:
+        mode: divine
+        generator: _generate_surprise_sign_range
+        start: 0
+        stop: 100
+        step: 40
+
+  sweat:
+    description: Show drop of sweat on the face
+    parameters:
+      Sweat:
+        mode: divine
+        generator: _generate_sweat_range
+        start: 0
+        stop: 100
+        step: 40
+        
 
 
 
