@@ -125,6 +125,7 @@ run "rabbitmqctl add_user sicken-speech_generator password"
 run "rabbitmqctl add_user sicken-text_input password"
 run "rabbitmqctl add_user sicken-microphone_input password"
 run "rabbitmqctl add_user sicken-vtube_plugin password"
+run "rabbitmqctl add_user sicken-twitch_chat password"
 run "rabbitmqctl add_user admin sicken"
 
 
@@ -138,6 +139,7 @@ rabbitmqctl set_permissions -p / sicken-text_input ".*" ".*" ".*"
 rabbitmqctl set_permissions -p / sicken-microphone_input ".*" ".*" ".*"
 rabbitmqctl set_permissions -p / sicken-vtube_plugin ".*" ".*" ".*"
 rabbitmqctl set_permissions -p / sicken-openai_llm ".*" ".*" ".*"
+rabbitmqctl set_permissions -p / sicken-twitch_chat ".*" ".*" ".*"
 rabbitmqctl set_permissions -p / admin ".*" ".*" ".*"
 
 rabbitmqctl set_topic_permissions sicken-logs "" ".*" ".*"
@@ -148,6 +150,7 @@ rabbitmqctl set_topic_permissions sicken-text_input "" ".*" ".*"
 rabbitmqctl set_topic_permissions sicken-microphone_input "" ".*" ".*"
 rabbitmqctl set_topic_permissions sicken-vtube_plugin "" ".*" ".*"
 rabbitmqctl set_topic_permissions sicken-openai_llm "" ".*" ".*"
+rabbitmqctl set_topic_permissions sicken-twitch_chat "" ".*" ".*"
 rabbitmqctl set_topic_permissions admin "" ".*" ".*"
 
 print 'Creating RabbitMQ Queues'

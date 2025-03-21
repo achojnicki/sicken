@@ -39,8 +39,3 @@ This will start the process manager of Sicken which starts all the submodules.
 > VTube Studio must be on and running before starting Sicken's Concurrent
 
  
-## Videos
-To see Sicken in action, see the TikTok videos below:  
-[https://www.tiktok.com/@adrianchojnicki/video/7479879733572898070](https://www.tiktok.com/@adrianchojnicki/video/7479879733572898070)
-[https://www.tiktok.com/@adrianchojnicki/video/7463930772307692822](https://www.tiktok.com/@adrianchojnicki/video/7463930772307692822)
-[https://www.tiktok.com/@adrianchojnicki/video/7463690318622362902](https://www.tiktok.com/@adrianchojnicki/video/7463690318622362902)
