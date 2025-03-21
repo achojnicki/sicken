@@ -79,18 +79,21 @@ class Speech_Generator:
 			file=self._speech_dir.joinpath(f"{message['response_uuid']}.mp3")
 			response.write_to_file(file)
 
-			transcription = self._openai.audio.transcriptions.create(
-				model=self._config.openai.transcription_model,
-				file=file,
-				response_format="verbose_json",
-				timestamp_granularities=["word"]
-			)
+			words=None
+			duration=None
+			if self._config.speech.whisper_lip_data:
+				transcription = self._openai.audio.transcriptions.create(
+					model=self._config.openai.transcription_model,
+					file=file,
+					response_format="verbose_json",
+					timestamp_granularities=["word"]
+				)
 
-			words=[]
-			for word in transcription.words:
-				words.append(dict(word))
+				words=[]
+				for word in transcription.words:
+					words.append(dict(word))
 
-			duration = transcription.duration
+				duration = transcription.duration
 
 			self._notify_vtube_plugin(message['response_uuid'], duration, words)
 

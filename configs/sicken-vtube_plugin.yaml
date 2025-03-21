@@ -5,6 +5,7 @@ vtube:
   host: localhost
   port: 8001
   frame_duration: 0.016
+  whisper_lip_data: true
 
 log:
   debug: true

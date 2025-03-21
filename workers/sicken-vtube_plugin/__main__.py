@@ -149,7 +149,7 @@ class Sicken_VTube_Plugin:
 		if message:
 			if message['response_uuid'] in self._speeches:
 				actions=[]
-				if self._speeches[message['response_uuid']]['response_speech']:
+				if self._speeches[message['response_uuid']]['response_speech'] and self._config.vtube.whisper_lip_data:
 					actions.append({
 						"action_name":"speak",
 						"words": message['speech_words'],
