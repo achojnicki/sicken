@@ -30,7 +30,7 @@ To set up Sicken to work with the Twitch chat you'll need:
 
 4. In the file `/opt/sicken/configs/sicken-twitch_chat.yaml`, change the `channel` value of the `twitch` tree to your Twitch **username** - this way the twitch integration will be able to connect to your stream's chat. 
 
-5. Installation and configuration is ready. To start the Twitch chat integration simply run it on Mac:
+5. Configuration is ready. To start the Twitch chat integration simply run it on Mac:
 	```
 	python3.12 /opt/sicken/workers/sicken-twitch_chat
 	```
