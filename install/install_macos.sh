@@ -49,9 +49,8 @@ export PATH=$PATH:/usr/local/bin:/usr/local/sbin:/opt/sicken/install
 print "1st stage installation of dependencies"
 run "brew install python@3.12"
 
-whereis pip3
 print "2nd stage installation of dependencies"
-run "/usr/local/bin/python3.12 -m pip install --break-system-packages numpy openai playsound flask flask-socketio python-socketio psutil tabulate colored pymongo pyyaml pika uwsgi websockets pyobjc"
+run "/usr/local/bin/python3.12 -m pip install --break-system-packages numpy openai playsound flask flask-socketio python-socketio psutil tabulate colored pymongo pyyaml pika uwsgi websockets pyobjc twitchapi"
 
 
 print "Installing MongoDB database"
