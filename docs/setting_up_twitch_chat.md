@@ -12,7 +12,7 @@ To set up Sicken to work with the Twitch chat you'll need:
 
 ## Setup
 
-1. Go to the [https://dev.twitch.tv/console/apps](https://dev.twitch.tv/console/apps) and register the new APP with the settings below..
+1. Go to the [https://dev.twitch.tv/console/apps](https://dev.twitch.tv/console/apps) and register the new APP with the settings below.
 
 	Settings:
 
