@@ -23,6 +23,13 @@ on Mac:
 python3.12 /opt/sicken/concurrent
 ```
 
+This will start the process manager of Sicken which starts all the submodules.  
+
+> [!NOTE]
+>
+> VTube Studio must be on and running before starting Sicken's Concurrent
+
+
 To interact with Sicken you can use the sicken-text_input command in a new terminal window. To start it type:
 ```
 python3 /opt/sicken/bin/sicken-text_input
@@ -31,11 +38,4 @@ or on Mac
 ```
 python3.12 /opt/sicken/bin/sicken-text_input
 ```
-
-This will start the process manager of Sicken which starts all the submodules.
-
-> [!NOTE]
->
-> VTube Studio must be on and running before starting Sicken's Concurrent
-
  
