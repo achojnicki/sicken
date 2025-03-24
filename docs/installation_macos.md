@@ -33,6 +33,7 @@ To install Sicken on a MacOS machine you'll need:
 	* /opt/sicken/sicken-openai_llm/manifest.yaml
 	* /opt/sicken/sicken-speech_generator/manifest.yaml
 	* /opt/sicken/sicken-vtube_plugin/manifest.yaml
+	* /opt/sicken/sicken-gui/manifest.yaml
 
 	The Modification requires changing the `exec` property from `/usr/bin/python3` to `/usr/local/bin/python3.12` in every manifest file mentioned.
 	

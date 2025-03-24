@@ -28,4 +28,10 @@ sicken-vtube_plugin:
   uid: 7676
   gid: 7676
 
+sicken-gui:
+  enable: true
+  workers_count: 1
+  uid: 7676
+  gid: 7676
+
 
