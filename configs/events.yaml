@@ -15,7 +15,15 @@ sicken-openai_llm:
       message: message
       response_speech: response_speech
       response_gesture: response_gesture
-  
+
+    sicken-gui_responses:
+      response_uuid: response_uuid
+      chat_uuid: chat_uuid
+      message_author: message_author
+      message: message
+      response_speech: response_speech
+      response_gesture: response_gesture
+
   model_introduction_request:
     sicken-model_introduction_requests:
 
@@ -34,6 +42,15 @@ sicken-text_input:
       message_source: message_source
       message: message
 
+sicken-gui:
+  message_entered:
+    sicken-response_requests:
+      chat_uuid: chat_uuid
+      message_author: message_author
+      message_source: message_source
+      message: message
+
+
 sicken-twitch_chat:
   message_entered:
     sicken-response_requests:
@@ -47,6 +64,7 @@ sicken-speech_generator:
       response_uuid: response_uuid
       speech_duration: speech_duration
       speech_words: speech_words
+
 sicken-vtube_plugin:
   model_introduction:
     sicken-model_introduction:

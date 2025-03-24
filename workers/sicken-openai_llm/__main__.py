@@ -152,12 +152,16 @@ class OpenAI_LLM:
 		
 		if message and self._model_id:
 			print('Queue message:')
-			pprint(message)
+			print(message)
 			response_uuid=str(uuid4())
 
 			prompt=self._build_prompt(msg=message)
 			print('Prompt:')
-			pprint(prompt)
+			print(prompt)
+
+			print('Json prompt:')
+			print(dumps(prompt))
+
 
 			response=loads(
 				self._get_model_response(
@@ -165,7 +169,8 @@ class OpenAI_LLM:
 				)
 			)
 			print('Model response:')
-			pprint(response)
+			print(response)
+
 			self._db.add_chat_message(
 				chat_uuid=message['chat_uuid'],
 				message_author='Sicken.ai',

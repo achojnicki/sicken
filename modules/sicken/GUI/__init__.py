@@ -1,0 +1,20 @@
+from sicken.GUI.pages.chat_page import Chat_Page
+
+from sys import exit
+import wx
+
+
+class Sicken_GUI(wx.Frame):
+	def __init__(self, root):
+		self._root=root
+		wx.Frame.__init__(self, None, title="Sicken.AI", size=(750,810), style=wx.DEFAULT_FRAME_STYLE)
+
+		self._notebook=wx.Notebook(self)
+		self._chat_page=Chat_Page(self._root, self._notebook, self)
+		self._notebook.AddPage(self._chat_page, "Chat")
+		self.Bind(wx.EVT_CLOSE, self._on_close)
+
+	def _on_close(self, event):
+		self._root._active=False
+		exit(0)
+		
