@@ -60,7 +60,6 @@ class Sicken:
 			on_message_callback=self._gui_response
 		)
 
-
 	def _gui_response(self, channel, method, properties, body):
 		message=loads(body.decode('utf8'))
 		print(message)
@@ -71,6 +70,7 @@ class Sicken:
 		self._sicken_gui.Show()
 
 		t=Thread(target=self._gui_responses_channel.start_consuming, args=[])
+		t.daemon=True
 		t.start()
 
 		self._app.MainLoop()
