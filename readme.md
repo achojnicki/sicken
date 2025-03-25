@@ -39,3 +39,11 @@ or on Mac
 python3.12 /opt/sicken/bin/sicken-text_input
 ```
  
+## Videos
+
+Below are the few videos of Sicken in action.
+
+[https://www.youtube.com/watch?v=YxmQ3sJWp4Q](https://www.youtube.com/watch?v=YxmQ3sJWp4Q)
+[https://www.tiktok.com/@adrianchojnicki/video/7483063751072140566](https://www.tiktok.com/@adrianchojnicki/video/7483063751072140566)
+[https://www.tiktok.com/@adrianchojnicki/video/7479879733572898070](https://www.tiktok.com/@adrianchojnicki/video/7479879733572898070)
+[https://www.tiktok.com/@adrianchojnicki/video/7463690318622362902](https://www.tiktok.com/@adrianchojnicki/video/7463690318622362902)
