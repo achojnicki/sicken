@@ -230,13 +230,13 @@ class API_Connection(
 		return request_id
 
 	def _request_response(self, request_data):
-		pprint(loads(request_data))
-		t=time()
+		#pprint(loads(request_data))
+		#t=time()
 		self._connection.send(request_data)
 		msg=loads(self._connection.recv())
-		print(time()-t)
-		pprint(msg)
-		print('---')
+		#print(time()-t)
+		#pprint(msg)
+		#print('---')
 		return msg
 
 	def init_connection(self, host, port):

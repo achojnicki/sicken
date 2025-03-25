@@ -128,15 +128,15 @@ class Sicken_VTube_Plugin:
 				"chat_uuid": message['chat_uuid'],
 				"message_author": message['message_author'],
 				"message": message['message'],
-				"response_speech": message['response_speech'],
-				"response_gesture": message['response_gesture']
+				"speech": message['speech'],
+				"gesture": message['gesture']
 			}
 
-			if not message['response_speech'] and message['response_gesture']:
+			if not message['speech'] and message['gesture']:
 				actions=[]
-				if self._speeches[message['response_uuid']]['response_gesture']:
+				if self._speeches[message['response_uuid']]['gesture']:
 					actions.append({
-						"action_name":self._speeches[message['response_uuid']]['response_gesture']
+						"action_name":self._speeches[message['response_uuid']]['gesture']
 						})
 				self._is_speaking=True
 				self._model.set_actions(actions=actions)
@@ -149,16 +149,16 @@ class Sicken_VTube_Plugin:
 		if message:
 			if message['response_uuid'] in self._speeches:
 				actions=[]
-				if self._speeches[message['response_uuid']]['response_speech'] and self._config.vtube.whisper_lip_data:
+				if self._speeches[message['response_uuid']]['speech'] and self._config.vtube.whisper_lip_data:
 					actions.append({
 						"action_name":"speak",
 						"words": message['speech_words'],
 						"duration": message['speech_duration']
 						})
 
-				if self._speeches[message['response_uuid']]['response_gesture']:
+				if self._speeches[message['response_uuid']]['gesture']:
 					actions.append({
-						"action_name":self._speeches[message['response_uuid']]['response_gesture']
+						"action_name":self._speeches[message['response_uuid']]['gesture']
 						})
 
 				self._speeches[message['response_uuid']]['actions']=actions

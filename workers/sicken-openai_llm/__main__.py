@@ -175,8 +175,8 @@ class OpenAI_LLM:
 				chat_uuid=message['chat_uuid'],
 				message_author='Sicken.ai',
 				message_source='OpenAI',
-				response_speech=response['response_speech'],
-				gestures=response['response_gesture']
+				speech=response['speech'],
+				gesture=response['gesture']
 				)
 
 			self._events.event(
@@ -186,8 +186,8 @@ class OpenAI_LLM:
 					"chat_uuid": message['chat_uuid'],
 					"message_author":message['message_author'],
 					"message": message['message'],
-					"response_speech": response['response_speech'],
-					"response_gesture": response['response_gesture']
+					"speech": response['speech'],
+					"gesture": response['gesture']
 					}
 				)
 			

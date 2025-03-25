@@ -63,8 +63,8 @@ class Sicken:
 	def _gui_response(self, channel, method, properties, body):
 		message=loads(body.decode('utf8'))
 		print(message)
-		if message and message['response_speech']:
-			self._sicken_gui._chat_page.add_sickens_message(message['response_speech'])
+		if message and message['speech']:
+			self._sicken_gui._chat_page.add_sickens_message(message['speech'])
 
 	def start(self):
 		self._sicken_gui.Show()

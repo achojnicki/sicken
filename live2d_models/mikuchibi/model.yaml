@@ -41,9 +41,9 @@ actions:
         mode: divine
         generator: _generate_speak_range
         data: 
-          a: 45
-          o: 38
-          e: 40
+          a: 30
+          o: 30
+          e: 30
           u: 5
           h: 10
           u: 18

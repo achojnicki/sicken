@@ -67,13 +67,13 @@ class Speech_Generator:
 	def _speech_request(self, channel, method, properties, body):
 		message=loads(body.decode('utf8'))
 
-		if message and message['response_speech']:
+		if message and message['speech']:
 
-			print(message['response_speech'])
+			print(message['speech'])
 			response = self._openai.audio.speech.create(
 				model=self._config.openai.tts_model,
 				voice=self._config.openai.tts_voice,
-				input=message['response_speech'],
+				input=message['speech'],
 			)
 
 			file=self._speech_dir.joinpath(f"{message['response_uuid']}.mp3")

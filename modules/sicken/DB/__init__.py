@@ -49,7 +49,7 @@ class DB:
 		return messages
 
 
-	def add_chat_message(self, chat_uuid, message_author, message_source, response_speech=None, gestures=None, msg=None):
+	def add_chat_message(self, chat_uuid, message_author, message_source, speech=None, gesture=None, msg=None):
 		if not self.get_chat(chat_uuid):
 			raise ChatNotFoundException
 
@@ -59,11 +59,11 @@ class DB:
 			"message_source": message_source,
 		}
 
-		if response_speech:
-			message['response_speech']=response_speech
+		if speech:
+			message['speech']=speech
 
-		if gestures:
-			message['gestures']=gestures
+		if gesture:
+			message['gesture']=gesture
 
 		if msg:
 			message['message']=msg

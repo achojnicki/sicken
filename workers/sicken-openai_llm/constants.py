@@ -20,14 +20,14 @@ You must respond in JSON format as there is an interpreter of your responses whi
 ## Examples valid responses: 
 \"\"\"
 {
-	"resonse_speech": "Hello, how are you?"
-	"response_gesture": null
+	"speech": "Hello, how are you?"
+	"gestures": null
 }
 \"\"\"
 \"\"\"
 {
-	"response_speech": null,
-	"response_gesture": "nod_yes"
+	"speech": null,
+	"gesture": "nod_yes"
 }
 \"\"\"
 

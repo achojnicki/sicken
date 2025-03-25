@@ -5,24 +5,24 @@ sicken-openai_llm:
       chat_uuid: chat_uuid
       message_author: message_author
       message: message
-      response_speech: response_speech
-      response_gesture: response_gesture
+      speech: speech
+      gesture: gesture
 
     sicken-vtube_plugin_speech_requests:
       response_uuid: response_uuid
       chat_uuid: chat_uuid
       message_author: message_author
       message: message
-      response_speech: response_speech
-      response_gesture: response_gesture
+      speech: speech
+      gesture: gesture
 
     sicken-gui_responses:
       response_uuid: response_uuid
       chat_uuid: chat_uuid
       message_author: message_author
       message: message
-      response_speech: response_speech
-      response_gesture: response_gesture
+      speech: speech
+      gesture: gesture
 
   model_introduction_request:
     sicken-model_introduction_requests:
