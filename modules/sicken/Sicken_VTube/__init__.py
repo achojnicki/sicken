@@ -231,10 +231,10 @@ class API_Connection(
 
 	def _request_response(self, request_data):
 		#pprint(loads(request_data))
-		#t=time()
+		t=time()
 		self._connection.send(request_data)
 		msg=loads(self._connection.recv())
-		#print(time()-t)
+		print(time()-t)
 		#pprint(msg)
 		#print('---')
 		return msg

@@ -76,7 +76,7 @@ class generators(Animation_Seq):
 		return l
 
 	def _generate_surprise_sign_range(self, start, stop, step):
-		l=list(range(start,stop+(step*2),step))
+		l=list(range(start,stop,step))
 
 		x=ceil(int(self._duration/self._frame))
 		for _ in range(x):
