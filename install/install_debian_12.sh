@@ -166,6 +166,7 @@ run 'create_queue.py sicken-vtube_plugin_speech_requests'
 run 'create_queue.py sicken-model_introduction'
 run 'create_queue.py sicken-model_introduction_requests'
 run 'create_queue.py sicken-gui_responses'
+run 'create_queue.py sicken-twitch_responses'
 
 
 

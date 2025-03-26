@@ -24,6 +24,14 @@ sicken-openai_llm:
       speech: speech
       gesture: gesture
 
+    sicken-twitch_responses:
+      response_uuid: response_uuid
+      chat_uuid: chat_uuid
+      message_author: message_author
+      message: message
+      speech: speech
+      gesture: gesture
+
   model_introduction_request:
     sicken-model_introduction_requests:
 

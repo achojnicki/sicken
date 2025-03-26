@@ -119,6 +119,8 @@ run '/usr/local/bin/python3.12 create_queue.py sicken-vtube_plugin_speech_reques
 run '/usr/local/bin/python3.12 create_queue.py sicken-model_introduction'
 run '/usr/local/bin/python3.12 create_queue.py sicken-model_introduction_requests'
 run '/usr/local/bin/python3.12 create_queue.py sicken-gui_responses'
+run '/usr/local/bin/python3.12 create_queue.py sicken-twitch_responses'
+
 
 
 

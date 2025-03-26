@@ -14,15 +14,22 @@ from pika import BlockingConnection, PlainCredentials, ConnectionParameters
 from pika.adapters.asyncio_connection import AsyncioConnection
 from uuid import uuid4
 from time import time
+from json import loads
+
+from threading import Thread
+
 
 import asyncio
 
-USER_SCOPE = [AuthScope.CHAT_READ]
+USER_SCOPE = [AuthScope.CHAT_READ, AuthScope.CHAT_EDIT]
 
 class Sicken_Twitch_Chat:
 	project_name="sicken-twitch_chat"
 
 	def __init__(self):
+		self._active=True
+		self._messages={}
+
 		self._config=adisconfig('/opt/sicken/configs/sicken-twitch_chat.yaml')
 
 		self._log=Log(
@@ -35,7 +42,6 @@ class Sicken_Twitch_Chat:
 			)
 
 
-		self._loop=asyncio.get_event_loop()
 		self._rabbitmq_conn = AsyncioConnection(
 			ConnectionParameters(
 				host=self._config.rabbitmq.host,
@@ -47,6 +53,24 @@ class Sicken_Twitch_Chat:
 			)
 		)
 
+		self._rabbitmq_conn_blocking = BlockingConnection(
+			ConnectionParameters(
+				host=self._config.rabbitmq.host,
+				port=self._config.rabbitmq.port,
+				credentials=PlainCredentials(
+					self._config.rabbitmq.user,
+					self._config.rabbitmq.password
+				)
+			)
+		)
+
+		self._incoming_messages_channel = self._rabbitmq_conn_blocking.channel()
+		self._incoming_messages_channel.basic_consume(
+			queue='sicken-twitch_responses',
+			auto_ack=True,
+			on_message_callback=self._message
+		)
+
 
 		self._db=DB(self)
 		self._events=events(self)
@@ -54,7 +78,28 @@ class Sicken_Twitch_Chat:
 
 		self._chat_uuid=None
 
+	def _start_thread(self):
+		t=Thread(target=self._incoming_messages_channel.start_consuming, args=[])
+		t.daemon=True
+		t.start()
+
+
+	def _message(self, channel, method, properties, body):
+		message=loads(body.decode('utf8'))
+		print(message)
+		if message and message['speech'] and hasattr(self, '_chat'):
+			self._messages[message['response_uuid']]=message
+
+
+
+	async def _send_message(self, message):
+		if hasattr(self, "_chat"):
+			print('wykonało w async')
+			await self._chat.send_message(self._config.twitch.channel, message)
+
 	async def _connect(self):
+		self._loop=asyncio.get_running_loop()
+
 		self._twitch = await Twitch(self._config.twitch.client_id, self._config.twitch.secret_key)
 		self._auth = UserAuthenticator(self._twitch, USER_SCOPE)
 		self._token, self._refresh_token = await self._auth.authenticate()
@@ -85,14 +130,15 @@ class Sicken_Twitch_Chat:
 
 	async def on_message(self, msg: ChatMessage):
 		print(f'in {msg.room.name}, {msg.user.name} said: {msg.text}')
-		self._events.event(
-			event_name="message_entered",
-			event_data={
-				"chat_uuid": self._chat_uuid,
-				"message_author":  msg.user.name,
-				"message_source": "Twitch",
-				"message": msg.text 
-				}
+		if msg.user.name!=self._config.twitch.channel:
+			self._events.event(
+				event_name="message_entered",
+				event_data={
+					"chat_uuid": self._chat_uuid,
+					"message_author":  msg.user.name,
+					"message_source": "Twitch",
+					"message": msg.text 
+					}
 			)
 
 
@@ -115,7 +161,14 @@ class Sicken_Twitch_Chat:
 		await self._bind()
 		self._chat.start()
 		try:
-			input('press ENTER to stop\n')
+			while self._active:
+				for message in dict(self._messages):
+					print(message, self._messages[message])
+					await self._send_message(self._messages[message]['speech'])
+					del self._messages[message]
+
+				await asyncio.sleep(0.1)
+
 		finally:
 			self._chat.stop()
 			await self._twitch.close()
@@ -124,6 +177,7 @@ class Sicken_Twitch_Chat:
 
 if __name__=="__main__":
 	SickenChat=Sicken_Twitch_Chat()
+	SickenChat._start_thread()
 	asyncio.run(SickenChat.run())
 
 
