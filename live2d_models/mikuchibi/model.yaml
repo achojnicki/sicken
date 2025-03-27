@@ -46,7 +46,7 @@ actions:
           e: 30
           u: 5
           h: 10
-          u: 18
+          u: 10
           i: 15
           w: 8
           y: 20
@@ -54,7 +54,7 @@ actions:
           p: 0
           b: 0
           m: 0
-          t: 10
+          t: 5
           l: 5
           w: 5
           f: 7
@@ -267,9 +267,5 @@ actions:
         start: 0
         stop: 100
         step: 25
-
-
-
-
 
 

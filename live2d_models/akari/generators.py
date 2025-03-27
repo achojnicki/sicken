@@ -54,14 +54,66 @@ class generators(Animation_Seq):
 		l=list(range(start,stop-(step*2),-step))+list(range(stop, start+step,step))
 		return l
 
-	def generate_possessed_look_range(self, start, stop, step):
+	def _generate_possessed_look_range(self, start, stop, step):
 		l=list(range(start,stop,-step))
 
 		x=ceil(int(self._duration/self._frame))
 		for _ in range(x):
 			l.append(stop)
 
-		l=l+list(range(stop,start+(2*step),step))
+		l=l+list(range(stop,start+step,step))
+		return l
+
+	def _generate_loving_look_range(self, start, stop, step):
+		l=list(range(start,stop,-step))
+
+		x=ceil(int(self._duration/self._frame))
+		for _ in range(x):
+			l.append(stop)
+
+		l=l+list(range(stop,start+step,step))
+		return l
+
+	def _generate_hide_eyes_range(self, start, stop, step):
+		l=list(range(start,stop,-step))
+
+		x=ceil(int(self._duration/self._frame))
+		for _ in range(x):
+			l.append(stop)
+
+		l=l+list(range(stop,start+step,step))
+		return l
+
+	def _generate_shocked_eyes_range(self, start, stop, step):
+		l=list(range(start,stop,step))
+
+		x=ceil(int(self._duration/self._frame))
+		for _ in range(x):
+			l.append(stop)
+
+		l=l+list(range(stop,start-step,-step))
+		return l
+
+	def _generate_xd_eyes_range(self, start, stop, step):
+		l=list(range(start,stop,step))
+
+		x=ceil(int(self._duration/self._frame))
+		for _ in range(x):
+			l.append(stop)
+
+		l=l+list(range(stop,start-step,-step))
+		return l
+
+
+	def _generate_cheeks_range(self, start, stop, step):
+		l=list(range(start,stop,step))
+
+		x=ceil(int(self._duration/self._frame))
+		for _ in range(x):
+			l.append(stop)
+
+		l=l+list(range(stop,start,-step))
+		l.append(start)
 		return l
 
 	def _generate_angry_range(self, start, stop, step):

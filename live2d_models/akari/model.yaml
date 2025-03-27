@@ -18,6 +18,32 @@ custom_parameters:
     max: 1.0
     default: 1.0
 
+  HeartEyes:
+    min: 0.0
+    max: 1.0
+    default: 0.0
+
+  RedCheeks:
+    min: 0.0
+    max: 1.0
+    default: 0.0
+
+  EyesVisible:
+    min: 0.0
+    max: 1.0
+    default: 1.0
+
+  EyesShockVisible:
+    min: 0.0
+    max: 1.0
+    default: 0.0
+
+  EyesXDVisible:
+    min: 0.0
+    max: 1.0
+    default: 0.0
+
+
 actions:
   speak:
     parameters:
@@ -197,13 +223,83 @@ actions:
     parameters: 
       PosessedLook:
         mode: divine
-        generator: generate_possessed_look_range
+        generator: _generate_possessed_look_range
         start: 100
         stop: 0
         step: 10
 
+  loving_look:
+    description: Look with a hearts in the eyes
+    parameters:
+      HeartEyes:
+        mode: divine
+        generator: _generate_loving_look_range
+        start: 0
+        stop: 100
+        step: 10
 
+  slightly_red_cheeks:
+    description: Make the cheeks of the model slightly red
+    parameters:
+      RedCheeks:
+        mode: divine
+        generator: _generate_cheeks_range
+        start: 0
+        stop: 30
+        step: 5
 
+  moderately_red_cheeks:
+    description: Make the cheeks of the model moderately red
+    parameters:
+      RedCheeks:
+        mode: divine
+        generator: _generate_cheeks_range
+        start: 0
+        stop: 75
+        step: 8
 
+  boldly_red_cheeks:
+    description: Make the cheeks of the model boldly red
+    parameters:
+      RedCheeks:
+        mode: divine
+        generator: _generate_cheeks_range
+        start: 0
+        stop: 100
+        step: 25
+
+  shocked_eyes:
+    description: Show eyes characteristic to shock
+    parameters:
+      EyesVisible:
+        mode: divine
+        generator: _generate_hide_eyes_range
+        start: 100
+        stop: 0
+        step: 10
+
+      EyesShockVisible:
+        mode: divine
+        generator: _generate_shocked_eyes_range
+        start: 0
+        stop: 100
+        step: 10
+        
+  xd_eyes:
+    description: Show XD eyes
+    parameters:
+      EyesVisible:
+        mode: divine
+        generator: _generate_hide_eyes_range
+        start: 100
+        stop: 0
+        step: 10
+
+      EyesXDVisible:
+        mode: divine
+        generator: _generate_xd_eyes_range
+        start: 0
+        stop: 100
+        step: 10
 
 

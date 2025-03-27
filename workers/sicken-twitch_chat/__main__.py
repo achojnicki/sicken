@@ -94,7 +94,6 @@ class Sicken_Twitch_Chat:
 
 	async def _send_message(self, message):
 		if hasattr(self, "_chat"):
-			print('wykonało w async')
 			await self._chat.send_message(self._config.twitch.channel, message)
 
 	async def _connect(self):
@@ -167,17 +166,15 @@ class Sicken_Twitch_Chat:
 					await self._send_message(self._messages[message]['speech'])
 					del self._messages[message]
 
-				await asyncio.sleep(0.1)
-
 		finally:
 			self._chat.stop()
 			await self._twitch.close()
-
 
 
 if __name__=="__main__":
 	SickenChat=Sicken_Twitch_Chat()
 	SickenChat._start_thread()
 	asyncio.run(SickenChat.run())
+
 
 
