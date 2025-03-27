@@ -165,6 +165,7 @@ class Sicken_Twitch_Chat:
 					print(message, self._messages[message])
 					await self._send_message(self._messages[message]['speech'])
 					del self._messages[message]
+			asyncio.sleep(0.1)
 
 		finally:
 			self._chat.stop()
