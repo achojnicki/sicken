@@ -50,6 +50,52 @@ class generators(Animation_Seq):
 		seq.append(0)
 		return seq
 
+	def _generate_speak_range_form(self, words, data):
+		seq=[]
+		for word_index in range(0,len(words)):
+			frame=self._frame
+			print(words[word_index]['word'])
+			start=words[word_index]['start']
+			end=words[word_index]['end']
+			duration=end-start
+			word_len=len(words[word_index]['word'])
+
+			print(f'start: {start}, end: {end}, duration: {duration}, word_len: {word_len}')
+			for letter in words[word_index]['word']:
+				iters=(duration/word_len)/frame
+				
+				if letter.lower() in data:
+					if iters>1:
+						path=np.linspace(
+							seq[-1] if len(seq)>0 else 0,
+							data[letter.lower()],
+							ceil(iters)
+						)
+					else:
+						path=[data[letter.lower()]]
+					print(f'path: {path}')
+
+					for repeat in range(0,ceil(iters)):
+						seq.append(int(path[repeat]))
+
+				else:
+					for repeats in range(0,ceil(iters)):
+						seq.append(seq[-1])
+
+				print(f'\tletter: {letter} iters: {iters}, seq[-1]:{seq[-1]}')
+
+			if (len(words)-1)>word_index:
+				pause_duration=words[word_index+1]['start']-words[word_index]['end']
+				print(f"pause_duration: {pause_duration}")
+				if pause_duration>frame:
+					iters=pause_duration*frame
+					print(f'\titers" {iters}')
+					for repeats in range(0, ceil(iters)):
+						seq.append(40)
+
+		seq.append(40)
+		return seq
+
 	def _generate_wink_range(self, start, stop, step):
 		l=list(range(start,stop-(step*2),-step))+list(range(stop, start+step,step))
 		return l
