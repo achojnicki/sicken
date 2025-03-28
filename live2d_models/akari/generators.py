@@ -149,7 +149,16 @@ class generators(Animation_Seq):
 
 		l=l+list(range(stop,start-step,-step))
 		return l
+	
+	def _generate_swirl_eyes_range(self, start, stop, step):
+		l=list(range(start,stop,step))
 
+		x=ceil(int(self._duration/self._frame))
+		for _ in range(x):
+			l.append(stop)
+
+		l=l+list(range(stop,start-step,-step))
+		return l
 
 	def _generate_cheeks_range(self, start, stop, step):
 		l=list(range(start,stop,step))

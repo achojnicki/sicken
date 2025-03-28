@@ -48,6 +48,11 @@ custom_parameters:
     max: 1.0
     default: 0.4
 
+  EyesSwirlVisible:
+    min: 0.0
+    max: 1.0
+    default: 0.0
+
 actions:
   speak:
     parameters:
@@ -322,6 +327,23 @@ actions:
       EyesXDVisible:
         mode: divine
         generator: _generate_xd_eyes_range
+        start: 0
+        stop: 100
+        step: 10
+
+  swirl_eyes:
+    description: Show eyes with swirl
+    parameters:
+      EyesVisible:
+        mode: divine
+        generator: _generate_hide_eyes_range
+        start: 100
+        stop: 0
+        step: 10
+
+      EyesSwirlVisible:
+        mode: divine
+        generator: _generate_swirl_eyes_range
         start: 0
         stop: 100
         step: 10
