@@ -43,6 +43,10 @@ custom_parameters:
     max: 1.0
     default: 0.0
 
+  MouthForm:
+    min: -1.0
+    max: 1.0
+    default: 0.4
 
 actions:
   speak:
@@ -58,7 +62,6 @@ actions:
           h: 10
           u: 18
           i: 15
-          w: 8
           y: 20
           n: 3
           p: 0
@@ -76,6 +79,35 @@ actions:
           l: 10
           c: 15
           r: 7
+
+      MouthForm:
+        mode: divine
+        generator: _generate_speak_range
+        data: 
+          a: 40
+          o: 2
+          e: 40
+          u: 0
+          h: 00
+          u: 40
+          i: 40
+          w: 40
+          y: 40
+          n: 40
+          p: 20
+          b: 20
+          m: 20
+          t: 20
+          l: 20
+          f: 27
+          s: 30
+          h: 30
+          j: 30
+          d: 30
+          g: 30
+          l: 20
+          c: 35
+          r: 27
 
   nod_yes:
     description: Noding with positive message
@@ -284,7 +316,7 @@ actions:
         start: 0
         stop: 100
         step: 10
-        
+
   xd_eyes:
     description: Show XD eyes
     parameters:
