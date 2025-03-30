@@ -53,6 +53,11 @@ custom_parameters:
     max: 1.0
     default: 0.0
 
+  TearsVisible:
+    min: 0.0
+    max: 1.0
+    default: 0.0
+
 actions:
   speak:
     parameters:
@@ -347,5 +352,16 @@ actions:
         start: 0
         stop: 100
         step: 10
+
+  teared_look:
+    description: Show a look with a teared eyes(eyes with tears)
+    parameters:
+      TearsVisible:
+        mode: divine
+        generator: _generate_teared_eyes_range
+        start: 0
+        stop: 100
+        step: 10
+
 
 
