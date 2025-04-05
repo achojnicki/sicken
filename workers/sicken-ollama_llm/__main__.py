@@ -19,7 +19,7 @@ from time import time
 
 
 
-class OpenAI_LLM:
+class Ollama_LLM:
 	project_name="sicken-ollama_llm"
 
 	def __init__(self):
@@ -200,5 +200,5 @@ class OpenAI_LLM:
 
 
 if __name__=="__main__":
-	openai_llm=OpenAI_LLM()
-	openai_llm.start()
+	ollama_llm=Ollama_LLM()
+	ollama_llm.start()
