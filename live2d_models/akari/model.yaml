@@ -1,6 +1,6 @@
 model:
   name: Akari
-  model_id: 31f896f000364f4fb02034761b2e9a3e
+  model_id: 4af07a24cec2430d8b3f798e72f34b8c
 
 custom_parameters:
   ShockSign:
@@ -64,52 +64,65 @@ actions:
       MouthOpen:
         mode: divine
         generator: _generate_speak_range
-        data: 
-          a: 35
-          o: 30
+        data:
+          q: 5
+          w: 5
           e: 32
-          h: 10
+          r: 7
+          t: 10
+          y: 20
           u: 18
           i: 15
-          y: 20
-          n: 3
+          o: 30
           p: 0
-          b: 0
-          m: 0
-          t: 10
-          l: 5
-          w: 5
-          f: 7
+          a: 35
           s: 25
-          h: 15
-          j: 14
           d: 15
+          f: 7
           g: 20
-          l: 10
+          h: 10
+          j: 14
+          k: 5
+          l: 5
+          z: 10
+          x: 10
           c: 15
-          r: 7
+          v: 2
+          b: 0
+          n: 3
+          m: 0
+
 
       MouthForm:
         mode: divine
         generator: _generate_speak_range_form
         data: 
-          a: 40
-          o: 25
+          q: 25
+          w: 25
           e: 50
+          r: 30
+          t: 25
+          y: 40
           u: 20
           i: 40
-          w: 25
-          y: 40
+          o: 25
           p: 25
-          b: 25
-          m: 25
-          t: 25
-          l: 25
-          f: 30
+          a: 40
           s: 40
+          d: 25
+          f: 30
+          g: 40
           h: 25
           j: 40
-          d: 25
+          k: 25
+          l: 20
+          z: 40
+          x: 25
+          c: 35
+          v: 15
+          b: 25
+          n: 25
+          m: 25
 
   nod_yes:
     description: Noding with positive message

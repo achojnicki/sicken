@@ -7,7 +7,9 @@ from sicken.exceptions import ChatNotFoundException
 
 from constants import SYSTEM_MESSAGE
 
-from openai import OpenAI
+from ollama import chat
+from ollama import ChatResponse
+
 from pika import BlockingConnection, PlainCredentials, ConnectionParameters
 from json import loads, dumps
 from pprint import pprint
@@ -18,10 +20,10 @@ from time import time
 
 
 class OpenAI_LLM:
-	project_name="sicken-openai_llm"
+	project_name="sicken-ollama_llm"
 
 	def __init__(self):
-		self._config=adisconfig('/opt/sicken/configs/sicken-openai_llm.yaml')
+		self._config=adisconfig('/opt/sicken/configs/sicken-ollama_llm.yaml')
 
 		self._log=Log(
 			parent=self,
@@ -61,8 +63,6 @@ class OpenAI_LLM:
 
 		self._db=DB(self)
 		self._events=events(self)
-
-		self._openai=OpenAI(api_key=self._config.openai.api_key)
 
 		self._model_name=None
 		self._model_id=None
@@ -130,18 +130,13 @@ class OpenAI_LLM:
 
 
 	def _get_model_response(self, prompt):
-		completion=self._openai.chat.completions.create(
+		response=chat(
 			model=self._config.sicken.model,
-			seed=self._config.sicken.seed,
-			frequency_penalty=self._config.sicken.frequency_penalty,
-			presence_penalty=self._config.sicken.presence_penalty,
-			top_p=self._config.sicken.top_p,
-			top_logprobs=self._config.sicken.top_logprobs,
 			messages=prompt
 		)
 
 	   
-		resp=completion.choices[0].message.content
+		resp=response.message.content
 		return resp
 
 	def _response_request(self, channel, method, properties, body):
@@ -163,13 +158,15 @@ class OpenAI_LLM:
 			print(dumps(prompt))
 
 
-			response=loads(
-				self._get_model_response(
+			response=self._get_model_response(
 					prompt=prompt
 				)
-			)
 			print('Model response:')
 			print(response)
+
+			response=response.replace('```json','').replace('```','')
+
+			response=loads(response)
 
 			self._db.add_chat_message(
 				chat_uuid=message['chat_uuid'],

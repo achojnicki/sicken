@@ -12,6 +12,7 @@ from os import mkdir
 from openai import OpenAI
 
 import requests
+import whisper
 
 class Speech_Generator:
 	project_name="sicken-speech_generator"
@@ -29,6 +30,9 @@ class Speech_Generator:
 			)
 
 		self._openai=OpenAI(api_key=self._config.openai.api_key)
+
+		if self._config.speech.local_whisper_lip_data:
+			self._model=whisper.load_model(self._config.whisper.model)
 
 		self._rabbitmq_conn = BlockingConnection(
 			ConnectionParameters(
@@ -81,7 +85,7 @@ class Speech_Generator:
 
 			words=None
 			duration=None
-			if self._config.speech.whisper_lip_data:
+			if self._config.speech.api_whisper_lip_data:
 				transcription = self._openai.audio.transcriptions.create(
 					model=self._config.openai.transcription_model,
 					file=file,
@@ -94,6 +98,18 @@ class Speech_Generator:
 					words.append(dict(word))
 
 				duration = transcription.duration
+			elif self._config.speech.local_whisper_lip_data:
+				transcription=self._model.transcribe(
+					str(file),
+					word_timestamps=True)
+
+				words=[]
+				for segment in transcription['segments']:
+					for word in segment['words']:
+						word['word']=word['word'].replace(' ','')
+						words.append(word)
+
+				duration=words[-1]['end']
 
 			self._notify_vtube_plugin(message['response_uuid'], duration, words)
 

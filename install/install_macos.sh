@@ -47,10 +47,10 @@ export PATH=$PATH:/usr/local/bin:/usr/local/sbin:/opt/sicken/install
 
 
 print "1st stage installation of dependencies"
-run "brew install python@3.12"
+run "brew install python@3.12 ollama"
 
 print "2nd stage installation of dependencies"
-run "/usr/local/bin/python3.12 -m pip install --break-system-packages numpy openai playsound flask flask-socketio python-socketio psutil tabulate colored pymongo pyyaml pika uwsgi websockets pyobjc twitchapi wxpython"
+run "/usr/local/bin/python3.12 -m pip install --break-system-packages numpy openai playsound flask flask-socketio python-socketio psutil tabulate colored pymongo pyyaml pika uwsgi websockets pyobjc twitchapi wxpython openai-whisper ollama"
 
 
 print "Installing MongoDB database"
@@ -121,13 +121,14 @@ run '/usr/local/bin/python3.12 create_queue.py sicken-model_introduction_request
 run '/usr/local/bin/python3.12 create_queue.py sicken-gui_responses'
 run '/usr/local/bin/python3.12 create_queue.py sicken-twitch_responses'
 
-
-
-
 print "Enable RabbitMQ Managment plugin"
 run "rabbitmq-plugins enable rabbitmq_management"
 
+print "Pulling Gemma3:4b model(may take a while)"
+ollama pull gemma3:4b
+
 run "mkdir /opt/sicken/logs"
+run "mkdir /opt/sicken/files"
 run "mkdir /opt/sicken/files/sicken"
 run "mkdir /opt/sicken/files/sicken/speech"
 run "chmod 775 /opt/sicken/files/sicken/speech"

@@ -1,8 +1,6 @@
-twitch:
-  client_id: client_id
-  secret_key: secret_key
-  channel: streamer_twitch_username
-
+sicken:
+  model: "gemma3:4b"
+  
 log:
   debug: true
 
@@ -14,5 +12,5 @@ mongo:
 rabbitmq:
   host: localhost
   port: 5672
-  user: sicken-twitch_chat
+  user: sicken-openai_llm
   password: password

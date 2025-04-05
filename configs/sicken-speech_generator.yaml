@@ -4,12 +4,12 @@ openai:
     tts_voice: nova
     transcription_model: whisper-1
 
-playht:
-    user_id: playht_user_id
-    secret_key: playht_secret_key
-    
 speech:
-    whisper_lip_data: true
+    api_whisper_lip_data: false
+    local_whisper_lip_data: true
+
+whisper:
+    model: base
 
 log:
     debug: true

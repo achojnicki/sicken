@@ -53,11 +53,11 @@ export PATH=$PATH:/sbin:/usr/sbin:/usr/local/sbin:/opt/sicken/install
 print "Updating local APT cache"
 run "apt-get update"
 
-print "1st stage installation of dependencies"
+print "1st stage installation of dependencies(may take a while)"
 run "apt-get install curl gnupg apt-transport-https python3 python3-pip nginx curl dpkg-dev build-essential libjpeg-dev libtiff-dev libsdl1.2-dev libgstreamer-plugins-base1.0-dev libnotify-dev freeglut3-dev libsm-dev libgtk-3-dev libwebkit2gtk-4.0-dev libxtst-dev -y"
 
-print "2nd stage installation of dependencies"
-run "pip3 install --break-system-packages numpy openai playsound flask flask-socketio python-socketio psutil tabulate colored pymongo pyyaml pika uwsgi websockets twitchapi wxpython"
+print "2nd stage installation of dependencies(may take a while)"
+run "pip3 install --break-system-packages numpy openai playsound flask flask-socketio python-socketio psutil tabulate colored pymongo pyyaml pika uwsgi websockets twitchapi wxpython openai-whisper ollama"
 
 print "Downloading and instaling MongoDB key"
 curl -fsSL https://www.mongodb.org/static/pgp/server-8.0.asc | gpg --dearmor -o /usr/share/keyrings/mongodb-server-8.0.gpg
@@ -168,11 +168,15 @@ run 'create_queue.py sicken-model_introduction_requests'
 run 'create_queue.py sicken-gui_responses'
 run 'create_queue.py sicken-twitch_responses'
 
-
-
-
 print "Enable RabbitMQ Managment plugin"
 run "rabbitmq-plugins enable rabbitmq_management"
+
+print "Installing Ollama"
+curl -fsSL https://ollama.com/install.sh | sh
+
+print "Pulling Gemma3:4b model(may take a while)"
+ollama pull gemma3:4b
+
 
 #print "Installing Sicken Nginx sites"
 #run "ln -s /opt/adistools/nginx_sites/* /etc/nginx/sites-enabled/"
@@ -193,10 +197,11 @@ run "rabbitmq-plugins enable rabbitmq_management"
 #run "service adistools start"
 
 run "mkdir /opt/sicken/logs"
+run "mkdir /opt/sicken/files"
 run "mkdir /opt/sicken/files/sicken"
 run "mkdir /opt/sicken/files/sicken/speech"
-run "chmod 770 /opt/sicken/files/sicken/speech"
+run "chmod -R 777 /opt/sicken/bin "
 run "touch /opt/sicken/logs/sicken-concurrent.log"
-run "chmod 770 /opt/sicken/logs/sicken-concurrent.log"
+run "chmod 777 /opt/sicken/logs/sicken-concurrent.log"
 
 print "Installation complete"   
