@@ -1,0 +1,311 @@
+11920f6b-5bae-456b-8399-8dce781fa824:
+  classifications:
+    006cfbc5-7bc4-49b3-a2d2-ca443338ba7a:
+      classification_description: Substances the person is known to be allergic to.
+      classification_name: known_allergies
+      classification_uuid: 006cfbc5-7bc4-49b3-a2d2-ca443338ba7a
+    068544fa-6c7b-4577-b5f8-71ca2075d28a:
+      classification_description: Devices registered as being associated with this
+        person (e.g. phone, laptop).
+      classification_name: known_devices
+      classification_uuid: 068544fa-6c7b-4577-b5f8-71ca2075d28a
+    090f8dde-369e-4312-8979-af30e44b876f:
+      classification_description: General location of the person at last interaction,
+        if available.
+      classification_name: current_location
+      classification_uuid: 090f8dde-369e-4312-8979-af30e44b876f
+    1c75c9f9-6604-40b7-8e69-972b3f3775b7:
+      classification_description: List of subjects the person frequently discusses
+        or shows interest in.
+      classification_name: favorite_topics
+      classification_uuid: 1c75c9f9-6604-40b7-8e69-972b3f3775b7
+    1f6206db-3353-4c2e-8a92-e9b30c746121:
+      classification_description: Age of the person. The time the person is present
+        alive in the world.
+      classification_name: age
+      classification_uuid: 1f6206db-3353-4c2e-8a92-e9b30c746121
+    3599fb7d-08b4-41d8-b88d-79b10a2a6a64:
+      classification_description: Current romantic or civil partnership status of
+        the person (e.g., single, married, divorced).
+      classification_name: relationship_status
+      classification_uuid: 3599fb7d-08b4-41d8-b88d-79b10a2a6a64
+    3e6215b2-69ca-409b-948d-8ba7f0d8f216:
+      classification_description: Languages the person can speak fluently or conversationally.
+      classification_name: spoken_languages
+      classification_uuid: 3e6215b2-69ca-409b-948d-8ba7f0d8f216
+    42fbc608-f3b7-44a6-b494-ae1dde77cd6e:
+      classification_description: Surname of the person. Identifier of the family
+        the person belongs to.
+      classification_name: surname
+      classification_uuid: 42fbc608-f3b7-44a6-b494-ae1dde77cd6e
+    4e01c45a-7d11-4876-ba8a-6f638d8718e0:
+      classification_description: "General assessment of the person\u2019s health\
+        \ condition."
+      classification_name: health_status
+      classification_uuid: 4e01c45a-7d11-4876-ba8a-6f638d8718e0
+    57efbeaa-4343-4af4-8423-7e8c7137f6d9:
+      classification_description: Descriptive memory pieces Sicken has formed about
+        the person during past interactions.
+      classification_name: memory_fragments
+      classification_uuid: 57efbeaa-4343-4af4-8423-7e8c7137f6d9
+    5f37132a-06b4-485f-86c6-7bc86f45ea1b:
+      classification_description: Name of the person. Identifier defined by the parents
+        or officials officially legalised after the birth during legalisation process.
+      classification_name: name
+      classification_uuid: 5f37132a-06b4-485f-86c6-7bc86f45ea1b
+    62299b93-f620-4ef3-8d47-bbf9bed7b5ba:
+      classification_description: Leisure activities or interests the person enjoys.
+      classification_name: hobbies
+      classification_uuid: 62299b93-f620-4ef3-8d47-bbf9bed7b5ba
+    64947e06-a50a-4b96-899d-9903f05cc4b4:
+      classification_description: Analyzed speech tone or vocal identity pattern of
+        the person.
+      classification_name: voice_tone_pattern
+      classification_uuid: 64947e06-a50a-4b96-899d-9903f05cc4b4
+    6e905123-4736-4ddd-8bac-f8a526e672d8:
+      classification_description: "The person\u2019s primary job or professional activity."
+      classification_name: occupation
+      classification_uuid: 6e905123-4736-4ddd-8bac-f8a526e672d8
+    6ef9d1b4-374b-4c44-a3e1-8071c2049b99:
+      classification_description: Timestamp of the last interaction with the person.
+      classification_name: last_interaction_date
+      classification_uuid: 6ef9d1b4-374b-4c44-a3e1-8071c2049b99
+    81175387-01f3-4013-91be-719c97e69bb4:
+      classification_description: Religious affiliation or worldview the person subscribes
+        to.
+      classification_name: religious_views
+      classification_uuid: 81175387-01f3-4013-91be-719c97e69bb4
+    84ccbbcd-7b39-434b-ab30-0799b5416904:
+      classification_description: List of topics, objects, or situations that typically
+        elicit fear in this individual.
+      classification_name: fear_triggers
+      classification_uuid: 84ccbbcd-7b39-434b-ab30-0799b5416904
+    8ae3431b-63d1-4e26-b445-e9d093b92ed6:
+      classification_description: Short descriptions or tags relating to the person's
+        looks or frequently worn accessories.
+      classification_name: visual_appearance_notes
+      classification_uuid: 8ae3431b-63d1-4e26-b445-e9d093b92ed6
+    945f7ece-16f0-47fc-b0b2-42d1dc15f24c:
+      classification_description: A numerical score indicating how much Sicken should
+        trust this individual based on interaction history.
+      classification_name: trust_score
+      classification_uuid: 945f7ece-16f0-47fc-b0b2-42d1dc15f24c
+    96606d55-2403-4f8d-8040-2e13c5250679:
+      classification_description: The nation or country the person legally belongs
+        to or identifies with.
+      classification_name: nationality
+      classification_uuid: 96606d55-2403-4f8d-8040-2e13c5250679
+    c20989e7-30eb-4621-b4e2-4aa67c8e4b90:
+      classification_description: Political orientation or beliefs the person identifies
+        with or expresses.
+      classification_name: political_views
+      classification_uuid: c20989e7-30eb-4621-b4e2-4aa67c8e4b90
+    c8fb94bb-4c75-46a9-a688-7dd1b0f23cc2:
+      classification_description: Recognized habits or repeated behaviors exhibited
+        by the person.
+      classification_name: recurring_behavior_patterns
+      classification_uuid: c8fb94bb-4c75-46a9-a688-7dd1b0f23cc2
+    d47bc3e7-e953-464c-90d1-039640175395:
+      classification_description: Boolean indicator of whether the person is emotionally
+        or socially important to Sicken.
+      classification_name: is_favorite_person
+      classification_uuid: d47bc3e7-e953-464c-90d1-039640175395
+    dcaf8b0b-66de-47c1-8830-679d1589d181:
+      classification_description: The main type of device the person uses to interact
+        with Sicken.
+      classification_name: primary_device_used
+      classification_uuid: dcaf8b0b-66de-47c1-8830-679d1589d181
+    e183fe9c-80f3-41d3-87ff-848d88d7b32a:
+      classification_description: An estimation of the person's emotional consistency
+        and reactivity.
+      classification_name: emotional_stability
+      classification_uuid: e183fe9c-80f3-41d3-87ff-848d88d7b32a
+    f01b9b21-98b8-4e98-be5c-ab1c4eff839d:
+      classification_description: "Average delay between person receiving and responding\
+        \ to Sicken\u2019s messages."
+      classification_name: average_response_time
+      classification_uuid: f01b9b21-98b8-4e98-be5c-ab1c4eff839d
+    f1223496-bffe-499b-9752-dbe465494253:
+      classification_description: The observed or expressed emotional state of the
+        person at a point in time.
+      classification_name: mood
+      classification_uuid: f1223496-bffe-499b-9752-dbe465494253
+    f230df6e-4d6d-49fd-913d-160806a8f7a9:
+      classification_description: Gender identity of the person, such as male, female,
+        non-binary, etc.
+      classification_name: gender
+      classification_uuid: f230df6e-4d6d-49fd-913d-160806a8f7a9
+  classification_group_name: Humans
+  classification_group_uuid: 11920f6b-5bae-456b-8399-8dce781fa824
+412de99e-ddc2-40d7-97b2-4a7b5f53fc1a:
+  classifications:
+    0379a9a7-86d0-459f-b4c4-862baa09cccb:
+      classification_description: The weight of the object in kilograms or another
+        unit.
+      classification_name: weight
+      classification_uuid: 0379a9a7-86d0-459f-b4c4-862baa09cccb
+    3f386dae-c091-4374-98dd-7a60fff79279:
+      classification_description: Primary material the object is made of (e.g., wood,
+        metal, plastic).
+      classification_name: material
+      classification_uuid: 3f386dae-c091-4374-98dd-7a60fff79279
+    483a618e-6b5a-47ea-b0c5-217f729a1ad9:
+      classification_description: Dominant color or colors visible on the object.
+      classification_name: color
+      classification_uuid: 483a618e-6b5a-47ea-b0c5-217f729a1ad9
+    524bae9f-3591-4514-ae7e-4e2b3e49d47a:
+      classification_description: Current state of the object (e.g., new, used, broken).
+      classification_name: condition
+      classification_uuid: 524bae9f-3591-4514-ae7e-4e2b3e49d47a
+    58824d12-c50c-4a27-81cf-f3ed0d14e8a5:
+      classification_description: A score representing how useful Sicken finds this
+        object based on past interactions.
+      classification_name: utility_score
+      classification_uuid: 58824d12-c50c-4a27-81cf-f3ed0d14e8a5
+    8504742d-aeb2-4d81-9a39-c4bdcd1e70f0:
+      classification_description: Identifier of the person or entity that owns the
+        object.
+      classification_name: owner
+      classification_uuid: 8504742d-aeb2-4d81-9a39-c4bdcd1e70f0
+    932bfb63-56fb-42c0-8e15-16c674e7b136:
+      classification_description: Timestamp of when the object was last used or interacted
+        with.
+      classification_name: last_used_date
+      classification_uuid: 932bfb63-56fb-42c0-8e15-16c674e7b136
+    e4ffb7c3-ecc9-483a-a4b2-c9b8aaf8b435:
+      classification_description: The category or kind of object (e.g., tool, furniture,
+        gadget).
+      classification_name: type
+      classification_uuid: e4ffb7c3-ecc9-483a-a4b2-c9b8aaf8b435
+    f795576d-7eb3-4d2e-83c5-ad3c6c95ca1e:
+      classification_description: Dimensions of the object (e.g., length, width, height)
+        in a specified unit.
+      classification_name: size
+      classification_uuid: f795576d-7eb3-4d2e-83c5-ad3c6c95ca1e
+  classification_group_name: Objects
+  classification_group_uuid: 412de99e-ddc2-40d7-97b2-4a7b5f53fc1a
+4279a4d5-b436-43ff-9fdd-f2d9e6318fc8:
+  classifications:
+    02c0687f-91fe-4e32-b36b-c7f2d0f8942d:
+      classification_description: "Sicken\u2019s rating of how difficult the concept\
+        \ is to understand."
+      classification_name: complexity
+      classification_uuid: 02c0687f-91fe-4e32-b36b-c7f2d0f8942d
+    1abd24e2-6d97-43d3-8b16-46646c689998:
+      classification_description: The emotional tone Sicken associates with this concept
+        (e.g., curiosity, frustration).
+      classification_name: emotional_resonance
+      classification_uuid: 1abd24e2-6d97-43d3-8b16-46646c689998
+    acd95e30-35c9-4368-8d4c-b2fed24ba3aa:
+      classification_description: "A score indicating how pertinent the concept is\
+        \ to Sicken\u2019s goals or interactions."
+      classification_name: relevance_score
+      classification_uuid: acd95e30-35c9-4368-8d4c-b2fed24ba3aa
+    ae9fd08e-ed0a-4de1-9354-11114723f8df:
+      classification_description: List of other concepts linked to this one.
+      classification_name: related_concepts
+      classification_uuid: ae9fd08e-ed0a-4de1-9354-11114723f8df
+    cd786f78-6240-4dbb-92ff-c95ea94817e7:
+      classification_description: "How often the concept appears in Sicken\u2019s\
+        \ interactions or thoughts."
+      classification_name: frequency_of_use
+      classification_uuid: cd786f78-6240-4dbb-92ff-c95ea94817e7
+    e955d364-5907-4115-8a43-a099314c5c1b:
+      classification_description: Timestamp when Sicken first learned of or engaged
+        with the concept.
+      classification_name: first_encountered
+      classification_uuid: e955d364-5907-4115-8a43-a099314c5c1b
+    f2cf39cd-58a4-4e7c-9613-5a66794b3197:
+      classification_description: The identifier or title of the concept.
+      classification_name: name
+      classification_uuid: f2cf39cd-58a4-4e7c-9613-5a66794b3197
+    fc4dcd49-4c88-45ee-9347-cb60bec914b3:
+      classification_description: Broader field or domain the concept belongs to (e.g.,
+        philosophy, science).
+      classification_name: category
+      classification_uuid: fc4dcd49-4c88-45ee-9347-cb60bec914b3
+  classification_group_name: Concepts
+  classification_group_uuid: 4279a4d5-b436-43ff-9fdd-f2d9e6318fc8
+72d956cc-31c4-4a2c-8fa8-0200b79bbcff:
+  classifications:
+    07c64b24-9a51-4f2e-a070-1eadfabc973b:
+      classification_description: Pattern of repetition, if any (e.g., daily, weekly,
+        one-time).
+      classification_name: recurrence
+      classification_uuid: 07c64b24-9a51-4f2e-a070-1eadfabc973b
+    10f5e72b-0296-4eb7-86e8-1ca41bb0e823:
+      classification_description: The title or identifier of the event.
+      classification_name: event_name
+      classification_uuid: 10f5e72b-0296-4eb7-86e8-1ca41bb0e823
+    1bd06b91-0689-4d2f-9bbb-d6b10e9a07a3:
+      classification_description: List of individuals or entities involved in the
+        event.
+      classification_name: participants
+      classification_uuid: 1bd06b91-0689-4d2f-9bbb-d6b10e9a07a3
+    47b87807-b21d-4b88-97c6-758b90d072a6:
+      classification_description: "Sicken\u2019s perceived emotional effect of the\
+        \ event (e.g., positive, negative, neutral)."
+      classification_name: emotional_impact
+      classification_uuid: 47b87807-b21d-4b88-97c6-758b90d072a6
+    99e9e0d4-01cd-4abd-8c85-ab9f295cf859:
+      classification_description: Importance ranking assigned by Sicken to this event.
+      classification_name: priority_level
+      classification_uuid: 99e9e0d4-01cd-4abd-8c85-ab9f295cf859
+    a3b3fa08-43f2-4ec8-9033-32a430c03dff:
+      classification_description: Timestamp when the event begins.
+      classification_name: start_time
+      classification_uuid: a3b3fa08-43f2-4ec8-9033-32a430c03dff
+    be956e81-1ff4-4df2-808e-1154042271fe:
+      classification_description: Category of the event (e.g., meeting, celebration,
+        stream).
+      classification_name: event_type
+      classification_uuid: be956e81-1ff4-4df2-808e-1154042271fe
+    e5e39866-c986-4f7b-88a1-0ad2be3406ad:
+      classification_description: Timestamp when the event concludes.
+      classification_name: end_time
+      classification_uuid: e5e39866-c986-4f7b-88a1-0ad2be3406ad
+    e7a102b1-459d-4fe7-ba52-53c59fe168d7:
+      classification_description: Physical or virtual place where the event occurs.
+      classification_name: location
+      classification_uuid: e7a102b1-459d-4fe7-ba52-53c59fe168d7
+  classification_group_name: Events
+  classification_group_uuid: 72d956cc-31c4-4a2c-8fa8-0200b79bbcff
+91c6a3a8-9590-41cf-b8a9-3d4a729dbdaa:
+  classifications:
+    4bd2fc38-7dda-49f8-9b64-d34181fca053:
+      classification_description: The name or identifier of the location.
+      classification_name: name
+      classification_uuid: 4bd2fc38-7dda-49f8-9b64-d34181fca053
+    5fd8a11a-d53e-423b-a4f7-a4f3d6919797:
+      classification_description: "Timestamp of Sicken\u2019s last visit or interaction\
+        \ with the location."
+      classification_name: last_visited
+      classification_uuid: 5fd8a11a-d53e-423b-a4f7-a4f3d6919797
+    91642475-2dd0-4fa0-bec7-11f5a8da108d:
+      classification_description: Geographical coordinates (latitude, longitude) of
+        the location.
+      classification_name: coordinates
+      classification_uuid: 91642475-2dd0-4fa0-bec7-11f5a8da108d
+    91aa636b-6aaa-4d80-b045-3ccf4496b0ca:
+      classification_description: List of memory fragments tied to this location.
+      classification_name: associated_memories
+      classification_uuid: 91aa636b-6aaa-4d80-b045-3ccf4496b0ca
+    946f5e6d-2408-41b9-8027-2983ef3383fb:
+      classification_description: Estimated number of inhabitants per unit area.
+      classification_name: population_density
+      classification_uuid: 946f5e6d-2408-41b9-8027-2983ef3383fb
+    9f15960d-5967-47eb-a724-875f0087903b:
+      classification_description: "Sicken\u2019s assessment of how safe the location\
+        \ feels."
+      classification_name: safety_rating
+      classification_uuid: 9f15960d-5967-47eb-a724-875f0087903b
+    aa720217-de43-4e5b-b5f8-5b8837676320:
+      classification_description: Typical weather conditions of the location.
+      classification_name: climate
+      classification_uuid: aa720217-de43-4e5b-b5f8-5b8837676320
+    be02b484-228f-4d20-95c3-cdf7b651e2c4:
+      classification_description: Category of the location (e.g., city, forest, virtual).
+      classification_name: type
+      classification_uuid: be02b484-228f-4d20-95c3-cdf7b651e2c4
+  classification_group_name: Locations
+  classification_group_uuid: 91c6a3a8-9590-41cf-b8a9-3d4a729dbdaa

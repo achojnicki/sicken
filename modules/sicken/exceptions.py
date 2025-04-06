@@ -24,3 +24,15 @@ class SickenDBException(SickenException):
 
 class ChatNotFoundException(SickenDBException):
 	pass
+
+class ClassificationGroupNotFoundException(SickenDBException):
+	pass
+
+class UserProfileNotFoundException(SickenDBException):
+	pass
+
+class UserProfileAlreadyExistsException(SickenDBException):
+	pass
+
+class MemoryDoesntExistsException(SickenDBException):
+	pass

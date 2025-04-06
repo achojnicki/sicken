@@ -4,8 +4,7 @@ from sicken.log import Log
 from sicken.events import events
 from sicken.DB import DB
 from sicken.exceptions import ChatNotFoundException
-
-from constants import SYSTEM_MESSAGE
+from sicken.memories import Memories
 
 from ollama import chat
 from ollama import ChatResponse
@@ -19,8 +18,8 @@ from time import time
 
 
 
-class Ollama_LLM:
-	project_name="sicken-ollama_llm"
+class Classification_Ollama:
+	project_name="sicken-classifications"
 
 	def __init__(self):
 		self._config=adisconfig('/opt/sicken/configs/sicken-ollama_llm.yaml')
@@ -46,32 +45,18 @@ class Ollama_LLM:
 			)
 		)
 
-		self._response_requests_channel = self._rabbitmq_conn.channel()
-		self._response_requests_channel.basic_consume(
-			queue='sicken-response_requests',
+		self._classification_requests_channel = self._rabbitmq_conn.channel()
+		self._classification_requests_channel.basic_consume(
+			queue='sicken-classification_requests',
 			auto_ack=True,
-			on_message_callback=self._response_request
+			on_message_callback=self._classification_request
 		)
 		
-		self._introduction_channel = self._rabbitmq_conn.channel()
-		self._introduction_channel.basic_consume(
-			queue='sicken-model_introduction',
-			auto_ack=True,
-			on_message_callback=self._introduction
-		)
-
 
 		self._db=DB(self)
 		self._events=events(self)
 
-		self._model_name=None
-		self._model_id=None
-		self._actions=None
-
-		self._events.event(
-				event_name="model_introduction_request",
-				event_data={}
-				)
+		self._memories=Memories(self)
 
 	def _introduction(self, channel, method, properties, body):
 		message=loads(body)
@@ -84,13 +69,6 @@ class Ollama_LLM:
 			self._gestures_string=self._build_gestures()
 
 
-	def _build_gestures(self):
-		data=[]
-		for action_name in self._actions:
-			if action_name!="speak":
-				data.append({"gesture_name": action_name, "gesture_description": self._actions[action_name]['description']})
-
-		return dumps(data)
 	def _build_prompt(self, msg):
 		try:
 			prompt=[]
@@ -139,66 +117,24 @@ class Ollama_LLM:
 		resp=response.message.content
 		return resp
 
-	def _response_request(self, channel, method, properties, body):
+	def _classification_request(self, channel, method, properties, body):
 		message=loads(body.decode('utf8'))
 
-		if not self._model_id and not self._model_name and not self._actions:
-			print('Recieved the message request, but the sicken-vtube_plugin didn\'t introduced model and it\'s features. Is the plugin running?')
-		
-		if message and self._model_id:
-			print('Queue message:')
-			print(message)
-			response_uuid=str(uuid4())
-
-			prompt=self._build_prompt(msg=message)
-			print('Prompt:')
-			print(prompt)
-
-			print('Json prompt:')
-			print(dumps(prompt))
-
-
-			response=self._get_model_response(
-					prompt=prompt
-				)
-			print('Model response:')
-			print(response)
-
-			response=response.replace('```json','').replace('```','')
-
-			response=loads(response)
-
-			self._db.add_chat_message(
-				chat_uuid=message['chat_uuid'],
-				message_author='Sicken.ai',
-				message_source=f'Ollama {self._config.sicken.model}',
-				speech=response['speech'],
-				gesture=response['gesture']
-				)
-
-			self._events.event(
-				event_name="request_responded",
-				event_data={
-					"response_uuid": response_uuid,
-					"chat_uuid": message['chat_uuid'],
-					"message_author":message['message_author'],
-					"message": message['message'],
-					"speech": response['speech'],
-					"gesture": response['gesture']
-					}
-				)
+		if message:
+			print(self._memories._get_user_memories(
+				profile_user_name=message['profile_user_name']))
 			
 
 
 	def start(self):
-		self._introduction_channel.start_consuming()
+		self._classification_requests_channel.start_consuming()
 		
 
 
 	def stop(self):
-		self._response_requests_channel.stop_consuming()
+		self._classification_requests_channel.stop_consuming()
 
 
 if __name__=="__main__":
-	ollama_llm=Ollama_LLM()
-	ollama_llm.start()
+	classification=Classification_Ollama()
+	classification.start()

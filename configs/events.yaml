@@ -72,7 +72,6 @@ sicken-ollama_llm:
   model_introduction_request:
     sicken-model_introduction_requests:
 
-
 sicken-microphone_input:
   speech_recognized:
     sicken-response_requests:
@@ -94,6 +93,12 @@ sicken-gui:
       chat_uuid: chat_uuid
       message_author: message_author
       message_source: message_source
+      message: message
+
+    sicken-classification_requests:
+      chat_uuid: chat_uuid
+      message_author: profile_user_name
+      message_source: profile_platform
       message: message
 
 
