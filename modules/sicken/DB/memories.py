@@ -14,3 +14,17 @@ class Memories:
 		for memory in doc:
 			memories[memory['memory_uuid']]=tidy_up_memory(memory)
 		return memories
+
+	def add_memory(self, memory_uuid, profile_uuid, profile_user_name, profile_platform, classification_uuid, classification_group_uuid, memory_value, sickens_comment):
+		document={
+			"memory_uuid": memory_uuid,
+			"profile_uuid": profile_uuid,
+			"profile_user_name": profile_user_name,
+			"profile_platform": profile_platform,
+			"classification_uuid": classification_uuid,
+			"classification_group_uuid": classification_group_uuid,
+			"memory_value": memory_value,
+			"sickens_comment": sickens_comment
+		}
+
+		self._memories_collection.insert_one(document)

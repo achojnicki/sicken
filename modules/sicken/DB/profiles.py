@@ -2,9 +2,6 @@ from sicken.exceptions import UserProfileNotFoundException, UserProfileAlreadyEx
 
 def clean_up_profile(profile):
 	del profile['_id']
-	del profile['profile_uuid']
-	del profile['profile_platform']
-	del profile['profile_user_name']
 	return profile
 
 
@@ -17,9 +14,10 @@ class Profiles:
 		doc=self._user_profiles_collection.find_one(query)
 		return doc
 
-	def get_profile_by_user_name(self, profile_user_name):
+	def get_profile_by_user_name(self, profile_user_name, profile_platform):
 		query={
 			'profile_user_name': profile_user_name,
+			'profile_platform': profile_platform
 			}
 
 		doc=self._user_profiles_collection.find_one(query)
@@ -36,6 +34,12 @@ class Profiles:
 		return classifications
 
 
+	def profile_exists(self, profile_user_name, profile_platform):
+		if self.get_profile_by_user_name(
+			profile_user_name=profile_user_name,
+			profile_platform=profile_platform):
+			return True
+		return False
 
 
 	def add_user_profile(self, profile_uuid, profile_user_name, classifications):

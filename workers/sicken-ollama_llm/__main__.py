@@ -3,6 +3,7 @@ from adistools.adisconfig import adisconfig
 from sicken.log import Log
 from sicken.events import events
 from sicken.DB import DB
+from sicken.memories import Memories 
 from sicken.exceptions import ChatNotFoundException
 
 from constants import SYSTEM_MESSAGE
@@ -63,6 +64,7 @@ class Ollama_LLM:
 
 		self._db=DB(self)
 		self._events=events(self)
+		self._memories=Memories(self)
 
 		self._model_name=None
 		self._model_id=None
@@ -114,6 +116,10 @@ class Ollama_LLM:
 						{"role": "user", "content": dumps(message)}
 						)
 
+			msg['memories']=dumps(self._memories._get_user_memories(
+				profile_user_name=msg['message_author'],
+				profile_platform=msg['message_source']))
+			
 			self._db.add_chat_message(
 				chat_uuid=msg['chat_uuid'],
 				message_author=msg['message_author'],
@@ -152,7 +158,7 @@ class Ollama_LLM:
 
 			prompt=self._build_prompt(msg=message)
 			print('Prompt:')
-			print(prompt)
+			pprint(prompt)
 
 			print('Json prompt:')
 			print(dumps(prompt))

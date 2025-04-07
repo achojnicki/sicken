@@ -6,8 +6,9 @@ from sicken.DB import DB
 from sicken.exceptions import ChatNotFoundException
 from sicken.memories import Memories
 
-from ollama import chat
-from ollama import ChatResponse
+from constants import SYSTEM_MESSAGE
+
+from openai import OpenAI
 
 from pika import BlockingConnection, PlainCredentials, ConnectionParameters
 from json import loads, dumps
@@ -18,11 +19,11 @@ from time import time
 
 
 
-class Classification_Ollama:
+class Classification:
 	project_name="sicken-classifications"
 
 	def __init__(self):
-		self._config=adisconfig('/opt/sicken/configs/sicken-ollama_llm.yaml')
+		self._config=adisconfig('/opt/sicken/configs/sicken-openai_llm.yaml')
 
 		self._log=Log(
 			parent=self,
@@ -52,53 +53,22 @@ class Classification_Ollama:
 			on_message_callback=self._classification_request
 		)
 		
-
+		self._openai=OpenAI(api_key=self._config.openai.api_key)
 		self._db=DB(self)
 		self._events=events(self)
 
 		self._memories=Memories(self)
+		
+		self._classifications=dumps(self._db.get_classifications())
 
-	def _introduction(self, channel, method, properties, body):
-		message=loads(body)
-		if message:
-			pprint(message)
-			self._model_id=message['model_id']
-			self._model_name=message['model_name']
-			self._actions=message['actions']
-
-			self._gestures_string=self._build_gestures()
 
 
 	def _build_prompt(self, msg):
 		try:
 			prompt=[]
 			prompt.append(
-				{"role": "system", "content": SYSTEM_MESSAGE.replace('<!_gestures_!>', self._gestures_string)}
+				{"role": "system", "content": SYSTEM_MESSAGE.replace('<!_categories_!>', self._classifications)}
 				)
-
-			previous_messages=self._db.get_chat_messages(
-				chat_uuid=msg['chat_uuid']
-				)
-
-
-			for message in previous_messages:
-				del message['chat_uuid']
-				if message['message_author'] == 'Sicken.ai':
-					prompt.append(
-						{"role": "assistant", "content": dumps(message)}
-						)
-				else:
-					prompt.append(
-						{"role": "user", "content": dumps(message)}
-						)
-
-			self._db.add_chat_message(
-				chat_uuid=msg['chat_uuid'],
-				message_author=msg['message_author'],
-				message_source=msg['message_source'],
-				msg=msg['message']
-				)
-
 			prompt.append({"role": "user", "content": dumps(msg)})
 
 			return prompt
@@ -108,22 +78,51 @@ class Classification_Ollama:
 
 
 	def _get_model_response(self, prompt):
-		response=chat(
+		completion=self._openai.chat.completions.create(
 			model=self._config.sicken.model,
+			seed=self._config.sicken.seed,
+			frequency_penalty=self._config.sicken.frequency_penalty,
+			presence_penalty=self._config.sicken.presence_penalty,
+			top_p=self._config.sicken.top_p,
+			top_logprobs=self._config.sicken.top_logprobs,
 			messages=prompt
 		)
 
 	   
-		resp=response.message.content
+		resp=completion.choices[0].message.content
 		return resp
 
 	def _classification_request(self, channel, method, properties, body):
 		message=loads(body.decode('utf8'))
 
 		if message:
-			print(self._memories._get_user_memories(
-				profile_user_name=message['profile_user_name']))
-			
+			print('Queue message:')
+			print(message)
+			response_uuid=str(uuid4())
+
+			prompt=self._build_prompt(msg=message)
+			print('Prompt:')
+			print(prompt)
+
+			print('Json prompt:')
+			print(dumps(prompt))
+
+
+			response=self._get_model_response(
+					prompt=prompt
+				)
+			print('Model response:')
+			print(response)
+			response=loads(response)
+
+			for classification in response['classifications']:
+				self._memories._add_memory(
+					profile_user_name=message['profile_user_name'],
+					profile_platform=message['profile_platform'],
+					classification_uuid=classification['classification_uuid'],
+					memory_value=classification['memory_value'],
+					sickens_comment=classification['sickens_comment']
+					)
 
 
 	def start(self):
@@ -136,5 +135,5 @@ class Classification_Ollama:
 
 
 if __name__=="__main__":
-	classification=Classification_Ollama()
+	classification=Classification()
 	classification.start()
