@@ -17,7 +17,7 @@ You'll get messages in the JSON format. Message will contain: message_uuid, prof
 
 # Response
 
-You must respond in JSON format as there is an interpreter of your responses which parses it. Do not include the \"```json\" prefix and suffix in response.
+You must respond in JSON format as there is an interpreter of your responses which parses it. Do not include the \"```json\" prefix and suffix in response. Do not use non-existing classifications uuid(include only those from the all categories) as system will crash and you will not be able to remember therfore forget. 
 
 ## Examples valid response: 
 \"\"\"

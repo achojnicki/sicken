@@ -23,7 +23,7 @@ class Classification:
 	project_name="sicken-classifications"
 
 	def __init__(self):
-		self._config=adisconfig('/opt/sicken/configs/sicken-openai_llm.yaml')
+		self._config=adisconfig('/opt/sicken/configs/sicken-classification.yaml')
 
 		self._log=Log(
 			parent=self,

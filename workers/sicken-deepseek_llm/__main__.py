@@ -22,7 +22,7 @@ class OpenAI_LLM:
 	project_name="sicken-openai_llm"
 
 	def __init__(self):
-		self._config=adisconfig('/opt/sicken/configs/sicken-openai_llm.yaml')
+		self._config=adisconfig('/opt/sicken/configs/sicken-deepseek_llm.yaml')
 
 		self._log=Log(
 			parent=self,
@@ -63,7 +63,9 @@ class OpenAI_LLM:
 		self._db=DB(self)
 		self._events=events(self)
 
-		self._openai=OpenAI(api_key=self._config.openai.api_key)
+		self._openai=OpenAI(
+			api_key=self._config.deepseek.api_key,
+			base_url="https://api.deepseek.com")
 
 		self._model_name=None
 		self._model_id=None
@@ -170,13 +172,13 @@ class OpenAI_LLM:
 			print(dumps(prompt))
 
 
-			response=loads(
-				self._get_model_response(
+			response=self._get_model_response(
 					prompt=prompt
 				)
-			)
 			print('Model response:')
 			print(response)
+			response=response.replace('```json','').replace('```','')
+			response=loads(response)
 
 			self._db.add_chat_message(
 				chat_uuid=message['chat_uuid'],

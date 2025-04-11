@@ -1,0 +1,28 @@
+openai:
+  api_key: openai_api_key_here
+
+
+
+sicken:
+  temperature: 0
+  model: gpt-4o
+  
+  seed: 76
+  frequency_penalty: null
+  presence_penalty: null
+  top_p: null
+  top_logprobs: null
+
+log:
+  debug: true
+
+mongo:
+  host: localhost
+  port: 27017
+  db: sicken
+
+rabbitmq:
+  host: localhost
+  port: 5672
+  user: sicken-openai_llm
+  password: password

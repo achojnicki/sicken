@@ -70,7 +70,6 @@ class Classifications:
 		d=self.get_all_clasification_groups()
 				
 		for x in dict(d):
-			print(x)
 			d[x]['classifications']=self.get_all_classification_definitions_of_classification_group(x)
 
 		return d

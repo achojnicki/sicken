@@ -16,8 +16,21 @@ sicken-openai_llm:
   uid: 7676
   gid: 7676
 
-sicken-ollama_llm:
+sicken-deepseek_llm:
+  enable: false
+  workers_count: 1
+  uid: 7676
+  gid: 7676
+
+sicken-grok_llm:
   enable: true
+  workers_count: 1
+  uid: 7676
+  gid: 7676
+
+
+sicken-ollama_llm:
+  enable: false
   workers_count: 1
   uid: 7676
   gid: 7676
@@ -40,4 +53,8 @@ sicken-gui:
   uid: 7676
   gid: 7676
 
-
+sicken-classification:
+  enable: true
+  workers_count: 5
+  uid: 7676
+  gid: 7676

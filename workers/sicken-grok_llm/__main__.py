@@ -22,7 +22,7 @@ class OpenAI_LLM:
 	project_name="sicken-openai_llm"
 
 	def __init__(self):
-		self._config=adisconfig('/opt/sicken/configs/sicken-openai_llm.yaml')
+		self._config=adisconfig('/opt/sicken/configs/sicken-grok_llm.yaml')
 
 		self._log=Log(
 			parent=self,
@@ -63,7 +63,9 @@ class OpenAI_LLM:
 		self._db=DB(self)
 		self._events=events(self)
 
-		self._openai=OpenAI(api_key=self._config.openai.api_key)
+		self._openai=OpenAI(
+			api_key=self._config.grok.api_key,
+			base_url="https://api.x.ai/v1")
 
 		self._model_name=None
 		self._model_id=None
