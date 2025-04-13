@@ -78,52 +78,66 @@ class Classification:
 
 
 	def _get_model_response(self, prompt):
-		completion=self._openai.chat.completions.create(
-			model=self._config.sicken.model,
-			seed=self._config.sicken.seed,
-			frequency_penalty=self._config.sicken.frequency_penalty,
-			presence_penalty=self._config.sicken.presence_penalty,
-			top_p=self._config.sicken.top_p,
-			top_logprobs=self._config.sicken.top_logprobs,
-			messages=prompt
-		)
+		try:
+			self._log.info('Calling an OpenAi LLM for classification')
+			completion=self._openai.chat.completions.create(
+				model=self._config.sicken.model,
+				seed=self._config.sicken.seed,
+				frequency_penalty=self._config.sicken.frequency_penalty,
+				presence_penalty=self._config.sicken.presence_penalty,
+				top_p=self._config.sicken.top_p,
+				top_logprobs=self._config.sicken.top_logprobs,
+				messages=prompt
+			)
 
-	   
-		resp=completion.choices[0].message.content
-		return resp
+			self._log.success('Received response')
+			resp=completion.choices[0].message.content
+			return resp
+
+		except:
+			self._log.exception('Exception occured')
+			raise
 
 	def _classification_request(self, channel, method, properties, body):
-		message=loads(body.decode('utf8'))
+		try:
+			self._log.info('Received classification request')
+			message=loads(body.decode('utf8'))
 
-		if message:
-			print('Queue message:')
-			print(message)
-			response_uuid=str(uuid4())
+			if message:
+				print('Queue message:')
+				print(message)
+				self._log.debug(message)
+				response_uuid=str(uuid4())
 
-			prompt=self._build_prompt(msg=message)
-			print('Prompt:')
-			print(prompt)
-
-			print('Json prompt:')
-			print(dumps(prompt))
+				prompt=self._build_prompt(msg=message)
+				print('Prompt:')
+				print(prompt)
+				self._log.debug(prompt)
 
 
-			response=self._get_model_response(
-					prompt=prompt
-				)
-			print('Model response:')
-			print(response)
-			response=loads(response)
-
-			for classification in response['classifications']:
-				self._memories._add_memory(
-					profile_user_name=message['profile_user_name'],
-					profile_platform=message['profile_platform'],
-					classification_uuid=classification['classification_uuid'],
-					memory_value=classification['memory_value'],
-					sickens_comment=classification['sickens_comment']
+				response=self._get_model_response(
+						prompt=prompt
 					)
+				print('Model response:')
+				print(response)
+				response=loads(response)
+				self._log.debug(response)
 
+				self._log.info(f'OpenAI LLM found {len(response["classifications"])} classifications in the message.')
+				for classification in response['classifications']:
+					self._memories._add_memory(
+						profile_user_name=message['profile_user_name'],
+						profile_platform=message['profile_platform'],
+						classification_uuid=classification['classification_uuid'],
+						memory_value=classification['memory_value'],
+						sickens_comment=classification['sickens_comment']
+						)
+
+				if len(response['classifications'])>0:
+					self._log.success('Memories saved.')
+		except:
+			self._log.exception('Exception occured')
+			raise
 
 	def start(self):
 		self._classification_requests_channel.start_consuming()
