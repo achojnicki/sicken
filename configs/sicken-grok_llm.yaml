@@ -2,6 +2,7 @@ grok:
   api_key: xai_api_key_here
 
 
+
 sicken:
   temperature: 1.3
   model: grok-3-mini-beta
@@ -23,5 +24,5 @@ mongo:
 rabbitmq:
   host: localhost
   port: 5672
-  user: sicken-openai_llm
+  user: sicken-grok_llm
   password: password

@@ -2,7 +2,6 @@ openai:
   api_key: openai_api_key_here
 
 
-
 sicken:
   temperature: 0
   model: gpt-4o
@@ -24,5 +23,5 @@ mongo:
 rabbitmq:
   host: localhost
   port: 5672
-  user: sicken-openai_llm
+  user: sicken-classification
   password: password

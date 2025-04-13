@@ -12,5 +12,5 @@ mongo:
 rabbitmq:
   host: localhost
   port: 5672
-  user: sicken-openai_llm
+  user: sicken-ollama_llm
   password: password
