@@ -8,7 +8,7 @@ vtube:
   whisper_lip_data: true
 
 log:
-  debug: true
+  debug: false
 
 mongo:
   host: localhost

@@ -76,23 +76,37 @@ class Ollama_LLM:
 				)
 
 	def _introduction(self, channel, method, properties, body):
-		message=loads(body)
-		if message:
-			pprint(message)
-			self._model_id=message['model_id']
-			self._model_name=message['model_name']
-			self._actions=message['actions']
+		try:
+			self._log.info('Received model introduction response')
+			message=loads(body)
+			self._log.debug(message)
 
-			self._gestures_string=self._build_gestures()
+			if message:
+				pprint(message)
+				self._model_id=message['model_id']
+				self._model_name=message['model_name']
+				self._actions=message['actions']
 
+				self._gestures_string=self._build_gestures()
+			
+			self._log.success('Model introduction processed successfully')
+
+		except:
+			self._log.exception('Exception occured')
+			raise
 
 	def _build_gestures(self):
-		data=[]
-		for action_name in self._actions:
-			if action_name!="speak":
-				data.append({"gesture_name": action_name, "gesture_description": self._actions[action_name]['description']})
+		try:
+			data=[]
+			for action_name in self._actions:
+				if action_name!="speak":
+					data.append({"gesture_name": action_name, "gesture_description": self._actions[action_name]['description']})
 
-		return dumps(data)
+			return dumps(data)
+		except:
+			self._log.exception('Exception occured')
+			raise
+
 	def _build_prompt(self, msg):
 		try:
 			prompt=[]
@@ -134,65 +148,78 @@ class Ollama_LLM:
 			self._log.exception('Exception ocured in the build_prompt')
 			raise
 
-
 	def _get_model_response(self, prompt):
-		response=chat(
-			model=self._config.sicken.model,
-			messages=prompt
-		)
+		try:
+			self._log.info('Calling an Ollama LLM for response')
+			response=chat(
+				model=self._config.sicken.model,
+				messages=prompt
+			)
+			self._log.success('Received response')
 
-	   
-		resp=response.message.content
-		return resp
+		   
+			resp=response.message.content
+			return resp
+		
+		except:
+			self._log.exception('Exception occured')
+			raise
 
 	def _response_request(self, channel, method, properties, body):
-		message=loads(body.decode('utf8'))
+		try:
+			message=loads(body.decode('utf8'))
+			self._log.info('Received response request')
 
-		if not self._model_id and not self._model_name and not self._actions:
-			print('Recieved the message request, but the sicken-vtube_plugin didn\'t introduced model and it\'s features. Is the plugin running?')
-		
-		if message and self._model_id:
-			print('Queue message:')
-			print(message)
-			response_uuid=str(uuid4())
+			if not self._model_id and not self._model_name and not self._actions:
+				print('Recieved the message request, but the sicken-vtube_plugin didn\'t introduced model and it\'s features. Is the plugin running and does user allowed connection of the plugin?')
+				self._log.warning('Recieved the message request, but the sicken-vtube_plugin didn\'t introduced model and it\'s features. Is the plugin running and does user allowed connection of the plugin?')
 
-			prompt=self._build_prompt(msg=message)
-			print('Prompt:')
-			pprint(prompt)
+			if message and self._model_id:
+				print('Queue message:')
+				print(message)
+				self._log.debug(message)
+				response_uuid=str(uuid4())
 
-			print('Json prompt:')
-			print(dumps(prompt))
+				prompt=self._build_prompt(msg=message)
+				print('Prompt:')
+				pprint(prompt)
+				self._log.debug(prompt)
 
+				response=self._get_model_response(
+						prompt=prompt
+					)
+				print('Model response:')
+				print(response)
 
-			response=self._get_model_response(
-					prompt=prompt
-				)
-			print('Model response:')
-			print(response)
+				response=response.replace('```json','').replace('```','')
+				self._log.debug(response)
 
-			response=response.replace('```json','').replace('```','')
+				response=loads(response)
 
-			response=loads(response)
+				self._db.add_chat_message(
+					chat_uuid=message['chat_uuid'],
+					message_author='Sicken.ai',
+					message_source=f'Ollama {self._config.sicken.model}',
+					speech=response['speech'],
+					gesture=response['gesture']
+					)
 
-			self._db.add_chat_message(
-				chat_uuid=message['chat_uuid'],
-				message_author='Sicken.ai',
-				message_source=f'Ollama {self._config.sicken.model}',
-				speech=response['speech'],
-				gesture=response['gesture']
-				)
+				self._events.event(
+					event_name="request_responded",
+					event_data={
+						"response_uuid": response_uuid,
+						"chat_uuid": message['chat_uuid'],
+						"message_author":message['message_author'],
+						"message": message['message'],
+						"speech": response['speech'],
+						"gesture": response['gesture']
+						}
+					)
+				self._log.success('Response request responded successfully')
 
-			self._events.event(
-				event_name="request_responded",
-				event_data={
-					"response_uuid": response_uuid,
-					"chat_uuid": message['chat_uuid'],
-					"message_author":message['message_author'],
-					"message": message['message'],
-					"speech": response['speech'],
-					"gesture": response['gesture']
-					}
-				)
+		except:
+			self._log.exception('Exception occured')
+			raise
 			
 
 

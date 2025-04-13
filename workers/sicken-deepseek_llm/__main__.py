@@ -18,8 +18,8 @@ from time import time
 
 
 
-class OpenAI_LLM:
-	project_name="sicken-openai_llm"
+class DeepSeek_LLM:
+	project_name="sicken-deepseek_llm"
 
 	def __init__(self):
 		self._config=adisconfig('/opt/sicken/configs/sicken-deepseek_llm.yaml')
@@ -79,23 +79,36 @@ class OpenAI_LLM:
 				)
 
 	def _introduction(self, channel, method, properties, body):
-		message=loads(body)
-		if message:
-			pprint(message)
-			self._model_id=message['model_id']
-			self._model_name=message['model_name']
-			self._actions=message['actions']
+		try:
+			self._log.info('Received model introduction response')
+			message=loads(body)
+			self._log.debug(message)
+			if message:
+				pprint(message)
+				self._model_id=message['model_id']
+				self._model_name=message['model_name']
+				self._actions=message['actions']
+				self._gestures_string=self._build_gestures()
+				self._log.success('Model introduction processed successfully')
 
-			self._gestures_string=self._build_gestures()
+		except:
+			self._log.exception('Exception occured')
+			raise
 
 
 	def _build_gestures(self):
-		data=[]
-		for action_name in self._actions:
-			if action_name!="speak":
-				data.append({"gesture_name": action_name, "gesture_description": self._actions[action_name]['description']})
+		try:
+			data=[]
+			for action_name in self._actions:
+				if action_name!="speak":
+					data.append({"gesture_name": action_name, "gesture_description": self._actions[action_name]['description']})
 
-		return dumps(data)
+			return dumps(data)
+
+		except:
+			self._log.exception('Exception occured')
+			raise
+
 	def _build_prompt(self, msg):
 		try:
 			prompt=[]
@@ -139,67 +152,76 @@ class OpenAI_LLM:
 
 
 	def _get_model_response(self, prompt):
-		completion=self._openai.chat.completions.create(
-			model=self._config.sicken.model,
-			seed=self._config.sicken.seed,
-			frequency_penalty=self._config.sicken.frequency_penalty,
-			presence_penalty=self._config.sicken.presence_penalty,
-			top_p=self._config.sicken.top_p,
-			top_logprobs=self._config.sicken.top_logprobs,
-			messages=prompt
-		)
+		try:
+			self._log.info('Calling a DeepSeek LLM for response')
+			completion=self._openai.chat.completions.create(
+				model=self._config.sicken.model,
+				seed=self._config.sicken.seed,
+				frequency_penalty=self._config.sicken.frequency_penalty,
+				presence_penalty=self._config.sicken.presence_penalty,
+				top_p=self._config.sicken.top_p,
+				top_logprobs=self._config.sicken.top_logprobs,
+				messages=prompt
+			)
 
-	   
-		resp=completion.choices[0].message.content
-		return resp
+			self._log.success('Received response')
+			resp=completion.choices[0].message.content
+			return resp
+		except:
+			self._log.exception('Exception occured')
+			raise
 
 	def _response_request(self, channel, method, properties, body):
-		message=loads(body.decode('utf8'))
+		try:
+			message=loads(body.decode('utf8'))
 
-		if not self._model_id and not self._model_name and not self._actions:
-			print('Recieved the message request, but the sicken-vtube_plugin didn\'t introduced model and it\'s features. Is the plugin running?')
-		
-		if message and self._model_id:
-			print('Queue message:')
-			print(message)
-			response_uuid=str(uuid4())
-
-			prompt=self._build_prompt(msg=message)
-			print('Prompt:')
-			print(prompt)
-
-			print('Json prompt:')
-			print(dumps(prompt))
-
-
-			response=self._get_model_response(
-					prompt=prompt
-				)
-			print('Model response:')
-			print(response)
-			response=response.replace('```json','').replace('```','')
-			response=loads(response)
-
-			self._db.add_chat_message(
-				chat_uuid=message['chat_uuid'],
-				message_author='Sicken.ai',
-				message_source='OpenAI',
-				speech=response['speech'],
-				gesture=response['gesture']
-				)
-
-			self._events.event(
-				event_name="request_responded",
-				event_data={
-					"response_uuid": response_uuid,
-					"chat_uuid": message['chat_uuid'],
-					"message_author":message['message_author'],
-					"message": message['message'],
-					"speech": response['speech'],
-					"gesture": response['gesture']
-					}
-				)
+			if not self._model_id and not self._model_name and not self._actions:
+				print('Recieved the message request, but the sicken-vtube_plugin didn\'t introduced model and it\'s features. Is the plugin running and does user allowed connection of the plugin?')
+				self._log.warning('Recieved the message request, but the sicken-vtube_plugin didn\'t introduced model and it\'s features. Is the plugin running and does user allowed connection of the plugin?')
 			
+			if message and self._model_id:
+				print('Queue message:')
+				print(message)
+				response_uuid=str(uuid4())
+
+				prompt=self._build_prompt(msg=message)
+				print('Prompt:')
+				print(prompt)
+
+				print('Json prompt:')
+				print(dumps(prompt))
+
+
+				response=self._get_model_response(
+						prompt=prompt
+					)
+				print('Model response:')
+				print(response)
+				response=response.replace('```json','').replace('```','')
+				response=loads(response)
+
+				self._db.add_chat_message(
+					chat_uuid=message['chat_uuid'],
+					message_author='Sicken.ai',
+					message_source='OpenAI',
+					speech=response['speech'],
+					gesture=response['gesture']
+					)
+
+				self._events.event(
+					event_name="request_responded",
+					event_data={
+						"response_uuid": response_uuid,
+						"chat_uuid": message['chat_uuid'],
+						"message_author":message['message_author'],
+						"message": message['message'],
+						"speech": response['speech'],
+						"gesture": response['gesture']
+						}
+					)
+		except:
+			self._log.exception('Exception occured')
+			raise		
 
 
 	def start(self):
@@ -212,5 +234,5 @@ class OpenAI_LLM:
 
 
 if __name__=="__main__":
-	openai_llm=OpenAI_LLM()
-	openai_llm.start()
+	deepseek_llm=DeepSeek_LLM()
+	deepseek_llm.start()

@@ -1,3 +1,3 @@
-name: sicken-openai_llm
+name: sicken-grok_llm
 exec: /usr/bin/python3
 script: __main__.py

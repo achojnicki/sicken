@@ -42,17 +42,13 @@ class Profiles:
 		return False
 
 
-	def add_user_profile(self, profile_uuid, profile_user_name, classifications):
-		if self.get_profile_by_user_name(profile_user_name):
+	def add_user_profile(self, profile_uuid, profile_user_name, profile_platform):
+		if self.get_profile_by_user_name(profile_user_name=profile_user_name, profile_platform=profile_platform):
 			raise UserProfileAlreadyExistsException
 
 		document={
 			"profile_uuid": str(profile_uuid),
-			"profile_user_name": profile_username,
+			"profile_user_name": profile_user_name,
 			"profile_platform": profile_platform
 		}
-
-		for classification in classifications:
-			document[classifications[classification]['classification_uuid']]=classifications['classification']
-
-		self._user_profiles_collection.insert_one(message)
+		self._user_profiles_collection.insert_one(document)

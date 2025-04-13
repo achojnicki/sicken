@@ -1,8 +1,8 @@
 sicken:
-  model: "llama3.2"
+  model: "gemma3:4b"
   
 log:
-  debug: true
+  debug: false
 
 mongo:
   host: localhost

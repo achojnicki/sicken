@@ -15,6 +15,9 @@ class APIConnectionException(SickenVTubeException):
 class RequestIdDoNotMatch(APIConnectionException):
 	pass
 
+class AuthFailedException(APIConnectionException):
+	pass
+
 class ModelNotLoadedException(ModelException):
 	pass
 

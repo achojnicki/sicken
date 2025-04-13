@@ -1,5 +1,5 @@
 openai:
-    api_key: openai_api_key
+    api_key: openai_api_key_here
     tts_model: tts-1
     tts_voice: nova
     transcription_model: whisper-1
@@ -12,7 +12,7 @@ whisper:
     model: base
 
 log:
-    debug: true
+    debug: false
 
 mongo:
     host: localhost

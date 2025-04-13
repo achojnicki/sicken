@@ -1,3 +1,5 @@
+from sicken.exceptions import RequestIdDoNotMatch, ModelNotLoadedException, AuthFailedException
+
 from websockets.sync.client import connect
 from random import randint
 from json import dumps, loads
@@ -8,7 +10,7 @@ from math import ceil
 from pprint import pprint
 from random import randint
 import importlib.util
-from sys import modules
+from sys import modules, exit
 
 SICKEN_IMAGE="Sicken.jpg"
 PLUGIN_NAME="Sicken.ai"
@@ -120,24 +122,6 @@ class message_builder:
 		)
 
 
-class SickenException(Exception):
-	pass
-
-class ModelException(SickenException):
-	pass
-
-class APIConnectionException(SickenException):
-	pass
-
-
-class RequestIdDoNotMatch(APIConnectionException):
-	pass
-
-
-class ModelNotLoadedException(ModelException):
-	pass
-
-
 class _API_Connectyion_Auth:
 	@property
 	def authenticated(self):
@@ -148,27 +132,43 @@ class _API_Connectyion_Auth:
 		return self._auth_token
 
 	def auth(self):
-		request_id=self._generate_request_id()
-
-		resp=self._request_response(
-			request_data=self._message_builder.pre_auth_message(
-				request_id=request_id
+		try:
+			request_id=self._generate_request_id()
+			self._log.info('Staring authentication with VTube Studio...')
+			self._log.info('Sending pre-auth message...')
+			resp=self._request_response(
+				request_data=self._message_builder.pre_auth_message(
+					request_id=request_id
+					)
 				)
-			)
 
-		if resp['requestID']!=request_id:
-			raise RequestIdDoNotMatch
+			if resp['requestID']!=request_id:
+				raise RequestIdDoNotMatch
 
-		self._message_builder.auth_token=resp['data']['authenticationToken']
-		self._auth_token=resp['data']['authenticationToken']
+			if 'authenticationToken' in resp['data']:
+				self._message_builder.auth_token=resp['data']['authenticationToken']
+				self._auth_token=resp['data']['authenticationToken']
+			else:
+				raise AuthFailedException
 
-		request_id=self._generate_request_id()
+			request_id=self._generate_request_id()
 
-		resp=self._request_response(
-			request_data=self._message_builder.auth_message(
-				request_id=request_id
+			self._log.info('Sending the authentication message')
+			resp=self._request_response(
+				request_data=self._message_builder.auth_message(
+					request_id=request_id
+					)
 				)
-			)
+
+			self._log.success('Authentication with VTube Studio succeeded.')
+		
+		except RequestIdDoNotMatch:
+			self._log.error('Received a pre-auth message, but the RequestID do not match with the sent one.')
+			exit(1)
+
+		except AuthFailedException:
+			self._log.error('Authentication with VTube Studio failed. You need to allow access for Sicken.AI')
+			exit(1)
 
 
 class _API_Connection_Model:
@@ -216,6 +216,8 @@ class API_Connection(
 	_API_Connection_Model):
 	def __init__(self, root):
 		self._root=root
+		self._log=root._log
+
 		self._message_builder=message_builder(root)
 
 		self._connection=None
@@ -244,13 +246,16 @@ class API_Connection(
 		self.auth()
 
 	def _connect(self, host, port):
+		self._log.info(f"Connecting with VTube Studio at ws://{host}:{port}")
 		self._connection=connect(f"ws://{host}:{port}")
+		self._log.success("Connection with VTube Studio accomplished")
 
 
 
 class Animation_Seq:
 	def __init__(self, root):
 		self._root=root
+		self._log=root._log
 
 		self._frame=self._root._config.vtube.frame_duration
 		self._live2d_model_manifest=self._root._live2d_model_manifest
@@ -306,6 +311,7 @@ class Animation_Seq:
 class Model:
 	def __init__(self, root):
 		self._root=root
+		self._log=root._log
 
 		self._live2d_model_manifest=self._root._live2d_model_manifest
 		self._generators_path=self._root._generators_path
@@ -316,15 +322,16 @@ class Model:
 		self._actions={}
 		self._processed_actions=[]
 
-
+		self._log.info('Loading Model\'s generators')
 		spec = importlib.util.spec_from_file_location("generators", self._generators_path)
 		generators = importlib.util.module_from_spec(spec)
 		modules["generators"] = generators
 		spec.loader.exec_module(generators)
-
 		self._generators=generators
+		self._log.success('Generators loaded successfully.')
 
 	def load_model(self, model_id):
+		self._log.info(f'Loading model with model_id:{model_id}')
 		model_id=self._api_connection.load_model(model_id)
 		self._models.append(model_id)
 
@@ -339,7 +346,7 @@ class Model:
 				default=self._live2d_model_manifest['custom_parameters'][custom_parameter]['default']
 				)
 		sleep(3)
-
+		self._log.success('Model loaded successfully')
 
 	def set_model_parameters(self, model_id, parameters:dict):
 		if not model_id in self._models:
@@ -392,6 +399,7 @@ class Model:
 
 
 	def play_actions(self, model_id):
+		self._log.info('Starting playing animations')
 		for actions_frame in self._processed_actions:
 			parameters={}
 			for action in actions_frame:
@@ -401,5 +409,6 @@ class Model:
 			self.set_model_parameters(
 				model_id=model_id,
 				parameters=parameters)
+		self._log.success('Animation ended.')
 
 

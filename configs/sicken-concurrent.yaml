@@ -4,7 +4,7 @@ general:
     start_uwsgi_workers: true
 
 log:
-    debug: true
+    debug: false
     print_log: true
     print_log_mode: colorful
     save_to_file: true

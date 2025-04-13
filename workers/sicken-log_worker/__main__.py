@@ -1,12 +1,14 @@
 from adistools.adisconfig import adisconfig
+from sicken.events import events
 
 from pymongo import MongoClient
 from pika import BlockingConnection, ConnectionParameters, PlainCredentials
-from json import loads
+from json import loads, dumps
 from uuid import uuid4
 
 
 class log_worker:
+    project_name="sicken-log_worker"
     mongo_cli = None
     rabbitmq_conn = None
 
@@ -16,6 +18,8 @@ class log_worker:
         self._init_mongo()
         self._init_rabbitmq()
 
+        self._events=events(self)
+        
     def _init_mongo(self):
         self._mongo_cli = MongoClient(
             self._config.mongo.host,
@@ -51,7 +55,12 @@ class log_worker:
         log_item_uuid = str(uuid4())
         msg['log_item_uuid'] = log_item_uuid
 
-        self._mongo_collection.insert_one(msg)
+        self._mongo_collection.insert_one(dict(msg))
+        self._rabbitmq_channel.basic_publish(
+            exchange="",
+            routing_key="sicken-gui_logs",
+            body=dumps(msg)
+        )
 
     def start(self):
         self._rabbitmq_channel.start_consuming()

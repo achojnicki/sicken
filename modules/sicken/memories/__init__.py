@@ -17,34 +17,35 @@ class Memories:
 			profile_user_name=profile_user_name,
 			profile_platform=profile_platform
 			)
+		if profile:
+			memories=self._db.get_all_memories_with_user_by_profile_uuid(
+				profile_uuid=profile['profile_uuid'])
 
-		memories=self._db.get_all_memories_with_user_by_profile_uuid(
-			profile_uuid=profile['profile_uuid'])
+			generated_memories={}
+			for memory in memories:
+				print(memory, memories[memory])
+				classification_definition=self._db.get_classification_definition_by_classification_uuid(
+					classification_uuid=memories[memory]['classification_uuid'])
 
-		generated_memories={}
-		for memory in memories:
-			print(memory, memories[memory])
-			classification_definition=self._db.get_classification_definition_by_classification_uuid(
-				classification_uuid=memories[memory]['classification_uuid'])
+				classification_group=self._db.get_classification_group_by_classification_group_uuid(
+					classification_group_uuid=classification_definition['classification_group_uuid'])
+				cl={
+					"memory_value": memories[memory]['memory_value'],			
+					"classification_name": classification_definition['classification_name'],
+					"classification_description": classification_definition['classification_description'],
+					"classification_group": classification_group['classification_group_name'],
+					"sickens_comment": memories[memory]['sickens_comment']
 
-			classification_group=self._db.get_classification_group_by_classification_group_uuid(
-				classification_group_uuid=classification_definition['classification_group_uuid'])
-			cl={
-				"memory_value": memories[memory]['memory_value'],			
-				"classification_name": classification_definition['classification_name'],
-				"classification_description": classification_definition['classification_description'],
-				"classification_group": classification_group['classification_group_name'],
-				"sickens_comment": memories[memory]['sickens_comment']
-
-			}
-			generated_memories[memories[memory]['memory_uuid']]=cl
-		return generated_memories
+				}
+				generated_memories[memories[memory]['memory_uuid']]=cl
+			return generated_memories
+		return {}
 
 
 
 	def _add_memory(self, profile_user_name, profile_platform, classification_uuid, memory_value, sickens_comment):
 		if not self._db.profile_exists(profile_user_name=profile_user_name,profile_platform=profile_platform):
-			profile_uuid=str(uuid4)
+			profile_uuid=str(uuid4())
 			self._db.add_user_profile(
 				profile_uuid=profile_uuid,
 				profile_platform=profile_platform,

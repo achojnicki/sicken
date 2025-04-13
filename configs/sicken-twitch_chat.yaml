@@ -1,10 +1,10 @@
 twitch:
   client_id: client_id
   secret_key: secret_key
-  channel: streamer_twitch_username
+  channel: twitch_username
 
 log:
-  debug: true
+  debug: false
 
 mongo:
   host: localhost

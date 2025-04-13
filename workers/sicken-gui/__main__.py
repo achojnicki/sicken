@@ -60,11 +60,25 @@ class Sicken:
 			on_message_callback=self._gui_response
 		)
 
+		self._logs_channel=self.rabbitmq_conn.channel()
+		self._logs_channel.basic_consume(
+			queue='sicken-gui_logs',
+			auto_ack=True,
+			on_message_callback=self._logs
+		)
+
 	def _gui_response(self, channel, method, properties, body):
 		message=loads(body.decode('utf8'))
 		print(message)
 		if message and message['speech']:
 			self._sicken_gui._chat_page.add_sickens_message(message['speech'])
+
+	def _logs(self, channel, method, properties, body):
+		message=loads(body.decode('utf8'))
+		if message:
+			wx.CallAfter(
+				self._sicken_gui._logs_page._add_item,
+				message)
 
 	def start(self):
 		self._sicken_gui.Show()

@@ -22,12 +22,16 @@ class events:
 		self._root=root
 
 		self._config=root._config
-		self._log=root._log
+		
+		self._log=None
+		if hasattr(root,'_log'):
+			self._log=root._log
 
 		self._events_file=Path(EVENTS_FILE)
 
 		if self._events_file.is_file():
-			self._log.debug('Events file detected. Opening...')
+			if self._log:
+				self._log.debug('Events file detected. Opening...')
 			self._load_events()
 		else:
 			raise EventsFileNotFound

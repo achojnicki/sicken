@@ -46,6 +46,20 @@ class Sicken_VTube_Plugin:
 				)
 			)
 		)
+		self._api_connection=API_Connection(self)
+		self._model=Model(self)
+
+		self._events=events(self)
+
+		self._speech_dir=Path(self._config.directories.speech)
+
+		self._speeches={}
+		self._is_speaking=False
+		self._awaiting=[]
+
+		self.awaiting_thread()
+
+	def _init_rabbitmq(self):
 		self._speech_requests_channel = self.rabbitmq_conn.channel()
 
 		self._speech_requests_channel.basic_consume(
@@ -67,26 +81,13 @@ class Sicken_VTube_Plugin:
 			on_message_callback=self._model_introduction_request
 		)
 
-		self._api_connection=API_Connection(self)
-		self._model=Model(self)
-
-		self._events=events(self)
-
-		self._speech_dir=Path(self._config.directories.speech)
-
-		self._speeches={}
-		self._is_speaking=False
-		self._awaiting=[]
-
-		self.awaiting_thread()
-
-		
 
 	def _play_sound(self, file):
 		playsound(file)
 
 	def play_sound(self, file):
 		t=Thread(target=self._play_sound, args=[file])
+		t.daemon=True
 		t.start()
 
 	def _awaiting_thread(self):
@@ -106,9 +107,11 @@ class Sicken_VTube_Plugin:
 			sleep(1)
 	def awaiting_thread(self):
 		t=Thread(target=self._awaiting_thread, args=[])
+		t.daemon=True
 		t.start()
 
 	def _model_introduction_request(self, channel, method, properties, body):
+		self._log.info('Received Vtube Model introduction request. Sending...')
 		self._events.event(
 				event_name="model_introduction",
 				event_data={
@@ -117,10 +120,12 @@ class Sicken_VTube_Plugin:
 					"actions": self._live2d_model_manifest['actions']
 					}
 				)
+		self._log.success('Vtube Model introduction request answered successfully.')
 
 	def _speech_request(self, channel, method, properties, body):
 		message=loads(body.decode('utf8'))
-
+		self._log.info('Received speech_request. Waiting for the sicken-speech_generator to finish generating speech.')
+		self._log.debug(message)
 		print(message)
 		if message:
 			self._speeches[message['response_uuid']]={
@@ -145,6 +150,8 @@ class Sicken_VTube_Plugin:
 
 	def _generation_finished(self, channel, method, properties, body):
 		message=loads(body.decode('utf8'))
+		self._log.info('Received generation_finished signal. Starting playing voice and animations')
+		self._log.debug(message)
 		print(message)
 		if message:
 			if message['response_uuid'] in self._speeches:
@@ -181,7 +188,7 @@ class Sicken_VTube_Plugin:
 			host=self._config.vtube.host,
 			port=self._config.vtube.port)
 		self._model.load_model(self._live2d_model_manifest['model']['model_id'])
-		
+		self._init_rabbitmq()
 		self._speech_requests_channel.start_consuming()
 
 

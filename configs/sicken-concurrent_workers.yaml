@@ -58,3 +58,9 @@ sicken-classification:
   workers_count: 5
   uid: 7676
   gid: 7676
+
+sicken-twitch_chat:
+  enable: false
+  workers_count: 1
+  uid: 7676
+  gid: 7676

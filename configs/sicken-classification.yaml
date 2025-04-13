@@ -14,7 +14,7 @@ sicken:
   top_logprobs: null
 
 log:
-  debug: true
+  debug: false
 
 mongo:
   host: localhost

@@ -1,8 +1,7 @@
 openai:
-    api_key: api_key_here
-
+    api_key: openai_api_key_here
 log:
-    debug: true
+    debug: false
 
 mongo:
     host: localhost

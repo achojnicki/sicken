@@ -72,6 +72,80 @@ sicken-ollama_llm:
   model_introduction_request:
     sicken-model_introduction_requests:
 
+sicken-grok_llm:
+  request_responded:
+    sicken-speech_requests:
+      response_uuid: response_uuid
+      chat_uuid: chat_uuid
+      message_author: message_author
+      message: message
+      speech: speech
+      gesture: gesture
+
+    sicken-vtube_plugin_speech_requests:
+      response_uuid: response_uuid
+      chat_uuid: chat_uuid
+      message_author: message_author
+      message: message
+      speech: speech
+      gesture: gesture
+
+    sicken-gui_responses:
+      response_uuid: response_uuid
+      chat_uuid: chat_uuid
+      message_author: message_author
+      message: message
+      speech: speech
+      gesture: gesture
+
+    sicken-twitch_responses:
+      response_uuid: response_uuid
+      chat_uuid: chat_uuid
+      message_author: message_author
+      message: message
+      speech: speech
+      gesture: gesture
+
+  model_introduction_request:
+    sicken-model_introduction_requests:
+
+sicken-deepseek_llm:
+  request_responded:
+    sicken-speech_requests:
+      response_uuid: response_uuid
+      chat_uuid: chat_uuid
+      message_author: message_author
+      message: message
+      speech: speech
+      gesture: gesture
+
+    sicken-vtube_plugin_speech_requests:
+      response_uuid: response_uuid
+      chat_uuid: chat_uuid
+      message_author: message_author
+      message: message
+      speech: speech
+      gesture: gesture
+
+    sicken-gui_responses:
+      response_uuid: response_uuid
+      chat_uuid: chat_uuid
+      message_author: message_author
+      message: message
+      speech: speech
+      gesture: gesture
+
+    sicken-twitch_responses:
+      response_uuid: response_uuid
+      chat_uuid: chat_uuid
+      message_author: message_author
+      message: message
+      speech: speech
+      gesture: gesture
+
+  model_introduction_request:
+    sicken-model_introduction_requests:
+
 sicken-microphone_input:
   speech_recognized:
     sicken-response_requests:
@@ -108,6 +182,12 @@ sicken-twitch_chat:
       chat_uuid: chat_uuid
       message_author: message_author
       message_source: message_source
+      message: message
+      
+    sicken-classification_requests:
+      chat_uuid: chat_uuid
+      message_author: profile_user_name
+      message_source: profile_platform
       message: message
 
 sicken-speech_generator:

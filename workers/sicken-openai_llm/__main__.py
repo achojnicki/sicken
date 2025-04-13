@@ -77,21 +77,32 @@ class OpenAI_LLM:
 				)
 
 	def _introduction(self, channel, method, properties, body):
-		message=loads(body)
-		if message:
-			pprint(message)
-			self._model_id=message['model_id']
-			self._model_name=message['model_name']
-			self._actions=message['actions']
+		try:
+			self._log.info('Received model introduction response')
+			message=loads(body)
+			self._log.debug(message)
 
-			self._gestures_string=self._build_gestures()
-
+			if message:
+				pprint(message)
+				self._model_id=message['model_id']
+				self._model_name=message['model_name']
+				self._actions=message['actions']
+				self._gestures_string=self._build_gestures()
+				self._log.success('Model introduction processed successfully')
+		
+		except:
+			self._log.exception('Exception occured')
+			raise
 
 	def _build_gestures(self):
-		data=[]
-		for action_name in self._actions:
-			if action_name!="speak":
-				data.append({"gesture_name": action_name, "gesture_description": self._actions[action_name]['description']})
+		try:
+			data=[]
+			for action_name in self._actions:
+				if action_name!="speak":
+					data.append({"gesture_name": action_name, "gesture_description": self._actions[action_name]['description']})
+		except:
+			self._log.exception('Exception occured')
+			raise
 
 		return dumps(data)
 	def _build_prompt(self, msg):
@@ -137,67 +148,78 @@ class OpenAI_LLM:
 
 
 	def _get_model_response(self, prompt):
-		completion=self._openai.chat.completions.create(
-			model=self._config.sicken.model,
-			seed=self._config.sicken.seed,
-			frequency_penalty=self._config.sicken.frequency_penalty,
-			presence_penalty=self._config.sicken.presence_penalty,
-			top_p=self._config.sicken.top_p,
-			top_logprobs=self._config.sicken.top_logprobs,
-			messages=prompt
-		)
-
-	   
-		resp=completion.choices[0].message.content
-		return resp
+		try:
+			self._log.info('Calling an OpenAi LLM for response')
+			completion=self._openai.chat.completions.create(
+				model=self._config.sicken.model,
+				seed=self._config.sicken.seed,
+				frequency_penalty=self._config.sicken.frequency_penalty,
+				presence_penalty=self._config.sicken.presence_penalty,
+				top_p=self._config.sicken.top_p,
+				top_logprobs=self._config.sicken.top_logprobs,
+				messages=prompt
+			)
+			self._log.success('Received response')
+		   
+			resp=completion.choices[0].message.content
+			return resp
+		except:
+			self._log.exception('Exception occured')
+			raise
 
 	def _response_request(self, channel, method, properties, body):
-		message=loads(body.decode('utf8'))
-
-		if not self._model_id and not self._model_name and not self._actions:
-			print('Recieved the message request, but the sicken-vtube_plugin didn\'t introduced model and it\'s features. Is the plugin running?')
-		
-		if message and self._model_id:
-			print('Queue message:')
-			print(message)
-			response_uuid=str(uuid4())
-
-			prompt=self._build_prompt(msg=message)
-			print('Prompt:')
-			print(prompt)
-
-			print('Json prompt:')
-			print(dumps(prompt))
-
-
-			response=loads(
-				self._get_model_response(
-					prompt=prompt
-				)
-			)
-			print('Model response:')
-			print(response)
-
-			self._db.add_chat_message(
-				chat_uuid=message['chat_uuid'],
-				message_author='Sicken.ai',
-				message_source='OpenAI',
-				speech=response['speech'],
-				gesture=response['gesture']
-				)
-
-			self._events.event(
-				event_name="request_responded",
-				event_data={
-					"response_uuid": response_uuid,
-					"chat_uuid": message['chat_uuid'],
-					"message_author":message['message_author'],
-					"message": message['message'],
-					"speech": response['speech'],
-					"gesture": response['gesture']
-					}
-				)
+		try:		
+			message=loads(body.decode('utf8'))
+			self._log.info('Received response request')
 			
+
+			if not self._model_id and not self._model_name and not self._actions:
+				print('Recieved the message request, but the sicken-vtube_plugin didn\'t introduced model and it\'s features. Is the plugin running and does user allowed connection of the plugin?')
+				self._log.warning('Recieved the message request, but the sicken-vtube_plugin didn\'t introduced model and it\'s features. Is the plugin running and does user allowed connection of the plugin?')
+			
+			if message and self._model_id:
+				print('Queue message:')
+				print(message)
+				self._log.debug(message)
+				response_uuid=str(uuid4())
+
+				prompt=self._build_prompt(msg=message)
+				print('Prompt:')
+				print(prompt)
+				self._log.debug(prompt)
+
+				response=loads(
+					self._get_model_response(
+						prompt=prompt
+					)
+				)
+				print('Model response:')
+				print(response)
+				self._log.debug(response)
+
+				self._db.add_chat_message(
+					chat_uuid=message['chat_uuid'],
+					message_author='Sicken.ai',
+					message_source='OpenAI',
+					speech=response['speech'],
+					gesture=response['gesture']
+					)
+
+				self._events.event(
+					event_name="request_responded",
+					event_data={
+						"response_uuid": response_uuid,
+						"chat_uuid": message['chat_uuid'],
+						"message_author":message['message_author'],
+						"message": message['message'],
+						"speech": response['speech'],
+						"gesture": response['gesture']
+						}
+					)
+				self._log.success('Response request responded successfully')
+		except:
+			self._log.exception('Exception occured')
+			raise
 
 
 	def start(self):
