@@ -246,9 +246,13 @@ class API_Connection(
 		self.auth()
 
 	def _connect(self, host, port):
-		self._log.info(f"Connecting with VTube Studio at ws://{host}:{port}")
-		self._connection=connect(f"ws://{host}:{port}")
-		self._log.success("Connection with VTube Studio accomplished")
+		try:
+			self._log.info(f"Connecting with VTube Studio at ws://{host}:{port}")
+			self._connection=connect(f"ws://{host}:{port}")
+			self._log.success("Connection with VTube Studio accomplished")
+		except:
+			self._log.exception('Exception occured during connecting')
+			raise
 
 
 
@@ -322,22 +326,24 @@ class Model:
 		self._actions={}
 		self._processed_actions=[]
 
-		self._log.info('Loading Model\'s generators')
-		spec = importlib.util.spec_from_file_location("generators", self._generators_path)
-		generators = importlib.util.module_from_spec(spec)
-		modules["generators"] = generators
-		spec.loader.exec_module(generators)
-		self._generators=generators
-		self._log.success('Generators loaded successfully.')
+		try:
+			self._log.info('Loading Model\'s generators')
+			spec = importlib.util.spec_from_file_location("generators", self._generators_path)
+			generators = importlib.util.module_from_spec(spec)
+			modules["generators"] = generators
+			spec.loader.exec_module(generators)
+			self._generators=generators
+			self._log.success('Generators loaded successfully.')
+		except:
+			self._log.exception('Exception occured during loading generators')
+			raise
 
 	def load_model(self, model_id):
 		self._log.info(f'Loading model with model_id:{model_id}')
 		model_id=self._api_connection.load_model(model_id)
 		self._models.append(model_id)
 
-
 		for custom_parameter in self._live2d_model_manifest['custom_parameters']:
-
 			self._api_connection.add_custom_parameter(
 				model_id=model_id,
 				parameter_name=custom_parameter,
@@ -345,7 +351,6 @@ class Model:
 				val_max=self._live2d_model_manifest['custom_parameters'][custom_parameter]['max'],
 				default=self._live2d_model_manifest['custom_parameters'][custom_parameter]['default']
 				)
-		sleep(3)
 		self._log.success('Model loaded successfully')
 
 	def set_model_parameters(self, model_id, parameters:dict):

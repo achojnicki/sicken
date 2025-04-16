@@ -72,11 +72,13 @@ class DeepSeek_LLM:
 		self._actions=None
 
 		self._memories=Memories(self)
-
+		
+		self._log.info('Sending Live2D model introduction request to sicken-vtube_plugin')
 		self._events.event(
 				event_name="model_introduction_request",
 				event_data={}
 				)
+		self._log.success('Model introduction sent successfully ')
 
 	def _introduction(self, channel, method, properties, body):
 		try:
