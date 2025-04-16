@@ -2,6 +2,7 @@ from sicken.GUI.pages.chat_page import Chat_Page
 from sicken.GUI.pages.logs_page import Logs_Page
 
 from sys import exit
+from os import getppid, kill
 import wx
 
 
@@ -19,5 +20,7 @@ class Sicken_GUI(wx.Frame):
 
 	def _on_close(self, event):
 		self._root._active=False
+		
+		kill(getppid(), 15)
 		exit(0)
 		

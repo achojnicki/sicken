@@ -20,6 +20,7 @@ class Detailed_Window(wx.Frame):
 		self._log_message=""
 		self._stack_trace={}
 		self._caller={}
+		self._system={}
 
 		wx.Frame.__init__(self, self._parent, title="Details", size=(800,500), style=wx.DEFAULT_FRAME_STYLE)
 
@@ -31,6 +32,7 @@ class Detailed_Window(wx.Frame):
 		self._tree_root=self._tree.AddRoot('Message')
 		self._log_message_item=self._tree.AppendItem(self._tree_root, 'Log Message')
 		self._stack_trace_item=self._tree.AppendItem(self._tree_root, 'Stack Trace')
+		self._system_item=self._tree.AppendItem(self._tree_root, 'System')
 		self._caller_item=self._tree.AppendItem(self._tree_root, 'Caller')
 		self._tree.Expand(self._tree_root)
 
@@ -56,13 +58,16 @@ class Detailed_Window(wx.Frame):
 			self._textctrl.SetValue(pformat(self._stack_trace) if self._stack_trace else "")
 		elif self._tree.GetSelection() == self._caller_item:
 			self._textctrl.SetValue(pformat(self._caller) if self._caller else "")
+		elif self._tree.GetSelection() == self._system_item:
+			self._textctrl.SetValue(pformat(self._system) if self._system else "")	
 		else:
 			self._textctrl.SetValue("")
 
-	def _set_data(self, log_message, stack_trace, caller):
+	def _set_data(self, log_message, stack_trace, caller, system):
 		self._log_message=log_message
 		self._stack_trace=stack_trace
 		self._caller=caller
+		self._system=system
 
 		self._tree.SelectItem(self._tree_root)
 			
@@ -126,7 +131,9 @@ class Logs_Page(wx.Panel):
 		self._detailed_window._set_data(
 			log_message=self._log_data[event.GetRow()]['message'],
 			stack_trace=self._log_data[event.GetRow()]['exception_data'],
-			caller=self._log_data[event.GetRow()]['caller'])
+			caller=self._log_data[event.GetRow()]['caller'],
+			system=self._log_data[event.GetRow()]['system'],
+			)
 
 		self._detailed_window.Show()
 	def _add_item(self, message):
