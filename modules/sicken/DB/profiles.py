@@ -6,6 +6,15 @@ def clean_up_profile(profile):
 
 
 class Profiles:
+	def get_all_profiles(self):
+		p={}
+		docs=self._user_profiles_collection.find()
+
+		for profile in docs:
+			p[profile['profile_uuid']]=clean_up_profile(profile)
+
+		return p
+
 	def get_profile_by_profile_uuid(self, profile_uuid):
 		query={
 			'profile_uuid': profile_uuid

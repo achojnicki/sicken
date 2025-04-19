@@ -30,10 +30,11 @@ class Sicken:
 			)
 		
 		self._app=wx.App()
-		self._sicken_gui=Sicken_GUI(self)
 
 		self._events=events(self)
 		self._db=DB(self)
+
+		self._sicken_gui=Sicken_GUI(self)
 
 		self._chat_uuid=str(uuid4())
 		self._db.create_chat(
