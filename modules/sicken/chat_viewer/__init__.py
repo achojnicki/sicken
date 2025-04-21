@@ -14,41 +14,23 @@ class Chat_Viewer_GUI(wx.Frame):
 		self._config=root._config
 		wx.Frame.__init__(self, None, title="sicken-chat_viewer", size=(self._config.window.width,self._config.window.height), style=wx.DEFAULT_FRAME_STYLE)
 
-		
 		self.chat_template=open("/opt/sicken/files/sicken/views/twitch_chat.html",'r').read()
 		self.sizer=wx.BoxSizer(wx.VERTICAL)        
 
 		self.html=wx.html2.WebView.New(self)
 		self.html.SetPage(self.chat_template,"")
-		self.html.EnableContextMenu(False)
-		self.html.EnableAccessToDevTools(False)
+		self.html.EnableContextMenu(True)
+		self.html.EnableAccessToDevTools(True)
 
 		self.sizer.Add(self.html, 1, wx.EXPAND)
 		self.SetSizer(self.sizer)
 
 		self.SetBackgroundColour((32,34,39))
 	
-		
+		self.SetMinSize((self._config.window.width,self._config.window.height))
+		self.SetMaxSize((self._config.window.width,self._config.window.height))
 		self.Show(True)
 	
-
-	def enter_event(self, event):
-		msg=self.textctrl.GetValue()
-		if msg!='':
-			self.textctrl.SetValue("")
-			self.add_user_message(msg)
-
-			self._root._events.event(
-					event_name="message_entered",
-					event_data={
-						"chat_uuid": self._root._chat_uuid,
-						"message_author": "Unknown",
-						"message_source": "sicken-gui",
-						"message": msg 
-						}
-					)
-			
-			
 
 	def add_message_user(self, message):
 		message['message']=message['message'].replace('\r','')

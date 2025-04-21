@@ -1,0 +1,20 @@
+window:
+  width: 1520
+  height: 215
+
+log:
+  debug: true
+
+scheduler:
+    interval: 0.1
+    
+mongo:
+  host: localhost
+  port: 27017
+  db: sicken
+
+rabbitmq:
+  host: localhost
+  port: 5672
+  user: sicken-bottom_bar
+  password: password

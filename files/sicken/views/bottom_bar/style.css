@@ -1,0 +1,7 @@
+body, html {margin: 0px;padding: 5px; background: rgb(32, 34, 39);}
+.username {font-weight: bold; margin-right: 5px}
+.message_container_p {font-size: 15pt;line-break: normal; display: inline;}
+
+#chat_container {overflow: none;}
+.message_div {color: white; width:100%;}
+::-webkit-scrollbar {display: none} 
