@@ -1,0 +1,65 @@
+ 
+<html>
+  <head>
+    <style>
+      body, html, hr {margin: 0px; padding: 0px; background: rgb(32, 34, 39);}
+      .username {font-weight: bold; margin-right: 5px}
+      .message_container_p {line-break: normal; display: inline;}
+
+      #chat_container {margin: 5px; overflow: auto;padding-bottom: 5px;}
+      .message_div {color: snow; width:100%;}
+      ::-webkit-scrollbar {display: none}
+    </style>
+    <script>
+      st=1000;
+      function scroll() {
+        chat_container=document.getElementById('chat_container');
+        chat_container.scrollTop=st;
+        st+=1000;
+      }
+      function add_message(username, message, platform, ) {
+        horizontal=document.createElement('div');
+        horizontal.classList.add("horizontal_container");
+        message_div=document.createElement('div');
+        message_div.classList.add('message_div');
+        
+
+        horizontal.appendChild(message_div);
+        message_container_p=document.createElement('p');
+        message_container_p.classList.add('message_container_p')
+
+        username_span=document.createElement('span');
+        username_span.classList.add('username');
+
+        if (typeof platform === "undefined") {
+          username_span.innerHTML= username;
+        } else {
+          username_span.innerHTML= `${username}[${platform}]`;
+        }
+
+        message_span=document.createElement('span');
+        message_span.innerHTML=message;
+
+        message_container_p.appendChild(username_span);
+				message_container_p.appendChild(message_span);
+
+        message_div.appendChild(message_container_p);
+        chat_container=document.getElementById('chat_container').appendChild(horizontal);
+        scroll();
+      }
+
+      addEventListener("resize", onresize);
+      function onresize(e) {
+        document.getElementById('chat_container').style.height=window.innerHeight;
+      };
+
+    </script>
+  </head>
+  <body onload="onresize()">
+	 	<div id="chat_container">
+	    </div>
+		<script type="text/javascript">
+	  </script>
+  </body>
+</html>
+

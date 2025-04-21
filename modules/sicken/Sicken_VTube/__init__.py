@@ -20,7 +20,6 @@ PLUGIN_DEVELOPER="adrianchojnicki.me"
 class message_builder:
 	def __init__(self, root):
 		self._root=root
-
 		self._auth_token=None
 
 	@property
@@ -250,6 +249,11 @@ class API_Connection(
 			self._log.info(f"Connecting with VTube Studio at ws://{host}:{port}")
 			self._connection=connect(f"ws://{host}:{port}")
 			self._log.success("Connection with VTube Studio accomplished")
+		except ConnectionRefusedError:
+			self._log.error('Connection with VTube Studio failed. Is the studio running?')
+			sleep(1)
+			exit(1)
+
 		except:
 			self._log.exception('Exception occured during connecting')
 			raise

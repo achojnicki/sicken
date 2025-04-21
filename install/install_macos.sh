@@ -84,6 +84,7 @@ run "rabbitmqctl add_user sicken-ollama_llm password"
 run "rabbitmqctl add_user sicken-deepseek_llm password"
 run "rabbitmqctl add_user sicken-grok_llm password"
 run "rabbitmqctl add_user sicken-classification password"
+run "rabbitmqctl add_user sicken-chat_viewer password"
 run "rabbitmqctl add_user admin sicken"
 
 
@@ -102,6 +103,7 @@ rabbitmqctl set_permissions -p / sicken-grok_llm ".*" ".*" ".*"
 rabbitmqctl set_permissions -p / sicken-twitch_chat ".*" ".*" ".*"
 rabbitmqctl set_permissions -p / sicken-gui ".*" ".*" ".*"
 rabbitmqctl set_permissions -p / sicken-classification ".*" ".*" ".*"
+rabbitmqctl set_permissions -p / sicken-chat_viewer ".*" ".*" ".*"
 rabbitmqctl set_permissions -p / admin ".*" ".*" ".*"
 
 rabbitmqctl set_topic_permissions sicken-logs "" ".*" ".*"
@@ -117,6 +119,7 @@ rabbitmqctl set_topic_permissions sicken-grok_llm "" ".*" ".*"
 rabbitmqctl set_topic_permissions sicken-twitch_chat "" ".*" ".*"
 rabbitmqctl set_topic_permissions sicken-gui "" ".*" ".*"
 rabbitmqctl set_topic_permissions sicken-classification "" ".*" ".*"
+rabbitmqctl set_topic_permissions sicken-chat_viewer "" ".*" ".*"
 rabbitmqctl set_topic_permissions admin "" ".*" ".*"
 
 print 'Creating RabbitMQ Queues'
@@ -131,6 +134,9 @@ run '/usr/local/bin/python3.12 create_queue.py sicken-model_introduction_request
 run '/usr/local/bin/python3.12 create_queue.py sicken-gui_responses'
 run '/usr/local/bin/python3.12 create_queue.py sicken-twitch_responses'
 run '/usr/local/bin/python3.12 create_queue.py sicken-gui_logs'
+run '/usr/local/bin/python3.12 create_queue.py sicken-webchat_requests'
+run '/usr/local/bin/python3.12 create_queue.py sicken-webchat_responses'
+
 
 print "Enable RabbitMQ Managment plugin"
 run "rabbitmq-plugins enable rabbitmq_management"

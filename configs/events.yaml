@@ -32,6 +32,14 @@ sicken-openai_llm:
       speech: speech
       gesture: gesture
 
+    sicken-webchat_responses:
+      response_uuid: response_uuid
+      chat_uuid: chat_uuid
+      message_author: message_author
+      message: message
+      speech: speech
+      gesture: gesture
+
   model_introduction_request:
     sicken-model_introduction_requests:
 
@@ -62,6 +70,14 @@ sicken-ollama_llm:
       gesture: gesture
 
     sicken-twitch_responses:
+      response_uuid: response_uuid
+      chat_uuid: chat_uuid
+      message_author: message_author
+      message: message
+      speech: speech
+      gesture: gesture
+
+    sicken-webchat_responses:
       response_uuid: response_uuid
       chat_uuid: chat_uuid
       message_author: message_author
@@ -106,6 +122,14 @@ sicken-grok_llm:
       speech: speech
       gesture: gesture
 
+    sicken-webchat_responses:
+      response_uuid: response_uuid
+      chat_uuid: chat_uuid
+      message_author: message_author
+      message: message
+      speech: speech
+      gesture: gesture
+
   model_introduction_request:
     sicken-model_introduction_requests:
 
@@ -136,6 +160,14 @@ sicken-deepseek_llm:
       gesture: gesture
 
     sicken-twitch_responses:
+      response_uuid: response_uuid
+      chat_uuid: chat_uuid
+      message_author: message_author
+      message: message
+      speech: speech
+      gesture: gesture
+      
+    sicken-webchat_responses:
       response_uuid: response_uuid
       chat_uuid: chat_uuid
       message_author: message_author
@@ -173,6 +205,12 @@ sicken-gui:
       chat_uuid: chat_uuid
       message_author: profile_user_name
       message_source: profile_platform
+      message: message
+
+    sicken-webchat_requests:
+      chat_uuid: chat_uuid
+      message_author: message_author
+      message_source: message_source
       message: message
 
 

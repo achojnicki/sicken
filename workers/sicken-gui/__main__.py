@@ -35,7 +35,6 @@ class Sicken:
 		self._db=DB(self)
 
 		self._sicken_gui=Sicken_GUI(self)
-
 		self._chat_uuid=str(uuid4())
 		self._db.create_chat(
 		            chat_uuid=self._chat_uuid,
