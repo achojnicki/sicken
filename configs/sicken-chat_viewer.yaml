@@ -1,6 +1,6 @@
 window:
   width: 400
-  height: 800
+  height: 1080
 
 log:
   debug: true
