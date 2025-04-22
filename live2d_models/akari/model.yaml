@@ -64,45 +64,46 @@ actions:
       MouthOpen:
         mode: divine
         generator: _generate_speak_range
+        smoother: _causal_smooth
         data:
-          q: 5
-          w: 5
-          e: 32
-          r: 7
-          t: 10
-          y: 20
-          u: 18
-          i: 15
-          o: 30
-          p: 0
-          a: 35
-          s: 25
+          q: 15
+          w: 15
+          e: 50
+          r: 15
+          t: 25
+          y: 25
+          u: 20
+          i: 25
+          o: 50
+          p: 15
+          a: 50
+          s: 35
           d: 15
-          f: 7
+          f: 15
           g: 20
-          h: 10
+          h: 15
           j: 14
-          k: 5
-          l: 5
-          z: 10
-          x: 10
+          k: 15
+          l: 15
+          z: 15
+          x: 15
           c: 15
-          v: 2
-          b: 0
-          n: 3
-          m: 0
-
+          v: 15
+          b: 15
+          n: 15
+          m: 15
 
       MouthForm:
         mode: divine
         generator: _generate_speak_range_form
+        smoother: _causal_smooth
         data: 
           q: 25
           w: 25
-          e: 50
+          e: 40
           r: 30
           t: 25
-          y: 40
+          y: 10
           u: 20
           i: 40
           o: 25

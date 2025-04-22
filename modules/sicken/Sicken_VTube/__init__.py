@@ -277,6 +277,31 @@ class Animation_Seq:
 		print(action)
 		self._actions[action['action_name']]=action
 
+	def _adaptive_smooth(self, int_list, alpha=0.4):
+	    smoothed = [int_list[0]]  # keep first point
+
+	    for i in range(1, len(int_list) - 1):
+	        prev, curr, next_ = int_list[i - 1], int_list[i], int_list[i + 1]
+	        neighbor_avg = (prev + next_) / 2
+	        delta = neighbor_avg - curr
+	        softened = round(curr + alpha * delta)
+	        smoothed.append(softened)
+
+	    smoothed.append(int_list[-1])  # keep last point
+	    return smoothed
+	
+	def _causal_smooth(self, int_list, alpha=0.5):
+	    smoothed = [int_list[0]]  # Start with the first value
+
+	    for i in range(1, len(int_list)-1):
+	        prev_smooth = smoothed[-1]
+	        curr = int_list[i]
+	        # Smooth only slightly toward previous smoothed value
+	        new_val = round(prev_smooth + alpha * (curr - prev_smooth))
+	        smoothed.append(new_val)
+
+	    smoothed.append(int_list[-1])
+	    return smoothed
 
 	@property
 	def sequence(self):
@@ -285,11 +310,13 @@ class Animation_Seq:
 			data={}
 
 			for prop in self._live2d_model_manifest['actions']['speak']['parameters']:
-				generator=generator=getattr(self, self._live2d_model_manifest['actions']['speak']['parameters'][prop]['generator'])
-				data[prop]=generator(
+				generator=getattr(self, self._live2d_model_manifest['actions']['speak']['parameters'][prop]['generator'])
+				smoother=getattr(self, self._live2d_model_manifest['actions']['speak']['parameters'][prop]['smoother'])
+				
+				data[prop]=smoother(generator(
 					self._actions['speak']['words'],
 					self._live2d_model_manifest['actions']['speak']['parameters'][prop]['data']
-				)
+				))
 
 			self._sequence['speak']=data
 
@@ -408,16 +435,12 @@ class Model:
 
 
 	def play_actions(self, model_id):
-		self._log.info('Starting playing animations')
 		for actions_frame in self._processed_actions:
 			parameters={}
 			for action in actions_frame:
 				parameters[action['prop']]=action['value']
 			
-			print(parameters)
 			self.set_model_parameters(
 				model_id=model_id,
 				parameters=parameters)
-		self._log.success('Animation ended.')
-
 
