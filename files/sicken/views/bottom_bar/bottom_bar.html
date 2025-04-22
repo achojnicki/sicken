@@ -1,8 +1,21 @@
 <html>
   <head>
     <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="emotes.js">
+    </script>
+
     <script>
-      function add_subtitles(message ) {
+
+
+      function replace_emotes(message) {
+        var m=message;
+        for (let [key, value] of Object.entries(emotes)) {
+           m=m.replaceAll(key, `<img height="27" src="emotes/${value.emote_file}">`)
+        }
+        return m;
+      }
+
+      function add_subtitles(message) {
         horizontal=document.createElement('div');
         horizontal.classList.add("horizontal_container");
         message_div=document.createElement('div');
@@ -14,7 +27,7 @@
         message_container_p.classList.add('message_container_p')
 
         message_span=document.createElement('span');
-        message_span.innerHTML=message;
+        message_span.innerHTML=replace_emotes(message);
 
 				message_container_p.appendChild(message_span);
 

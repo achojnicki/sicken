@@ -8,7 +8,17 @@
       .message_div {color: snow; width:100%;}
       ::-webkit-scrollbar {display: none}
     </style>
+    <script type="text/javascript" src="emotes.js">
+    </script>
     <script>
+      function replace_emotes(message) {
+        var m=message;
+        for (let [key, value] of Object.entries(emotes)) {
+           m=m.replaceAll(key, `<img height="15" src="emotes/${value.emote_file}">`)
+        }
+        return m;
+      }
+
       function add_message(username, message, platform, ) {
         horizontal=document.createElement('div');
         horizontal.classList.add("horizontal_container");
@@ -30,7 +40,7 @@
         }
 
         message_span=document.createElement('span');
-        message_span.innerHTML=message;
+        message_span.innerHTML=replace_emotes(message);
 
         message_container_p.appendChild(username_span);
 				message_container_p.appendChild(message_span);

@@ -14,11 +14,11 @@ class Chat_Viewer_GUI(wx.Frame):
 		self._config=root._config
 		wx.Frame.__init__(self, None, title="sicken-chat_viewer", size=(self._config.window.width,self._config.window.height), style=wx.DEFAULT_FRAME_STYLE)
 
-		self.chat_template=open("/opt/sicken/files/sicken/views/twitch_chat.html",'r').read()
+		self.chat_template=open("/opt/sicken/files/sicken/views/twitch_chat/twitch_chat.html",'r').read()
 		self.sizer=wx.BoxSizer(wx.VERTICAL)        
 
 		self.html=wx.html2.WebView.New(self)
-		self.html.SetPage(self.chat_template,"")
+		self.html.SetPage(self.chat_template,"file:///opt/sicken/files/sicken/views/twitch_chat/twitch_chat.html")
 		self.html.EnableContextMenu(True)
 		self.html.EnableAccessToDevTools(True)
 
