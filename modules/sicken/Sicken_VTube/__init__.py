@@ -316,7 +316,7 @@ class Animation_Seq:
 				data[prop]=smoother(generator(
 					self._actions['speak']['words'],
 					self._live2d_model_manifest['actions']['speak']['parameters'][prop]['data']
-				))
+				), alpha= self._live2d_model_manifest['actions']['speak']['parameters'][prop]['smoother_alpha'])
 
 			self._sequence['speak']=data
 
