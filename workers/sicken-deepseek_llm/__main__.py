@@ -3,7 +3,8 @@ from adistools.adisconfig import adisconfig
 from sicken.log import Log
 from sicken.events import events
 from sicken.DB import DB
-from sicken.memories import Memories 
+from sicken.memories import Memories
+from sicken.knowledge import Knowledge
 from sicken.exceptions import ChatNotFoundException
 
 from constants import SYSTEM_MESSAGE
@@ -72,6 +73,7 @@ class DeepSeek_LLM:
 		self._actions=None
 
 		self._memories=Memories(self)
+		self._knowledge=Knowledge(self)
 		
 		self._log.info('Sending Live2D model introduction request to sicken-vtube_plugin')
 		self._events.event(
@@ -137,7 +139,8 @@ class DeepSeek_LLM:
 			msg['memories']=dumps(self._memories._get_user_memories(
 				profile_user_name=msg['message_author'],
 				profile_platform=msg['message_source']))
-
+			msg['knowledge']=dumps(self._knowledge._get_knowledge())
+			
 			self._db.add_chat_message(
 				chat_uuid=msg['chat_uuid'],
 				message_author=msg['message_author'],
