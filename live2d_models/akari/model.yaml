@@ -64,7 +64,7 @@ actions:
       MouthOpen:
         mode: divine
         generator: _generate_speak_range
-        smoother: _causal_smooth
+        smoother: null
         smoother_alpha: 0.8
         data:
           q: 15
@@ -97,7 +97,7 @@ actions:
       MouthForm:
         mode: divine
         generator: _generate_speak_range_form
-        smoother: _causal_smooth
+        smoother: null
         smoother_alpha: 0.8
         data: 
           q: 25

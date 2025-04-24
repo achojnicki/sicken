@@ -311,12 +311,18 @@ class Animation_Seq:
 
 			for prop in self._live2d_model_manifest['actions']['speak']['parameters']:
 				generator=getattr(self, self._live2d_model_manifest['actions']['speak']['parameters'][prop]['generator'])
-				smoother=getattr(self, self._live2d_model_manifest['actions']['speak']['parameters'][prop]['smoother'])
+				if self._live2d_model_manifest['actions']['speak']['parameters'][prop]['smoother']:
+					smoother=getattr(self, self._live2d_model_manifest['actions']['speak']['parameters'][prop]['smoother'])
 				
-				data[prop]=smoother(generator(
+				d=generator(
 					self._actions['speak']['words'],
 					self._live2d_model_manifest['actions']['speak']['parameters'][prop]['data']
-				), alpha= self._live2d_model_manifest['actions']['speak']['parameters'][prop]['smoother_alpha'])
+				)
+				
+				if self._live2d_model_manifest['actions']['speak']['parameters'][prop]['smoother']:
+					data[prop]=smoother(d,alpha= self._live2d_model_manifest['actions']['speak']['parameters'][prop]['smoother_alpha'])
+				else:
+					data[prop]=d
 
 			self._sequence['speak']=data
 

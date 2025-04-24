@@ -1,8 +1,0 @@
-log:
-    debug: false
-
-rabbitmq:
-    host: localhost
-    port: 5672
-    user: sicken-speech_recognition
-    password: password
