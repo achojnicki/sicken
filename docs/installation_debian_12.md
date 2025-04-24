@@ -15,7 +15,7 @@ To install and operate Sicken on the Debian Bookworm machine, you'll need:
 	$ su
 	# apt install git
 	# cd /opt
-	# sudo git clone https://github.com/achojnicki/sicken.git
+	# git clone https://github.com/achojnicki/sicken.git
 	# exit
 	```
 
