@@ -187,6 +187,7 @@ run 'create_queue.py sicken-gui_logs'
 run 'create_queue.py sicken-webchat_requests'
 run 'create_queue.py sicken-webchat_responses'
 run 'create_queue.py sicken-subtitles'
+run 'create_queue.py sicken-classification_requests'
 
 
 print "Enable RabbitMQ Managment plugin"

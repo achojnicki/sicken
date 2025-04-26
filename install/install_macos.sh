@@ -140,6 +140,7 @@ run '/usr/local/bin/python3.12 create_queue.py sicken-gui_logs'
 run '/usr/local/bin/python3.12 create_queue.py sicken-webchat_requests'
 run '/usr/local/bin/python3.12 create_queue.py sicken-webchat_responses'
 run '/usr/local/bin/python3.12 create_queue.py sicken-subtitles'
+run '/usr/local/bin/python3.12 create_queue.py sicken-classification_requests'
 
 print "Enable RabbitMQ Managment plugin"
 run "rabbitmq-plugins enable rabbitmq_management"
