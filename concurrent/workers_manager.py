@@ -189,11 +189,47 @@ class Workers_manager:
                     if "\n" in self._stderr_line_buffer[process['worker_uuid']]:
                         self._log.error(project_name=process['name'], log_item=self._stderr_line_buffer[process['worker_uuid']])
                         del self._stderr_line_buffer[process['worker_uuid']]
+    
+    def _read_process_stream_windows(self, process, stream):
+        st=process['process_obj'].stdout if stream=='stdout' else process['process_obj'].stderr
+        data=st.read()
 
+        if data:
+            if stream=='stdout':
+                if process['worker_uuid'] in self._stdout_line_buffer:
+                    self._stdout_line_buffer[process['worker_uuid']]+=data.decode('utf-8')
+                else:
+                    self._stdout_line_buffer[process['worker_uuid']]=data.decode('utf-8')
+
+                if "\n" in self._stdout_line_buffer[process['worker_uuid']]:
+                    self._log.info(project_name=process['name'], log_item=self._stdout_line_buffer[process['worker_uuid']])
+                    del self._stdout_line_buffer[process['worker_uuid']]
+                
+            else:
+                if process['worker_uuid'] in self._stderr_line_buffer:
+                    self._stderr_line_buffer[process['worker_uuid']]+=data.decode('utf-8')
+                else:
+                    self._stderr_line_buffer[process['worker_uuid']]=data.decode('utf-8')
+
+
+                if "\n" in self._stderr_line_buffer[process['worker_uuid']]:
+                    self._log.error(project_name=process['name'], log_item=self._stderr_line_buffer[process['worker_uuid']])
+                    del self._stderr_line_buffer[process['worker_uuid']]
+    
     def task(self):
         for process in self._active_workers:
             self._read_process_stream(process, 'stdout')
             self._read_process_stream(process, 'stderr')
+            
+
+        self._clear_zombies()
+        for worker in self._workers:
+            self._start_workers(worker)
+
+    def task_windows(self):
+        for process in self._active_workers:
+            self._read_process_stream_windows(process, 'stdout')
+            self._read_process_stream_windows(process, 'stderr')
             
 
         self._clear_zombies()

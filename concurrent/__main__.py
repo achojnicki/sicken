@@ -10,6 +10,7 @@ from pathlib import Path
 from adisconfig import adisconfig
 from sys import exit
 from signal import signal, SIGTERM
+from platform import system
 
 class sickenconcurrent:
     _active=None
@@ -90,7 +91,10 @@ class sickenconcurrent:
             #starting workers if enabled in config
             if self._config.general.start_workers:
                 self._workers_manager.load_workers()
-                self._scheduler.add_task('workers_manager',self._workers_manager.task, 100)
+                if system()=='Linux' or system()=='Darwin':
+                    self._scheduler.add_task('workers_manager',self._workers_manager.task, 100)
+                else:
+                    self._scheduler.add_task('workers_manager',self._workers_manager.task_windows, 100)
             
             #starting UWSGI workers if enabled in config
             if self._config.general.start_uwsgi_workers:
