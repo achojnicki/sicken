@@ -11,7 +11,7 @@ sicken-events:
   gid: 7676
 
 sicken-openai_llm:
-  enable: false
+  enable: true
   workers_count: 1
   uid: 7676
   gid: 7676
@@ -23,7 +23,7 @@ sicken-deepseek_llm:
   gid: 7676
 
 sicken-grok_llm:
-  enable: true
+  enable: false
   workers_count: 1
   uid: 7676
   gid: 7676

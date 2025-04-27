@@ -1,7 +1,6 @@
 openai:
   api_key: openai_api_key_here
 
-
 sicken:
   temperature: 0
   model: gpt-4o

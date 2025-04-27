@@ -7,8 +7,9 @@ from json import loads as json_loads
 from pathlib import Path
 from pprint import pprint
 from datetime import datetime
+from platform import system
 
-EVENTS_FILE='/opt/sicken/configs/events.yaml'
+EVENTS_FILE='/opt/sicken/configs/events.yaml' if system()=='Linux' or system()=='Darwin' else 'C:\\sicken\\configs\\events.yaml' 
 
 class AttrDict(dict):
 	def __init__(self, *args, **kwargs):

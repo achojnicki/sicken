@@ -1,7 +1,11 @@
 from constants.workers_manager import MANIFEST_FILE
 from pathlib import Path
 from subprocess import Popen, PIPE
-from os import environ, getcwd, listdir, chdir, kill, setuid, setgid, set_blocking
+from platform import system
+if system()=='Linux' or system()=='Darwin':
+    from os import environ, getcwd, listdir, chdir, kill, setuid, setgid, set_blocking
+else:
+    from os import environ, getcwd, listdir, chdir, kill, set_blocking
 from yaml import safe_load
 from copy import deepcopy
 from select import select
@@ -50,7 +54,8 @@ class Workers_manager:
             self._start_worker(name)
                     
     def _generate_python_path(self, worker_dir, modules_dir):
-        return "{0}:{1}".format(worker_dir, modules_dir)
+        s="{0}:{1}" if system()=='Linux' or system()=='Darwin' else "{0};{1}"
+        return s.format(worker_dir, modules_dir)
     
     def _start_worker(self,name):
         self._log.info('Starting worker: '+name)
@@ -58,7 +63,7 @@ class Workers_manager:
         worker=self._workers[name]
 
         env=environ.copy()
-        env['PYTHONPATH']=self._generate_python_path(worker['worker_dir'], self._config.directories.modules_directory)
+        env['PYTHONPATH']=self._generate_python_path(worker['worker_dir'], self._config.directories_posix.modules_directory if system()=='Linux' or system()=='Darwin' else self._config.directories_nt.modules_directory)
         env['PYTHONUNBUFFERED']='True'
         env['WEBKIT_DISABLE_COMPOSITING_MODE']='1'
         
@@ -85,7 +90,7 @@ class Workers_manager:
             'process_obj': p,
             'polled': False
         })
-        chdir(self._config.directories.main_directory)
+        chdir(self._config.directories_posix.main_directory if system()=='Linux' or system()=='Darwin' else self._config.directories_nt.main_directory)
         
     def _clear_zombies(self):
         for worker in self._active_workers:
@@ -113,18 +118,18 @@ class Workers_manager:
     def load_workers(self):
         for worker in self._config_workers:
             settings=self._config_workers[worker]
-            manifest_file=Path(self._config.directories.workers_directory) / worker / "manifest.yaml"
+            manifest_file=Path(self._config.directories_posix.workers_directory if system()=='Linux' or system()=='Darwin' else self._config.directories_nt.workers_directory) / worker / "manifest.yaml"
             manifest=self._parse_manifest(manifest_file)            
 
             if settings['enable']:
                 self._declare_worker(
                     name=worker,
                     exec=Path(manifest['exec']) if manifest['exec']!='__DEFAULT_PYTHON_3__' else None,
-                    script=Path(self._config.directories.workers_directory) / worker / manifest['script'],
+                    script=Path(self._config.directories_posix.workers_directory if system()=='Linux' or system()=='Darwin' else self._config.directories_nt.workers_directory) / worker / manifest['script'],
                     uid=settings['uid'],
                     gid=settings['gid'],
                     workers=settings['workers_count'],
-                    worker_dir=Path(self._config.directories.workers_directory) / worker,
+                    worker_dir=Path(self._config.directories_posix.workers_directory if system()=='Linux' or system()=='Darwin' else self._config.directories_nt.workers_directory) / worker,
                     stderr_as_info=settings['stderr_as_info'] if "stderr_as_info" in settings else False
                 )
 
@@ -161,6 +166,21 @@ class Workers_manager:
         for worker in self._active_workers:
             self._read_process_stream(worker,'stdout')
             self._read_process_stream(worker,'sterr')
+
+    def stop_windows(self):
+        for worker in self._active_workers:
+            process=worker['process_obj']
+            process.terminate()
+
+
+        while not self._all_polled:
+            self._poll_processes()
+            sleep(0.1)
+
+
+        for worker in self._active_workers:
+            self._read_process_stream_windows(worker,'stdout')
+            self._read_process_stream_windows(worker,'sterr')
 
     def _read_process_stream(self, process, stream):
         x=[process['process_obj'].stdout if stream=='stdout' else process['process_obj'].stderr ]

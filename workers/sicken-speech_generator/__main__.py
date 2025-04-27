@@ -10,6 +10,7 @@ from pathlib import Path
 from uuid import uuid4
 from os import mkdir
 from openai import OpenAI
+from platform import system
 
 import requests
 import whisper
@@ -53,7 +54,7 @@ class Speech_Generator:
 			on_message_callback=self._speech_request
 		)
 
-		self._speech_dir=Path(self._config.directories.speech)
+		self._speech_dir=Path(self._config.directories_posix.speech if system()=='Linux' or system()=='Darwin' else self._config.directories_nt.speech)
 		self._events=events(self)
 
 

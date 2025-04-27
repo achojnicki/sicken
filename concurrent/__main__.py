@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
 from workers_manager import Workers_manager
-from uwsgi_manager import Uwsgi_manager
 from scheduler import Scheduler
 from daemon import Daemon
 
+from platform import system
 from adislog import adislog
 from pathlib import Path
 from adisconfig import adisconfig
@@ -19,27 +19,28 @@ class sickenconcurrent:
     _config=None
     _log=None
     _workers_manager=None
-    _uwsgi_manager=None
     _scheduler=None
     
     def __init__(self):
         try:
-            self._config=adisconfig('/opt/sicken/configs/sicken-concurrent.yaml')
+            if system()=='Linux' or system()=='Darwin':
+                self._config=adisconfig('/opt/sicken/configs/sicken-concurrent.yaml')
+            else:
+                self._config=adisconfig('C:\\\\sicken\\configs\\sicken-concurrent.yaml')
+
         except:
             print("Fatal error during loading the main config file. Exitting...")
+            raise
             exit(1)
         
         try:
-            self._config_workers=adisconfig('/opt/sicken/configs/sicken-concurrent_workers.yaml')
+            if system()=='Linux' or system()=='Darwin':
+                self._config_workers=adisconfig('/opt/sicken/configs/sicken-concurrent_workers.yaml')
+            else:
+                self._config_workers=adisconfig('C:\\\\sicken\\configs\\sicken-concurrent_workers.yaml')
         except:
             print("Fatal error during loading the workers config file. Exitting...")
             exit(2)
-
-        try:
-            self._config_uwsgi_workers=adisconfig('/opt/sicken/configs/sicken-concurrent_uwsgi_workers.yaml')
-        except:
-            print("Fatal error during loading the UWSGI workers config file. Exitting...")
-            exit(3)
 
         _backends=[]
         if not self._config.general.daemonize:
@@ -63,10 +64,11 @@ class sickenconcurrent:
             self._log=adislog(
                 project_name="sickens-concurrent",
                 backends=_backends,
-                log_file=Path(self._config.directories.logs_directory).joinpath("sicken-concurrent.log"),
+                log_file=Path(self._config.directories_posix.logs_directory if system()=='Linux' or system()=='Darwin' else self._config.directories_nt.logs_directory).joinpath("sicken-concurrent.log"),
                 debug=self._config.log.debug,
                 )
         except:
+            raise
             print("Fatal Error during initializating the log module. Exitting")
             exit(4)
         
@@ -86,7 +88,6 @@ class sickenconcurrent:
             #initialisating all of the child objects
             self._scheduler=Scheduler(self)
             self._workers_manager=Workers_manager(self)
-            self._uwsgi_manager=Uwsgi_manager(self)
             
             #starting workers if enabled in config
             if self._config.general.start_workers:
@@ -96,13 +97,6 @@ class sickenconcurrent:
                 else:
                     self._scheduler.add_task('workers_manager',self._workers_manager.task_windows, 100)
             
-            #starting UWSGI workers if enabled in config
-            if self._config.general.start_uwsgi_workers:
-                self._uwsgi_manager.load_uwsgi_workers()
-                self._scheduler.add_task('uwsgi_manager',self._uwsgi_manager.task, 100)
-
-            self._log.success("Initialisation of Sicken-concurrent succeeded")
-
         except:
             self._log.fatal('Initialisation failed. Exitting...')
             self._log.exception()
@@ -120,8 +114,10 @@ class sickenconcurrent:
 
             self._active=False
             self._scheduler.stop()
-            self._workers_manager.stop()
-            self._uwsgi_manager.stop()
+            if system()=='Linux' or system()=='Darwin':
+                self._workers_manager.stop()
+            else:
+                self._workers_manager.stop_windows()
             if self._daemon:
                 self._daemon.stop()
             self._log.success('Exitting...')

@@ -12,6 +12,7 @@ from pathlib import Path
 from threading import Thread
 from playsound import playsound
 from yaml import safe_load
+from platform import system
 
 import sys
 
@@ -31,8 +32,8 @@ class Sicken_VTube_Plugin:
 			)
 
 
-		self._model_path=Path(self._config.directories.live2d_models).joinpath(self._config.model.model).joinpath('model.yaml')
-		self._generators_path=Path(self._config.directories.live2d_models).joinpath(self._config.model.model).joinpath('generators.py')
+		self._model_path=Path(self._config.directories_posix.live2d_models if system()=='Linux' or system()=='Darwin' else self._config.directories_nt.live2d_models).joinpath(self._config.model.model).joinpath('model.yaml')
+		self._generators_path=Path(self._config.directories_posix.live2d_models if system()=='Linux' or system()=='Darwin' else self._config.directories_nt.live2d_models).joinpath(self._config.model.model).joinpath('generators.py')
 		with open(self._model_path, 'r') as file:
 			self._live2d_model_manifest=safe_load(file.read())
 
@@ -51,7 +52,7 @@ class Sicken_VTube_Plugin:
 
 		self._events=events(self)
 
-		self._speech_dir=Path(self._config.directories.speech)
+		self._speech_dir=Path(self._config.directories_posix.speech if system()=='Linux' or system()=='Darwin' else self._config.directories_nt.speech)
 
 		self._speeches={}
 		self._is_speaking=False
@@ -83,7 +84,7 @@ class Sicken_VTube_Plugin:
 
 
 	def _play_sound(self, file):
-		playsound(file)
+		playsound(str(file))
 
 	def play_sound(self, file):
 		t=Thread(target=self._play_sound, args=[file])

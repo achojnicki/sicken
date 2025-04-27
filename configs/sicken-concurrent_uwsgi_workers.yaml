@@ -1,5 +1,0 @@
-sicken-api:
-  enable: false
-  uid: 7676
-  gid: 7676
-  stderr_as_info: true

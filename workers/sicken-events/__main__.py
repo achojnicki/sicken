@@ -10,6 +10,7 @@ from pprint import pprint
 from datetime import datetime
 from uuid import uuid4
 from pymongo import MongoClient
+from platform import system
 
 class EventsException(Exception):
 	pass
@@ -25,7 +26,7 @@ class EventParentNotFound(EventsException):
 
 
 
-EVENTS_FILE='/opt/sicken/configs/events.yaml' 
+EVENTS_FILE='/opt/sicken/configs/events.yaml' if system()=='Linux' or system()=='Darwin' else 'C:\\sicken\\configs\\events.yaml' 
 
 class Events:
 	project_name="sicken-events"

@@ -1,5 +1,5 @@
 from platform import node
-from os import getpid, getppid, getcwd, getlogin, getuid, getgid
+from os import getpid, getppid, getcwd
 
 
 class System:
@@ -18,12 +18,4 @@ class System:
     @property
     def cwd(self):
         return getcwd()
-
-    @property
-    def uid(self):
-        return getuid()
-
-    @property
-    def gid(self):
-        return getgid()
 

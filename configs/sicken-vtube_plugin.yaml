@@ -4,7 +4,7 @@ model:
 vtube:
   host: localhost
   port: 8001
-  frame_duration: 0.016
+  frame_duration: 0.067
   whisper_lip_data: true
 
 log:
@@ -21,6 +21,10 @@ rabbitmq:
   user: sicken-vtube_plugin
   password: password
   
-directories:
+directories_posix:
   speech: /opt/sicken/files/sicken/speech
   live2d_models: /opt/sicken/live2d_models
+
+directories_nt:
+  speech: "C:\\sicken\\files\\sicken\\speech"
+  live2d_models: "c:\\sicken\\live2d_models"

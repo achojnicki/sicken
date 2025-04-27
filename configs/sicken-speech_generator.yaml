@@ -5,8 +5,8 @@ openai:
     transcription_model: whisper-1
 
 speech:
-    api_whisper_lip_data: false
-    local_whisper_lip_data: true
+    api_whisper_lip_data: true
+    local_whisper_lip_data: false
 
 whisper:
     model: base
@@ -25,5 +25,8 @@ rabbitmq:
     user: sicken-speech_generator
     password: password
 
-directories:
+directories_posix:
     speech: /opt/sicken/files/sicken/speech
+
+directories_nt:
+    speech: "C:\\sicken\\files\\sicken\\speech
