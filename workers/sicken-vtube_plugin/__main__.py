@@ -1,4 +1,4 @@
-from adistools.adisconfig import adisconfig
+from sicken.config import Config
 
 from sicken.events import events
 from sicken.log import Log
@@ -20,7 +20,7 @@ class Sicken_VTube_Plugin:
 
 	def __init__(self):
 		self._active=True
-		self._config = adisconfig('/opt/sicken/configs/sicken-vtube_plugin.yaml')
+		self._config=Config(self)
 		self._log = Log(
 			parent=self,
 			rabbitmq_host=self._config.rabbitmq.host,

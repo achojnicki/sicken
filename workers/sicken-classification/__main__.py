@@ -1,4 +1,4 @@
-from adistools.adisconfig import adisconfig
+from sicken.config import Config
 
 from sicken.log import Log
 from sicken.events import events
@@ -19,10 +19,10 @@ from time import time
 
 
 class Classification:
-	project_name="sicken-classifications"
+	project_name="sicken-classification"
 
 	def __init__(self):
-		self._config=adisconfig('/opt/sicken/configs/sicken-classification.yaml')
+		self._config=Config(self)
 
 		self._log=Log(
 			parent=self,

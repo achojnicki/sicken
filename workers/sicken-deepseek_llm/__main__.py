@@ -1,4 +1,4 @@
-from adistools.adisconfig import adisconfig
+from sicken.config import Config
 
 from sicken.log import Log
 from sicken.events import events
@@ -23,7 +23,7 @@ class DeepSeek_LLM:
 	project_name="sicken-deepseek_llm"
 
 	def __init__(self):
-		self._config=adisconfig('/opt/sicken/configs/sicken-deepseek_llm.yaml')
+		self._config=Config(self)
 
 		self._log=Log(
 			parent=self,

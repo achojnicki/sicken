@@ -1,4 +1,4 @@
-from adistools.adisconfig import adisconfig
+from sicken.config import Config
 from sicken.log import Log
 from sicken.chat_viewer import Chat_Viewer_GUI
 from sicken.events import events
@@ -17,7 +17,7 @@ class Chat_Viewer:
 	def __init__(self):
 		self._active=True
 		
-		self._config=adisconfig('/opt/sicken/configs/sicken-chat_viewer.yaml')
+		self._config=Config(self)
 
 		self._log=Log(
 			parent=self,

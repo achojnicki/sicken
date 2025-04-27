@@ -1,4 +1,4 @@
-from adistools.adisconfig import adisconfig
+from sicken.config import Config
 from sicken.events import events
 
 from pymongo import MongoClient
@@ -13,7 +13,7 @@ class log_worker:
     rabbitmq_conn = None
 
     def __init__(self):
-        self._config=adisconfig('/opt/sicken/configs/sicken-log_worker.yaml')
+        self._config=Config(self)
 
         self._init_mongo()
         self._init_rabbitmq()

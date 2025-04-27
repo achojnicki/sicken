@@ -1,4 +1,4 @@
-from adistools.adisconfig import adisconfig
+from sicken.config import Config
 from sicken.log import Log
 from sicken.bottom_bar import Bottom_Bar_GUI
 from sicken.events import events
@@ -16,8 +16,7 @@ class Bottom_Bar:
 	def __init__(self):
 		self._active=True
 		
-		self._config=adisconfig('/opt/sicken/configs/sicken-bottom_bar.yaml')
-
+		self._config=Config(self)
 		self._log=Log(
 			parent=self,
 			rabbitmq_host=self._config.rabbitmq.host,

@@ -1,4 +1,4 @@
-from adistools.adisconfig import adisconfig
+from sicken.config import Config
 
 from sicken.log import Log
 from sicken.events import events
@@ -24,7 +24,7 @@ class Ollama_LLM:
 	project_name="sicken-ollama_llm"
 
 	def __init__(self):
-		self._config=adisconfig('/opt/sicken/configs/sicken-ollama_llm.yaml')
+		self._config=Config(self)
 
 		self._log=Log(
 			parent=self,

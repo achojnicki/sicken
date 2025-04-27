@@ -1,4 +1,4 @@
-from adistools.adisconfig import adisconfig
+from sicken.config import Config
 from sicken.log import Log
 
 from pika import BlockingConnection, ConnectionParameters, PlainCredentials
@@ -34,7 +34,7 @@ class Events:
 		self._events=[]
 		self._destinations=[]
 
-		self._config=adisconfig('/opt/sicken/configs/sicken-events.yaml')
+		self._config=Config(self)
 
 		self._log=Log(
 			parent=self,

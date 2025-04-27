@@ -1,4 +1,4 @@
-from adistools.adisconfig import adisconfig
+from sicken.config import Config
 
 from sicken.log import Log
 from sicken.events import events
@@ -30,7 +30,7 @@ class Sicken_Twitch_Chat:
 		self._active=True
 		self._messages={}
 
-		self._config=adisconfig('/opt/sicken/configs/sicken-twitch_chat.yaml')
+		self._config=Config(self)
 
 		self._log=Log(
 			parent=self,
