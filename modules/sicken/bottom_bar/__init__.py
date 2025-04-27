@@ -1,6 +1,7 @@
 from html import escape
 from sys import exit
 from os import getppid, kill
+from platform import system
 
 import wx
 import wx.html2
@@ -14,11 +15,10 @@ class Bottom_Bar_GUI(wx.Frame):
 		self._config=root._config
 		wx.Frame.__init__(self, None, title="sicken-bottom_bar", size=(self._config.window.width,self._config.window.height), style=wx.DEFAULT_FRAME_STYLE)
 
-		self.chat_template=open("/opt/sicken/files/sicken/views/bottom_bar/bottom_bar.html",'r').read()
 		self.sizer=wx.BoxSizer(wx.VERTICAL)        
 
 		self.html=wx.html2.WebView.New(self)
-		self.html.SetPage(self.chat_template,"file:///opt/sicken/files/sicken/views/bottom_bar/bottom_bar.html")
+		self.html.LoadURL("file:///opt/sicken/files/sicken/views/bottom_bar/bottom_bar.html" if system()=='Linux' or system()=='Darwin' else "file:///C://sicken//files//sicken//views//bottom_bar/bottom_bar.html")
 		self.html.EnableContextMenu(True)
 		self.html.EnableAccessToDevTools(True)
 

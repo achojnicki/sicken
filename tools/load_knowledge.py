@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+from platform import system
+
 import yaml
 import json
 import pymongo
@@ -13,7 +15,7 @@ mongo_knowledge_gropus=mongo_db['knowledge_groups']
 
 
 
-with open('/opt/sicken/files/sicken/knowledge.yaml','r') as file:
+with open('/opt/sicken/files/sicken/knowledge.yaml' if system()=='Linux' or system()=='Darwin' else 'C:\\sicken\\files\\sicken\\knowledge.yaml' ,'r') as file:
     data=yaml.safe_load(file.read())
 
 new_data={}

@@ -29,4 +29,4 @@ directories_posix:
     speech: /opt/sicken/files/sicken/speech
 
 directories_nt:
-    speech: "C:\\sicken\\files\\sicken\\speech
+    speech: "C:\\sicken\\files\\sicken\\speech"
