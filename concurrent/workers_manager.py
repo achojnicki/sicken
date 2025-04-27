@@ -7,6 +7,7 @@ from copy import deepcopy
 from select import select
 from time import sleep
 from uuid import uuid4
+from sys import executable
 
 def demote(uid, gid):
     def prepare_process():
@@ -64,7 +65,7 @@ class Workers_manager:
         chdir(worker['worker_dir'])
         p=Popen(
                 [
-                    worker['exec'].absolute(),
+                    worker['exec'].absolute() if worker['exec'] else executable,
                     worker['script'].absolute()
                 ],
                 env=env,
@@ -92,7 +93,7 @@ class Workers_manager:
             if poll != None:
                 del self._active_workers[self._active_workers.index(worker)]
 
-    def _declare_worker(self,name:str, exec:Path, script:Path, workers:int, worker_dir:Path, uid:int, gid: int, stderr_as_info: bool, **kwargs):
+    def _declare_worker(self,name:str, exec:Path or type(None), script:Path, workers:int, worker_dir:Path, uid:int, gid: int, stderr_as_info: bool, **kwargs):
         self._workers[name]={
             "name":name,
             "exec":exec,
@@ -118,7 +119,7 @@ class Workers_manager:
             if settings['enable']:
                 self._declare_worker(
                     name=worker,
-                    exec=Path(manifest['exec']),
+                    exec=Path(manifest['exec']) if manifest['exec']!='__DEFAULT_PYTHON_3__' else None,
                     script=Path(self._config.directories.workers_directory) / worker / manifest['script'],
                     uid=settings['uid'],
                     gid=settings['gid'],
