@@ -9,7 +9,7 @@ from adislog import adislog
 from pathlib import Path
 from adisconfig import adisconfig
 from sys import exit
-from signal import signal, SIGTERM
+from signal import signal, SIGTERM, SIGINT
 from platform import system
 
 class sickenconcurrent:
@@ -76,8 +76,8 @@ class sickenconcurrent:
             self._log.info("Initialising Sicken's Concurrent")
 
             #binding for the signals
-            signal(handler=self._signal_handler, signalnum=SIGTERM)
-
+            sig1=signal(handler=self._signal_handler, signalnum=SIGTERM)
+            sig2=signal(handler=self._signal_handler, signalnum=SIGINT)
             #initialisation of the daemonization module
             if self._config.general.daemonize:
                 self._daemon=Daemon(
@@ -105,7 +105,7 @@ class sickenconcurrent:
     def _signal_handler(self, sig, frame):
         """Callback handler for the signal coming from OS"""
         self._log.debug('Got the signal')
-        if sig==SIGTERM:
+        if sig==SIGTERM or sig==SIGINT:
             self.stop()
 
     def stop(self):

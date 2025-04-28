@@ -2,8 +2,10 @@ from sicken.GUI.pages.chat_page import Chat_Page
 from sicken.GUI.pages.logs_page import Logs_Page
 from sicken.GUI.pages.memories_page import Memories_Page
 
+from platform import system
 from sys import exit
 from os import getppid, kill
+from signal import SIGTERM
 import wx
 
 
@@ -25,6 +27,6 @@ class Sicken_GUI(wx.Frame):
 	def _on_close(self, event):
 		self._root._active=False
 		
-		kill(getppid(), 15)
+		kill(getppid(), SIGTERM if system()=="Linux" or system()=="Darwin" else 0)
 		exit(0)
 		
