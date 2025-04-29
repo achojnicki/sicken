@@ -65,7 +65,9 @@ class Workers_manager:
         env=environ.copy()
         env['PYTHONPATH']=self._generate_python_path(worker['worker_dir'], self._config.directories_posix.modules_directory if system()=='Linux' or system()=='Darwin' else self._config.directories_nt.modules_directory)
         env['PYTHONUNBUFFERED']='True'
+        env['PYTHONIOENCODING']='utf-8'
         env['WEBKIT_DISABLE_COMPOSITING_MODE']='1'
+
         
         chdir(worker['worker_dir'])
         p=Popen(
