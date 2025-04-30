@@ -42,17 +42,13 @@ logo
 print 'Installing Sicken...'
 run cd /c/sicken
 
-print "Updating \$PATH"
-#export PATH=$PATH:/sbin:/usr/sbin:/usr/local/sbin:/opt/sicken/install
-
-
 
 print "1st stage installation of dependencies(may take a while)"
 run "winget install -e --id Python.Python.3.12 --disable-interactivity --accept-package-agreements --scope machine"
 
 print "2nd stage installation of dependencies(may take a while)"
-run "py -m pip install --upgrade setuptools wheel"
-run "py -m pip install --break-system-packages numpy openai playsound==1.2.2 flask flask-socketio python-socketio psutil tabulate colored pymongo pyyaml pika websockets twitchapi wxpython openai-whisper"
+run "py -3.12 -m pip install --upgrade setuptools wheel"
+run "py -3.12 -m pip install --break-system-packages numpy openai playsound==1.2.2 flask flask-socketio python-socketio psutil tabulate colored pymongo pyyaml pika websockets twitchapi wxpython openai-whisper"
 
 print "Installing MongoDB database"
 run "winget install -e --id MongoDB.Server --disable-interactivity --accept-package-agreements --scope machine"
