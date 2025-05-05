@@ -1,65 +1,89 @@
+# Log worker of Sicken. Responsible of storing log reports from the workers. This doesn't store the log od sicken-concurrent - there's a separate log for this.
 sicken-log_worker:
   enable: true
   workers_count: 1
   uid: 7676
   gid: 7676
 
+# Events brooker for Sicken.
 sicken-events:
   enable: true
   workers_count: 1
   uid: 7676
   gid: 7676
 
+# An OpenAI worker for Sicken. To run Sicken, at least one of the worker with suffix _llm have to be on.
 sicken-openai_llm:
-  enable: true
+  enable: false
   workers_count: 1
   uid: 7676
   gid: 7676
 
+# A DeepSeek worker for Sicken. To run Sicken, at least one of the worker with suffix _llm have to be on.
 sicken-deepseek_llm:
   enable: false
   workers_count: 1
   uid: 7676
   gid: 7676
 
+# A Grok worker for Sicken. To run Sicken, at least one of the worker with suffix _llm have to be on.
 sicken-grok_llm:
-  enable: false
+  enable: true
   workers_count: 1
   uid: 7676
   gid: 7676
 
-
+# An Ollama worker for Sicken - still not ready, not recommended to use.
 sicken-ollama_llm:
   enable: false
   workers_count: 1
   uid: 7676
   gid: 7676
 
+# The Speech Generator for Sicken. Based on OpenAI
 sicken-speech_generator:
   enable: true
   workers_count: 1
   uid: 7676
   gid: 7676
 
+# VTube Studio plugin for Sicken - this worker allows Sicken to control Live2D model in the VTube Studio - must be on.
 sicken-vtube_plugin:
   enable: true
   workers_count: 1
   uid: 7676
   gid: 7676
 
+# A GUI for Sicken.
 sicken-gui:
   enable: true
   workers_count: 1
   uid: 7676
   gid: 7676
 
+# Classification mechanism, responsible for memory of Sicken. Basen on OpenAI
 sicken-classification:
   enable: true
   workers_count: 5
   uid: 7676
   gid: 7676
 
+# A Twitch Integration. Responsible for delivering messages from the Twitch stream chat to Sicken and sending Sicken's responses back to the chat.
 sicken-twitch_chat:
+  enable: false
+  workers_count: 1
+  uid: 7676
+  gid: 7676
+
+# A GUI app responsible of displaying the chat from streaming platforms on the stream's video.
+sicken-chat_viewer:
+  enable: false
+  workers_count: 1
+  uid: 7676
+  gid: 7676
+
+# A GUI app responsible of displaying the subtitles of Sicken speeches.
+sicken-bottom_bar:
   enable: false
   workers_count: 1
   uid: 7676
