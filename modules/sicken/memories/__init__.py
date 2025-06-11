@@ -1,5 +1,5 @@
 from uuid import uuid4
-
+from random import randint
 class Memories:
 	def __init__(self, root):
 
@@ -32,7 +32,7 @@ class Memories:
 				cl={
 					"memory_value": memories[memory]['memory_value'],			
 					"classification_name": classification_definition['classification_name'],
-					"classification_description": classification_definition['classification_description'],
+					#"classification_description": classification_definition['classification_description'],
 					"classification_group": classification_group['classification_group_name'],
 					"sickens_comment": memories[memory]['sickens_comment']
 
@@ -41,7 +41,24 @@ class Memories:
 			return generated_memories
 		return {}
 
+	def _get_random_memories(self, profile_user_name, profile_platform, amount=50):
+		memories=self._get_user_memories(profile_user_name, profile_platform)
+		memories_indexes=list(memories.keys())
+		idents=[]
+		ids=[]
+		for x in range(amount):
+			while True:
+				i=randint(0,len(memories_indexes)-1)
+				if i not in ids:
+					ids.append(i)
+					idents.append(memories_indexes[i])
+					break
 
+		random_memories={}
+		for x in idents:
+			random_memories[x]=memories[x]
+
+		return random_memories
 
 	def _add_memory(self, profile_user_name, profile_platform, classification_uuid, memory_value, sickens_comment):
 		if not self._db.profile_exists(profile_user_name=profile_user_name,profile_platform=profile_platform):

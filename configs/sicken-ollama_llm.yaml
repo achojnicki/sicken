@@ -1,8 +1,8 @@
 sicken:
-  model: "gemma3:4b"
+  model: "deepseek-llm:7b"
   
 log:
-  debug: false
+  debug: true
 
 mongo:
   host: localhost

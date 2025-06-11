@@ -16,7 +16,7 @@ import requests
 import whisper
 
 class Speech_Generator:
-	project_name="sicken-speech_generator"
+	project_name="sicken-speech_generator_openai"
 
 	def __init__(self):
 		self._config=Config(self)

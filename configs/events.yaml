@@ -210,20 +210,6 @@ sicken-deepseek_llm:
   model_introduction_request:
     sicken-model_introduction_requests:
 
-sicken-microphone_input:
-  speech_recognized:
-    sicken-response_requests:
-      chat_uuid: chat_uuid
-      message_author: message_author
-      message: message
-
-sicken-text_input:
-  message_entered:
-    sicken-response_requests:
-      chat_uuid: chat_uuid
-      message_author: message_author
-      message_source: message_source
-      message: message
 
 sicken-gui:
   message_entered:
@@ -260,12 +246,26 @@ sicken-twitch_chat:
       message_source: profile_platform
       message: message
 
-sicken-speech_generator:
+    sicken-webchat_requests:
+      chat_uuid: chat_uuid
+      message_author: message_author
+      message_source: message_source
+      message: message
+
+sicken-speech_generator_openai:
   speech_generated:
     sicken-vtube_plugin_speech_generation_finished:
       response_uuid: response_uuid
       speech_duration: speech_duration
       speech_words: speech_words
+
+sicken-speech_generator_elevenlabs:
+  speech_generated:
+    sicken-vtube_plugin_speech_generation_finished:
+      response_uuid: response_uuid
+      speech_duration: speech_duration
+      speech_words: speech_words
+
 
 sicken-vtube_plugin:
   model_introduction:

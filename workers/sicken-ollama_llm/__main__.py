@@ -11,6 +11,9 @@ from constants import SYSTEM_MESSAGE
 from ollama import chat
 from ollama import ChatResponse
 
+from pydantic import BaseModel
+
+
 from pika import BlockingConnection, PlainCredentials, ConnectionParameters
 from json import loads, dumps
 from pprint import pprint
@@ -18,6 +21,10 @@ from pathlib import Path
 from uuid import uuid4
 from time import time
 
+
+class ResponseFormat(BaseModel):
+	speech: str
+	gesture: str
 
 
 class Ollama_LLM:
@@ -109,7 +116,7 @@ class Ollama_LLM:
 			self._log.exception('Exception occured')
 			raise
 
-	def _build_prompt(self, msg):
+	def _build_prompt(self, msg, memories):
 		try:
 			prompt=[]
 			prompt.append(
@@ -122,19 +129,15 @@ class Ollama_LLM:
 
 
 			for message in previous_messages:
-				del message['chat_uuid']
 				if message['message_author'] == 'Sicken.ai':
 					prompt.append(
-						{"role": "assistant", "content": dumps(message)}
+						{"role": "assistant", "content": f"# Message:\n\"\"\"{dumps(message)}\"\"\""}
 						)
 				else:
 					prompt.append(
-						{"role": "user", "content": dumps(message)}
+						{"role": "user", "content":f"# Message:\n\"\"\"{dumps(message)}\"\"\""}
 						)
 
-			msg['memories']=dumps(self._memories._get_user_memories(
-				profile_user_name=msg['message_author'],
-				profile_platform=msg['message_source']))
 			
 			self._db.add_chat_message(
 				chat_uuid=msg['chat_uuid'],
@@ -142,8 +145,7 @@ class Ollama_LLM:
 				message_source=msg['message_source'],
 				msg=msg['message']
 				)
-
-			prompt.append({"role": "user", "content": dumps(msg)})
+			prompt.append({"role": "user", "content":f"""# Memories:\n\"\"\"{memories}\"\"\"\n\n# Message:\n\"\"\"{dumps(msg)}\"\"\""""})
 
 			return prompt
 		except:
@@ -155,7 +157,8 @@ class Ollama_LLM:
 			self._log.info('Calling an Ollama LLM for response')
 			response=chat(
 				model=self._config.sicken.model,
-				messages=prompt
+				messages=prompt,
+				format=ResponseFormat.model_json_schema()
 			)
 			self._log.success('Received response')
 
@@ -182,7 +185,11 @@ class Ollama_LLM:
 				self._log.debug(message)
 				response_uuid=str(uuid4())
 
-				prompt=self._build_prompt(msg=message)
+				memories=dumps(self._memories._get_random_memories(
+					profile_user_name=message['message_author'],
+					profile_platform=message['message_source']))
+
+				prompt=self._build_prompt(msg=message, memories=memories)
 				print('Prompt:')
 				pprint(prompt)
 				self._log.debug(prompt)

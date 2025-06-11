@@ -1,0 +1,385 @@
+model:
+  name: Sicken
+  model_id: 59ffebee19f144f8af44a6c1a66a736c
+
+custom_parameters:
+  ShockEyes:
+    min: 0.0
+    max: 0.1
+    default: 0.1
+
+  ShockMouth:
+    min: 0.0
+    max: 0.1
+    default: 0.1
+  
+  ShockSign:
+    min: 0.0
+    max: 0.1
+    default: 0.1
+
+  Sunny:
+    min: 0.0
+    max: 0.1
+    default: 0.1
+
+  Cloud:
+    min: 0.0
+    max: 0.1
+    default: 0.1
+
+  Angry:
+    min: 0.0
+    max: 0.1
+    default: 0.1
+
+  HallowEyes:
+    min: 0.0
+    max: 0.1
+    default: 0.1
+
+  HeartEyes:
+    min: 0.0
+    max: 0.1
+    default: 0.1
+
+  MateEyes:
+    min: 0.0
+    max: 0.1
+    default: 0.1
+
+  SadEyes:
+    min: 0.0
+    max: 0.1
+    default: 0.1
+
+  GlowingHeartEyes:
+    min: 0.0
+    max: 0.1
+    default: 0.1
+
+  PossessedEyes:
+    min: 0.0
+    max: 0.1
+    default: 0.1
+
+  SwirlEyes:
+    min: 0.0
+    max: 0.1
+    default: 0.1
+
+  XDEyes:
+    min: 0.0
+    max: 0.1
+    default: 0.1
+
+  CatEars:
+    min: 0.0
+    max: 0.1
+    default: 0.0
+
+  CryingEyes:
+    min: 0.0
+    max: 0.1
+    default: 0.1
+
+
+actions:
+  speak:
+    parameters:
+      MouthOpen:
+        mode: divine
+        generator: _generate_speak_range
+        smoother: null
+        smoother_alpha: 0.8
+        data:
+          q: 15
+          w: 15
+          e: 50
+          r: 15
+          t: 25
+          y: 25
+          u: 20
+          i: 25
+          o: 50
+          p: 15
+          a: 50
+          s: 35
+          d: 15
+          f: 15
+          g: 20
+          h: 15
+          j: 14
+          k: 15
+          l: 15
+          z: 15
+          x: 15
+          c: 15
+          v: 15
+          b: 15
+          n: 15
+          m: 15
+
+      MouthForm:
+        mode: divine
+        generator: _generate_speak_range_form
+        smoother: null
+        smoother_alpha: 0.8
+        data: 
+          q: 25
+          w: 25
+          e: 40
+          r: 30
+          t: 25
+          y: 10
+          u: 20
+          i: 40
+          o: 25
+          p: 25
+          a: 40
+          s: 40
+          d: 25
+          f: 30
+          g: 40
+          h: 25
+          j: 40
+          k: 25
+          l: 20
+          z: 40
+          x: 25
+          c: 35
+          v: 15
+          b: 25
+          n: 25
+          m: 25
+
+  nod_yes:
+    description: Noding with positive message
+    parameters:
+      FaceAngleY:
+        mode: divine
+        generator: _generate_nod_range
+        start: 0
+        stop: 3000
+        step: 400
+
+  nod_no:
+    description: Noding with negative message
+    parameters:
+      FaceAngleX:
+        mode: divine
+        generator: _generate_nod_range
+        start: 0
+        stop: 3000
+        step: 400
+
+  blink:
+    description: Blink with both eyes
+    parameters:
+      EyeOpenRight:
+        mode: divine
+        generator: _generate_wink_range
+        start: 100
+        stop: 0
+        step: 40
+      
+      EyeOpenLeft:
+        mode: divine
+        generator: _generate_wink_range
+        start: 100
+        stop: 0
+        step: 40
+
+  wink_left_eye:
+    description: Wink with left eye
+    parameters:
+      EyeOpenLeft:
+        mode: divine
+        generator: _generate_wink_range
+        start: 100
+        stop: 0
+        step: 20
+
+  wink_left_eye_tilt:
+    description: Wink with left eye with head tilt to the left side
+    parameters:
+      EyeOpenLeft:
+        mode: divine
+        generator: _generate_wink_range
+        start: 100
+        stop: 0
+        step: 20
+
+      FaceAngleZ:
+        mode: divine
+        generator: _generate_tilt_left_range
+        start: 0
+        stop: 3000
+        step: 120
+
+  wink_right_eye:
+    description: wink with right eye
+    parameters:
+      EyeOpenRight:
+        mode: divine
+        generator: _generate_wink_range
+        start: 100
+        stop: 0
+        step: 20
+
+  wink_right_eye_tilt:
+    description: wink with right eye with head tilt to the right side
+    parameters:
+      EyeOpenRight:
+        mode: divine
+        generator: _generate_wink_range
+        start: 100
+        stop: 0
+        step: 20
+
+      FaceAngleZ:
+        mode: divine
+        generator: _generate_tilt_right_range
+        start: 0
+        stop: -3000
+        step: 120
+
+  tilt_head_left:
+    description: Tilt head to left side
+    parameters:
+      FaceAngleZ:
+        mode: divine
+        generator: _generate_tilt_left_range
+        start: 0
+        stop: 3000
+        step: 120
+
+  tilt_head_right:
+    description: Tilt head to right side
+    parameters:
+      FaceAngleZ:
+        mode: divine
+        generator: _generate_tilt_right_range
+        start: 0
+        stop: -3000
+        step: 120
+
+  angry_sign:
+    description: Angry Sign
+    parameters:
+      Angry:
+        mode: divine
+        generator: _generate_angry_range
+        start: 10
+        stop: 0
+        step: 1
+
+  shock_sign:
+    description: Shock Sign just like in the anime when the "crown" like object is appearing next to the head.
+    parameters:
+      ShockSign:
+        mode: divine
+        generator: _generate_shock_sign_range
+        start: 10
+        stop: 0
+        step: 1
+
+  posessed_look:
+    description: Look without any reflections of the light from the eye
+    parameters: 
+      PosessedLook:
+        mode: divine
+        generator: _generate_possessed_look_range
+        start: 10
+        stop: 0
+        step: 1
+
+  loving_look:
+    description: Look with a hearts in the eyes
+    parameters:
+      HeartEyes:
+        mode: divine
+        generator: _generate_loving_look_range
+        start: 10
+        stop: 0
+        step: 1
+
+  gloving_loving_look:
+    description: Look with a hearts in the eyes
+    parameters:
+      GlowingHeartEyes:
+        mode: divine
+        generator: _generate_loving_look_range
+        start: 10
+        stop: 0
+        step: 1
+
+  shocked_eyes:
+    description: Show eyes characteristic to shock
+    parameters:
+      ShockEyes:
+        mode: divine
+        generator: _generate_shocked_eyes_range
+        start: 10
+        stop: 0
+        step: 1
+
+  xd_eyes:
+    description: Show XD eyes
+    parameters:
+      XDEyes:
+        mode: divine
+        generator: _generate_xd_eyes_range
+        start: 10
+        stop: 0
+        step: 1
+
+  swirl_eyes:
+    description: Show eyes with swirl
+    parameters:
+      SwirlEyes:
+        mode: divine
+        generator: _generate_swirl_eyes_range
+        start: 10
+        stop: 0
+        step: 1
+
+  teared_look:
+    description: Show a look with a teared eyes(eyes with tears)
+    parameters:
+      CryingEyes:
+        mode: divine
+        generator: _generate_teared_eyes_range
+        start: 10
+        stop: 0
+        step: 1
+
+  cat_ears:
+    description: Show a cat ears on model's head
+    parameters:
+      CatEars:
+        mode: divine
+        generator: _generate_cat_ears_range
+        start: 0
+        stop: 10
+        step: 1
+  
+  sun:
+    description: Shows sun above Sicken's head
+    parameters:
+      Sunny:
+        mode: divine
+        generator: _generate_sun_range
+        start: 10
+        stop: 0
+        step: 1
+
+  cloud:
+    description: Shows cloud above Sicken's head
+    parameters:
+      Cloud:
+        mode: divine
+        generator: _generate_cloud_range
+        start: 10
+        stop: 0
+        step: 1

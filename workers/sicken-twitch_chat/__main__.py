@@ -129,7 +129,7 @@ class Sicken_Twitch_Chat:
 
 	async def on_message(self, msg: ChatMessage):
 		print(f'in {msg.room.name}, {msg.user.name} said: {msg.text}')
-		if msg.user.name!=self._config.twitch.channel:
+		if msg.user.name!="sickenai_vtuber":
 			self._events.event(
 				event_name="message_entered",
 				event_data={
@@ -161,11 +161,11 @@ class Sicken_Twitch_Chat:
 		self._chat.start()
 		try:
 			while self._active:
-				for message in dict(self._messages):
-					print(message, self._messages[message])
-					await self._send_message(self._messages[message]['speech'])
-					del self._messages[message]
-			await asyncio.sleep(0.1)
+#				for message in dict(self._messages):
+#					print(message, self._messages[message])
+#					await self._send_message(self._messages[message]['speech'])
+#					del self._messages[message]
+				await asyncio.sleep(0.1)
 
 		finally:
 			self._chat.stop()

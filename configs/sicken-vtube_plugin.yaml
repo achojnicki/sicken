@@ -1,14 +1,13 @@
 model:
-  model: akari
-
+  model: sicken
 vtube:
   host: localhost
   port: 8001
-  frame_duration: 0.067
+  frame_duration: 0.02
   whisper_lip_data: true
 
 log:
-  debug: false
+  debug: true
 
 mongo:
   host: localhost

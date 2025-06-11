@@ -213,7 +213,7 @@ class Grok_LLM:
 				self._db.add_chat_message(
 					chat_uuid=message['chat_uuid'],
 					message_author='Sicken.ai',
-					message_source='OpenAI',
+					message_source='XAI',
 					speech=response['speech'],
 					gesture=response['gesture']
 					)

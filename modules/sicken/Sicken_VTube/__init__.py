@@ -66,7 +66,6 @@ class message_builder:
 		)
 
 	def load_model_message(self, request_id, model_id):
-		print('auth_token:',self._auth_token)
 		return dumps(
 			{
 				"apiName": "VTubeStudioPublicAPI",
@@ -162,7 +161,7 @@ class _API_Connectyion_Auth:
 			self._log.success('Authentication with VTube Studio succeeded.')
 		
 		except RequestIdDoNotMatch:
-			self._log.error('Received a pre-auth message, but the RequestID do not match with the sent one.')
+			self._log.error('Received a pre-auth response, but the RequestID do not match with the sent one.')
 			exit(1)
 
 		except AuthFailedException:
@@ -235,9 +234,7 @@ class API_Connection(
 		t=time()
 		self._connection.send(request_data)
 		msg=loads(self._connection.recv())
-		print(time()-t)
-		#pprint(msg)
-		#print('---')
+		self._log.debug(f'Response time: {time()-t} Request with the data: {request_data}, received the response: {msg}. ')
 		return msg
 
 	def init_connection(self, host, port):
@@ -363,6 +360,8 @@ class Model:
 		self._actions={}
 		self._processed_actions=[]
 
+		self._frame_duration=self._root._config.vtube.frame_duration
+
 		try:
 			self._log.info('Loading Model\'s generators')
 			spec = importlib.util.spec_from_file_location("generators", self._generators_path)
@@ -446,7 +445,12 @@ class Model:
 			for action in actions_frame:
 				parameters[action['prop']]=action['value']
 			
+			t=time()
 			self.set_model_parameters(
 				model_id=model_id,
 				parameters=parameters)
-
+			
+			dur=time()-t
+			if dur<self._frame_duration:
+				d=self._frame_duration-dur
+				sleep(d)

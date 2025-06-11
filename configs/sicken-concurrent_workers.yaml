@@ -1,4 +1,4 @@
-# Log worker of Sicken. Responsible of storing log reports from the workers. This doesn't store the log od sicken-concurrent - there's a separate log for this.
+# Log worker of Sicken. Responsible to store the log reports from the workers. This one doesn't store the logs of the sicken-concurrent - sicken-concurent is having a separate log system
 sicken-log_worker:
   enable: true
   workers_count: 1
@@ -21,14 +21,14 @@ sicken-openai_llm:
 
 # A DeepSeek worker for Sicken. To run Sicken, at least one of the worker with suffix _llm have to be on.
 sicken-deepseek_llm:
-  enable: false
+  enable: true
   workers_count: 1
   uid: 7676
   gid: 7676
 
 # A Grok worker for Sicken. To run Sicken, at least one of the worker with suffix _llm have to be on.
 sicken-grok_llm:
-  enable: true
+  enable: false
   workers_count: 1
   uid: 7676
   gid: 7676
@@ -40,8 +40,8 @@ sicken-ollama_llm:
   uid: 7676
   gid: 7676
 
-# The Speech Generator for Sicken. Based on OpenAI
-sicken-speech_generator:
+# The Speech Generator for Sicken.
+sicken-speech_generator_openai:
   enable: true
   workers_count: 1
   uid: 7676

@@ -208,7 +208,7 @@ class DeepSeek_LLM:
 				self._db.add_chat_message(
 					chat_uuid=message['chat_uuid'],
 					message_author='Sicken.ai',
-					message_source='OpenAI',
+					message_source='DeepSeek',
 					speech=response['speech'],
 					gesture=response['gesture']
 					)
