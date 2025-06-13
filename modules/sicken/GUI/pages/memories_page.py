@@ -202,13 +202,13 @@ class Memories_Page(wx.Panel):
 			self._memories_list.SetItem(
 				self._memories_indexes.index(memory_uuid),
 				2,
-				self._memories[memory_uuid]['memory_value']
+				str(self._memories[memory_uuid]['memory_value'])
 			)
 
 			self._memories_list.SetItem(
 				self._memories_indexes.index(memory_uuid),
 				3,
-				self._memories[memory_uuid]['sickens_comment']
+				str(self._memories[memory_uuid]['sickens_comment'])
 			)
 
 

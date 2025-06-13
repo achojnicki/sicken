@@ -118,7 +118,7 @@ class Classification:
 				response=loads(response)
 				self._log.debug(response)
 
-				self._log.info(f'OpenAI LLM found {len(response["classifications"])} classification{"s" if len(response["classifications"])>0 else ""} in the message.')
+				self._log.info(f'OpenAI LLM found {len(response["classifications"])} classification{"s" if len(response["classifications"])>1 else ""} in the message.')
 				for classification in response['classifications']:
 					self._memories._add_memory(
 						profile_user_name=message['profile_user_name'],

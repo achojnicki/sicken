@@ -19,23 +19,24 @@ class generators(Animation_Seq):
 				p=duration/word_len
 				iters=p/frame
 				
-				if letter.lower() in data:
-					if round(iters)>1:
-						path=np.linspace(
-							seq[-1] if len(seq)>0 else 0,
-							data[letter.lower()],
-							round(iters)
-						)
+				if letter.isalpha():
+					if letter.lower() in data:
+						if round(iters)>1:
+							path=np.linspace(
+								seq[-1] if len(seq)>0 else 0,
+								data[letter.lower()],
+								round(iters)
+							)
+						else:
+							path=[data[letter.lower()]]
+						print(f'path: {path}')
+
+						for repeat in range(0,round(iters)):
+							seq.append(int(path[repeat]))
+
 					else:
-						path=[data[letter.lower()]]
-					print(f'path: {path}')
-
-					for repeat in range(0,round(iters)):
-						seq.append(int(path[repeat]))
-
-				else:
-					for repeats in range(0,round(iters)):
-						seq.append(seq[-1])
+						for repeats in range(0,round(iters)):
+							seq.append(seq[-1])
 
 				print(f'\tletter: {letter} iters: {iters}, seq[-1]:{seq[-1]}')
 
@@ -65,23 +66,24 @@ class generators(Animation_Seq):
 			for letter in words[word_index]['word']:
 				iters=(duration/word_len)/frame
 				
-				if letter.lower() in data:
-					if round(iters)>1:
-						path=np.linspace(
-							seq[-1] if len(seq)>0 else 0,
-							data[letter.lower()],
-							round(iters)
-						)
+				if letter.isalpha():
+					if letter.lower() in data:
+						if round(iters)>1:
+							path=np.linspace(
+								seq[-1] if len(seq)>0 else 0,
+								data[letter.lower()],
+								round(iters)
+							)
+						else:
+							path=[data[letter.lower()]]
+						print(f'path: {path}')
+
+						for repeat in range(0,round(iters)):
+							seq.append(int(path[repeat]))
+
 					else:
-						path=[data[letter.lower()]]
-					print(f'path: {path}')
-
-					for repeat in range(0,round(iters)):
-						seq.append(int(path[repeat]))
-
-				else:
-					for repeats in range(0,round(iters)):
-						seq.append(seq[-1])
+						for repeats in range(0,round(iters)):
+							seq.append(seq[-1])
 
 				print(f'\tletter: {letter} iters: {iters}, seq[-1]:{seq[-1]}')
 

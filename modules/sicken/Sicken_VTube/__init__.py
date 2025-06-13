@@ -120,7 +120,7 @@ class message_builder:
 		)
 
 
-class _API_Connectyion_Auth:
+class _API_Connection_Auth:
 	@property
 	def authenticated(self):
 		return True if self._auth_token else False
@@ -210,7 +210,7 @@ class _API_Connection_Model:
 
 
 class API_Connection(
-	_API_Connectyion_Auth,
+	_API_Connection_Auth,
 	_API_Connection_Model):
 	def __init__(self, root):
 		self._root=root
@@ -234,7 +234,7 @@ class API_Connection(
 		t=time()
 		self._connection.send(request_data)
 		msg=loads(self._connection.recv())
-		self._log.debug(f'Response time: {time()-t} Request with the data: {request_data}, received the response: {msg}. ')
+		self._log.debug(f'Response time: {time()-t} Request  data: {request_data},  response: {msg}. ')
 		return msg
 
 	def init_connection(self, host, port):
