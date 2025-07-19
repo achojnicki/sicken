@@ -38,11 +38,26 @@ This will start the process manager of Sicken which starts submodules specified 
 
 Below are the few videos of Sicken in action.
 
-[https://www.youtube.com/watch?v=cwjDW99yS5U](https://www.youtube.com/watch?v=cwjDW99yS5U)  
-[https://www.youtube.com/watch?v=FZUz16MBOMM](https://www.youtube.com/watch?v=FZUz16MBOMM)  
-[https://www.youtube.com/watch?v=d4FViSgLyCI](https://www.youtube.com/watch?v=d4FViSgLyCI)  
-[https://www.youtube.com/watch?v=NF8PHVxOCcE](https://www.youtube.com/watch?v=NF8PHVxOCcE)  
-[https://www.youtube.com/watch?v=YxmQ3sJWp4Q](https://www.youtube.com/watch?v=YxmQ3sJWp4Q)  
-[https://www.tiktok.com/@adrianchojnicki/video/7483063751072140566](https://www.tiktok.com/@adrianchojnicki/video/7483063751072140566)  
-[https://www.tiktok.com/@adrianchojnicki/video/7479879733572898070](https://www.tiktok.com/@adrianchojnicki/video/7479879733572898070)  
-[https://www.tiktok.com/@adrianchojnicki/video/7463690318622362902](https://www.tiktok.com/@adrianchojnicki/video/7463690318622362902)  
+<table>
+	<tr>
+		<td>
+			<a href="https://www.youtube.com/watch?v=cwjDW99yS5U"><img src="https://github.com/achojnicki/sicken/blob/main/docs/img/Sicken_memories.png?raw=true"></a>
+		</td>
+		<td>
+			<a href="https://www.youtube.com/watch?v=FZUz16MBOMM"><img src="https://github.com/achojnicki/sicken/blob/main/docs/img/Sicken_windows_installer.png?raw=true"></a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://www.youtube.com/watch?v=d4FViSgLyCI"><img src="https://github.com/achojnicki/sicken/blob/main/docs/img/Sicken_debian_installer.png?raw=true"></a>
+		</td>
+		<td>
+			<a href="https://www.youtube.com/watch?v=NF8PHVxOCcE"><img src="https://github.com/achojnicki/sicken/blob/main/docs/img/Sicken_logging_system.png?raw=true"></a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://www.youtube.com/watch?v=YxmQ3sJWp4Q"><img src="https://github.com/achojnicki/sicken/blob/main/docs/img/Sicken_mac.png?raw=true"></a>
+		</td>
+	</tr>
+</table>
