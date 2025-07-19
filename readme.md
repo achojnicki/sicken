@@ -1,5 +1,5 @@
 # Sicken.ai
-<img src="https://github.com/achojnicki/sicken/blob/main/docs/Sicken.png?raw=true" width="100%">  
+<img src="https://github.com/achojnicki/sicken/blob/main/docs/img/Sicken.png?raw=true" width="100%">  
 An AI VTuber based on OpenAI, XAI, or DeepSeek.
 
 ## Installation
