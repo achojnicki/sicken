@@ -1,0 +1,436 @@
+{
+	"Version": 3,
+	"Parameters": [
+		{
+			"Id": "ParamSHOCKEYE",
+			"GroupId": "ParamGroup5",
+			"Name": "SHOCK EYE"
+		},
+		{
+			"Id": "ParamSHOCKMOUTH",
+			"GroupId": "ParamGroup5",
+			"Name": "SHOCK MOUTH"
+		},
+		{
+			"Id": "ParamSHOCKSIGN",
+			"GroupId": "ParamGroup5",
+			"Name": "SHOCK SIGN"
+		},
+		{
+			"Id": "ParamSUN",
+			"GroupId": "ParamGroup4",
+			"Name": "SUN"
+		},
+		{
+			"Id": "ParamCLOUD",
+			"GroupId": "ParamGroup4",
+			"Name": "CLOUD"
+		},
+		{
+			"Id": "ParamANGRY",
+			"GroupId": "ParamGroup4",
+			"Name": "ANGRY"
+		},
+		{
+			"Id": "ParamSHOCKED",
+			"GroupId": "ParamGroup4",
+			"Name": "SHOCKED"
+		},
+		{
+			"Id": "ParamHALLOWEYES",
+			"GroupId": "ParamGroup4",
+			"Name": "HALLOW EYES"
+		},
+		{
+			"Id": "ParamHEARTEYES",
+			"GroupId": "ParamGroup4",
+			"Name": "HEART EYES"
+		},
+		{
+			"Id": "ParamMATEEYES",
+			"GroupId": "ParamGroup4",
+			"Name": "MATE EYES"
+		},
+		{
+			"Id": "ParamSADEYES",
+			"GroupId": "ParamGroup4",
+			"Name": "SAD EYES"
+		},
+		{
+			"Id": "ParamGLOWINGHEARTEYE",
+			"GroupId": "ParamGroup4",
+			"Name": "GLOWING HEART EYE"
+		},
+		{
+			"Id": "ParamPOSSESEDEYE",
+			"GroupId": "ParamGroup4",
+			"Name": "POSSESED EYE"
+		},
+		{
+			"Id": "ParamSADEXP",
+			"GroupId": "ParamGroup4",
+			"Name": "SAD EXP"
+		},
+		{
+			"Id": "ParamSHOCKEXP",
+			"GroupId": "ParamGroup4",
+			"Name": "SHOCK EXP"
+		},
+		{
+			"Id": "ParamSWIRLEYE",
+			"GroupId": "ParamGroup4",
+			"Name": "SWIRL EYE"
+		},
+		{
+			"Id": "ParamXDEYE",
+			"GroupId": "ParamGroup4",
+			"Name": "XD EYE"
+		},
+		{
+			"Id": "ParamEARSTOGGLE",
+			"GroupId": "ParamGroup6",
+			"Name": "EARS TOGGLE"
+		},
+		{
+			"Id": "ParamAngleX",
+			"GroupId": "",
+			"Name": "Angle X"
+		},
+		{
+			"Id": "ParamAngleY",
+			"GroupId": "",
+			"Name": "Angle Y"
+		},
+		{
+			"Id": "ParamAngleZ",
+			"GroupId": "",
+			"Name": "Angle Z"
+		},
+		{
+			"Id": "ParamEyeLOpen",
+			"GroupId": "",
+			"Name": "EyeL Open"
+		},
+		{
+			"Id": "ParamEyeROpen",
+			"GroupId": "",
+			"Name": "EyeR Open"
+		},
+		{
+			"Id": "ParamRIGHTHAND",
+			"GroupId": "",
+			"Name": "RIGHT HAND"
+		},
+		{
+			"Id": "ParamLEFTHAND",
+			"GroupId": "",
+			"Name": "LEFT HAND"
+		},
+		{
+			"Id": "ParamRIGHTLEG",
+			"GroupId": "",
+			"Name": "RIGHT LEG"
+		},
+		{
+			"Id": "ParamLEFTLEG",
+			"GroupId": "",
+			"Name": "LEFT LEG"
+		},
+		{
+			"Id": "ParamEyeLSmile",
+			"GroupId": "",
+			"Name": "EyeL Smile"
+		},
+		{
+			"Id": "ParamEyeRSmile",
+			"GroupId": "",
+			"Name": "EyeR Smile"
+		},
+		{
+			"Id": "ParamEyeBallX",
+			"GroupId": "",
+			"Name": "Eyeball X"
+		},
+		{
+			"Id": "ParamEyeBallY",
+			"GroupId": "",
+			"Name": "Eyeball Y"
+		},
+		{
+			"Id": "ParamBrowLY",
+			"GroupId": "",
+			"Name": "BrowL Y"
+		},
+		{
+			"Id": "ParamBrowRY",
+			"GroupId": "",
+			"Name": "BrowR Y"
+		},
+		{
+			"Id": "ParamBrowLX",
+			"GroupId": "",
+			"Name": "BrowL X"
+		},
+		{
+			"Id": "ParamBrowRX",
+			"GroupId": "",
+			"Name": "BrowR X"
+		},
+		{
+			"Id": "ParamBrowLAngle",
+			"GroupId": "",
+			"Name": "BrowL Angle"
+		},
+		{
+			"Id": "ParamBrowRAngle",
+			"GroupId": "",
+			"Name": "BrowR Angle"
+		},
+		{
+			"Id": "ParamBrowLForm",
+			"GroupId": "",
+			"Name": "BrowL Form"
+		},
+		{
+			"Id": "ParamBrowRForm",
+			"GroupId": "",
+			"Name": "BrowR Form"
+		},
+		{
+			"Id": "ParamMouthForm",
+			"GroupId": "",
+			"Name": "Mouth Form"
+		},
+		{
+			"Id": "ParamMouthOpenY",
+			"GroupId": "",
+			"Name": "Mouth Open"
+		},
+		{
+			"Id": "ParamCheek",
+			"GroupId": "",
+			"Name": "Cheek"
+		},
+		{
+			"Id": "ParamBodyAngleX",
+			"GroupId": "",
+			"Name": "Body X"
+		},
+		{
+			"Id": "ParamBodyAngleY",
+			"GroupId": "",
+			"Name": "Body Y"
+		},
+		{
+			"Id": "ParamBodyAngleZ",
+			"GroupId": "",
+			"Name": "Body Z"
+		},
+		{
+			"Id": "ParamBreath",
+			"GroupId": "",
+			"Name": "Breath"
+		},
+		{
+			"Id": "ParamHairFront",
+			"GroupId": "",
+			"Name": "Hair Move Front"
+		},
+		{
+			"Id": "ParamHairSide",
+			"GroupId": "",
+			"Name": "Hair Move Side"
+		},
+		{
+			"Id": "ParamHairBack",
+			"GroupId": "",
+			"Name": "Hair Move Back"
+		},
+		{
+			"Id": "Param_Angle_Rotation2",
+			"GroupId": "ParamGroup",
+			"Name": "[1]R EAR"
+		},
+		{
+			"Id": "Param_Angle_Rotation3",
+			"GroupId": "ParamGroup",
+			"Name": "[2]R EAR"
+		},
+		{
+			"Id": "Param_Angle_Rotation4",
+			"GroupId": "ParamGroup2",
+			"Name": "[1]L EAR"
+		},
+		{
+			"Id": "Param_Angle_Rotation5",
+			"GroupId": "ParamGroup2",
+			"Name": "[2]L EAR"
+		},
+		{
+			"Id": "ParamFRONTSKIRTX",
+			"GroupId": "ParamGroup3",
+			"Name": "FRONT SKIRT X"
+		},
+		{
+			"Id": "ParamFRONTSKIRTY",
+			"GroupId": "ParamGroup3",
+			"Name": "FRONT SKIRT Y"
+		},
+		{
+			"Id": "ParamBACKSKIRTX2",
+			"GroupId": "ParamGroup3",
+			"Name": "BACK SKIRT X"
+		},
+		{
+			"Id": "ParamBACKSKIRTY2",
+			"GroupId": "ParamGroup3",
+			"Name": "BACK SKIRT Y"
+		}
+	],
+	"ParameterGroups": [
+		{
+			"Id": "ParamGroup5",
+			"GroupId": "",
+			"Name": "SCHOKED SEPARATE"
+		},
+		{
+			"Id": "ParamGroup4",
+			"GroupId": "",
+			"Name": "EXP"
+		},
+		{
+			"Id": "ParamGroup6",
+			"GroupId": "",
+			"Name": "EARS TOGGLE"
+		},
+		{
+			"Id": "ParamGroup",
+			"GroupId": "",
+			"Name": "R EAR"
+		},
+		{
+			"Id": "ParamGroup2",
+			"GroupId": "",
+			"Name": "L EAR"
+		},
+		{
+			"Id": "ParamGroup3",
+			"GroupId": "",
+			"Name": "OUTFIT PHYSICS"
+		}
+	],
+	"Parts": [
+		{
+			"Id": "Part12",
+			"Name": "Png.png"
+		},
+		{
+			"Id": "Part23",
+			"Name": "2D BLACK AND WHITE OUTFIT ANIME GIRL MODEL.psd (Corresponding layer not found)"
+		},
+		{
+			"Id": "sun",
+			"Name": "sun"
+		},
+		{
+			"Id": "cloud",
+			"Name": "cloud"
+		},
+		{
+			"Id": "Part",
+			"Name": "angry sign"
+		},
+		{
+			"Id": "Part16",
+			"Name": "SCHOCK EXP-01.psd"
+		},
+		{
+			"Id": "Part2",
+			"Name": "shock reaction"
+		},
+		{
+			"Id": "Part4",
+			"Name": "cat ears"
+		},
+		{
+			"Id": "Part25",
+			"Name": "2D BLACK AND WHITE OUTFIT ANIME GIRL MODEL.psd (Corresponding layer not found)"
+		},
+		{
+			"Id": "Part13",
+			"Name": "HEART EYE EXP-01.psd"
+		},
+		{
+			"Id": "Part14",
+			"Name": "POSSESED EYE EXP-01.psd"
+		},
+		{
+			"Id": "Part15",
+			"Name": "SAD EXP-01.psd"
+		},
+		{
+			"Id": "Part17",
+			"Name": "SWIRL EYE EXP-01.psd"
+		},
+		{
+			"Id": "Part18",
+			"Name": "XD EYE EXP-01.psd"
+		},
+		{
+			"Id": "Part6",
+			"Name": "hollow eyes"
+		},
+		{
+			"Id": "Part7",
+			"Name": "heart eyes"
+		},
+		{
+			"Id": "Part9",
+			"Name": "Layer 15"
+		},
+		{
+			"Id": "legs",
+			"Name": "legs"
+		},
+		{
+			"Id": "body",
+			"Name": "body"
+		},
+		{
+			"Id": "hands",
+			"Name": "hands"
+		},
+		{
+			"Id": "body2",
+			"Name": "body"
+		},
+		{
+			"Id": "Part3",
+			"Name": "shock sign"
+		},
+		{
+			"Id": "Part5",
+			"Name": "<Group>"
+		},
+		{
+			"Id": "Part8",
+			"Name": "<Group>"
+		},
+		{
+			"Id": "Part10",
+			"Name": "<Group>"
+		},
+		{
+			"Id": "ArtMesh5_Skinning",
+			"Name": "<Group>(Skinning)"
+		},
+		{
+			"Id": "ArtMesh6_Skinning",
+			"Name": "<Group>(Skinning)"
+		},
+		{
+			"Id": "Part11",
+			"Name": "<Group>"
+		}
+	]
+}

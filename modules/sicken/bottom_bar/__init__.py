@@ -13,16 +13,16 @@ class Bottom_Bar_GUI(wx.Frame):
 		self._root=root
 
 		self._config=root._config
-		wx.Frame.__init__(self, None, title="sicken-bottom_bar", size=(self._config.window.width,self._config.window.height), style=wx.DEFAULT_FRAME_STYLE)
+		wx.Frame.__init__(self, None, title="sicken-bottom_bar", size=(self._config.window.width,self._config.window.height), style=wx.DEFAULT_FRAME_STYLE|wx.BORDER_NONE)
 
 		self.sizer=wx.BoxSizer(wx.VERTICAL)        
 
-		self.html=wx.html2.WebView.New(self)
+		self.html=wx.html2.WebView.New(self, style=wx.BORDER_NONE)
 		self.html.LoadURL("file:///opt/sicken/files/sicken/views/bottom_bar/bottom_bar.html" if system()=='Linux' or system()=='Darwin' else "file:///C://sicken//files//sicken//views//bottom_bar/bottom_bar.html")
 		self.html.EnableContextMenu(True)
 		self.html.EnableAccessToDevTools(True)
 
-		self.sizer.Add(self.html, 1, wx.EXPAND)
+		self.sizer.Add(self.html, 1, wx.EXPAND, 0)
 		self.SetSizer(self.sizer)
 
 		self.SetBackgroundColour((32,34,39))

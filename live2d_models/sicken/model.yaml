@@ -1,6 +1,30 @@
 model:
   name: Sicken
   model_id: 59ffebee19f144f8af44a6c1a66a736c
+  model3_file: "2d black and white outfit anime girl model.model3.json"
+
+parameters_mapping:
+  Angry: ParamANGRY
+  FaceAngleX: ParamAngleX
+  FaceAngleY: ParamAngleY
+  FaceAngleZ: ParamAngleZ
+  EyeOpenLeft: ParamEyeLOpen
+  EyeOpenRight: ParamEyeROpen
+  CryingEyes: ParamSADEXP
+  CatEars: ParamEARSTOGGLE
+  XDEyes: ParamXDEYE
+  SwirlEyes: ParamSWIRLEYE
+  ShockEyes: ParamSHOCKEYE
+  PossessedEyes: ParamPOSSESEDEYE
+  ShockSign: ParamSHOCKSIGN
+  HeartEyes: ParamHEARTEYES
+  GlowingHeartEyes: ParamGLOWINGHEARTEYE
+  MouthOpen: ParamMouthOpenY
+  Sunny: ParamSUN
+  Cloud: ParamCLOUD
+
+
+
 
 custom_parameters:
   ShockEyes:
@@ -120,39 +144,6 @@ actions:
           n: 15
           m: 15
 
-      MouthForm:
-        mode: divine
-        generator: _generate_speak_range_form
-        smoother: null
-        smoother_alpha: 0.8
-        data: 
-          q: 25
-          w: 25
-          e: 40
-          r: 30
-          t: 25
-          y: 10
-          u: 20
-          i: 40
-          o: 25
-          p: 25
-          a: 40
-          s: 40
-          d: 25
-          f: 30
-          g: 40
-          h: 25
-          j: 40
-          k: 25
-          l: 20
-          z: 40
-          x: 25
-          c: 35
-          v: 15
-          b: 25
-          n: 25
-          m: 25
-
   nod_yes:
     description: Noding with positive message
     parameters:
@@ -160,8 +151,8 @@ actions:
         mode: divine
         generator: _generate_nod_range
         start: 0
-        stop: 3000
-        step: 400
+        stop: 2000
+        step: 200
 
   nod_no:
     description: Noding with negative message
@@ -170,8 +161,8 @@ actions:
         mode: divine
         generator: _generate_nod_range
         start: 0
-        stop: 3000
-        step: 400
+        stop: 2000
+        step: 200
 
   blink:
     description: Blink with both eyes
@@ -215,7 +206,7 @@ actions:
         generator: _generate_tilt_left_range
         start: 0
         stop: 3000
-        step: 120
+        step: 100
 
   wink_right_eye:
     description: wink with right eye

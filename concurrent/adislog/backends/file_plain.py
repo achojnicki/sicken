@@ -21,7 +21,7 @@ class file_plain:
         cwd:str,
         excpt_data=None):
         
-        with open(self._log_file,'a') as log_file:
+        with open(self._log_file,'a', encoding="utf-8") as log_file:
             msg=MSG_FORMAT.format(
                 project_name=project_name,
                 message=message,

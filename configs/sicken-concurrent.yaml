@@ -26,7 +26,7 @@ directories_posix:
     logs_directory: /opt/sicken/logs
     ini_directory: /opt/sicken/uwsgi_inis
     modules_directory: /opt/sicken/modules
-
+    
 directories_nt:
     main_directory: "C:\\sicken"
     workers_directory: "C:\\sicken\\workers"

@@ -3,7 +3,7 @@ model:
 vtube:
   host: localhost
   port: 8001
-  frame_duration: 0.02
+  frame_duration: 0.025
   whisper_lip_data: true
 
 log:

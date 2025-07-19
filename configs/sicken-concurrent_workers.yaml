@@ -14,14 +14,14 @@ sicken-events:
 
 # An OpenAI worker for Sicken. To run Sicken, at least one of the worker with suffix _llm have to be on.
 sicken-openai_llm:
-  enable: false
+  enable: true
   workers_count: 1
   uid: 7676
   gid: 7676
 
 # A DeepSeek worker for Sicken. To run Sicken, at least one of the worker with suffix _llm have to be on.
 sicken-deepseek_llm:
-  enable: true
+  enable: false
   workers_count: 1
   uid: 7676
   gid: 7676
@@ -49,14 +49,21 @@ sicken-speech_generator_openai:
 
 # VTube Studio plugin for Sicken - this worker allows Sicken to control Live2D model in the VTube Studio - must be on.
 sicken-vtube_plugin:
-  enable: true
+  enable: True
   workers_count: 1
   uid: 7676
   gid: 7676
 
-# A GUI for Sicken.
-sicken-gui:
-  enable: true
+# A GUI for Sicken - to be used with Vtube Studio.
+sicken-gui_vtube_studio:
+  enable: True
+  workers_count: 1
+  uid: 7676
+  gid: 7676
+
+# A GUI for Sicken - standalone version .
+sicken-gui_standalone:
+  enable: False
   workers_count: 1
   uid: 7676
   gid: 7676

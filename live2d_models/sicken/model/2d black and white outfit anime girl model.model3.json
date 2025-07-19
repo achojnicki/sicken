@@ -1,0 +1,101 @@
+{
+	"Version": 3,
+	"FileReferences": {
+		"Moc": "2D BLACK AND WHITE OUTFIT ANIME GIRL MODEL.moc3",
+		"Textures": [
+			"2D BLACK AND WHITE OUTFIT ANIME GIRL MODEL.4096/texture_00.png"
+		],
+		"Physics": "2D BLACK AND WHITE OUTFIT ANIME GIRL MODEL.physics3.json",
+		"DisplayInfo": "2D BLACK AND WHITE OUTFIT ANIME GIRL MODEL.cdi3.json",
+		"Expressions": [
+			{
+				"Name": "SHOCK EYE",
+				"File": "SHOCK EYE.exp3.json"
+			},
+			{
+				"Name": "SHOCK MOUTH",
+				"File": "SHOCK MOUTH.exp3.json"
+			},
+			{
+				"Name": "SHOCK SIGN",
+				"File": "SHOCK SIGN.exp3.json"
+			},
+			{
+				"Name": "SUN",
+				"File": "SUN.exp3.json"
+			},
+			{
+				"Name": "CLOUD",
+				"File": "CLOUD.exp3.json"
+			},
+			{
+				"Name": "ANGRY",
+				"File": "ANGRY.exp3.json"
+			},
+			{
+				"Name": "SHOCKED",
+				"File": "SHOCKED.exp3.json"
+			},
+			{
+				"Name": "HALLOW EYES",
+				"File": "HALLOW EYES.exp3.json"
+			},
+			{
+				"Name": "HEART EYES",
+				"File": "HEART EYES.exp3.json"
+			},
+			{
+				"Name": "MATE EYES",
+				"File": "MATE EYES.exp3.json"
+			},
+			{
+				"Name": "SAD EYES",
+				"File": "SAD EYES.exp3.json"
+			},
+			{
+				"Name": "GLOWING HEART EYE",
+				"File": "GLOWING HEART EYE.exp3.json"
+			},
+			{
+				"Name": "POSSESED EYE",
+				"File": "POSSESED EYE.exp3.json"
+			},
+			{
+				"Name": "SAD EXP",
+				"File": "SAD EXP.exp3.json"
+			},
+			{
+				"Name": "SHOCK EXP",
+				"File": "SHOCK EXP.exp3.json"
+			},
+			{
+				"Name": "SWIRL EYE",
+				"File": "SWIRL EYE.exp3.json"
+			},
+			{
+				"Name": "XD EYE",
+				"File": "XD EYE.exp3.json"
+			},
+			{
+				"Name": "EARS TOGGLE",
+				"File": "EARS TOGGLE.exp3.json"
+			}
+		]
+	},
+	"Groups": [
+		{
+			"Target": "Parameter",
+			"Name": "LipSync",
+			"Ids": []
+		},
+		{
+			"Target": "Parameter",
+			"Name": "EyeBlink",
+			"Ids": [
+				"ParamEyeLOpen",
+				"ParamEyeROpen"
+			]
+		}
+	],
+	"HitAreas": []
+}

@@ -16,6 +16,15 @@ sicken-openai_llm:
       speech: speech
       gesture: gesture
 
+    sicken-standalone_speech_requests:
+      response_uuid: response_uuid
+      chat_uuid: chat_uuid
+      message_author: message_author
+      message: message
+      speech: speech
+      gesture: gesture
+  
+
     sicken-gui_responses:
       response_uuid: response_uuid
       chat_uuid: chat_uuid
@@ -50,6 +59,7 @@ sicken-openai_llm:
 
   model_introduction_request:
     sicken-model_introduction_requests:
+
 
 sicken-ollama_llm:
   request_responded:
@@ -69,6 +79,14 @@ sicken-ollama_llm:
       speech: speech
       gesture: gesture
 
+    sicken-standalone_speech_requests:
+      response_uuid: response_uuid
+      chat_uuid: chat_uuid
+      message_author: message_author
+      message: message
+      speech: speech
+      gesture: gesture
+
     sicken-gui_responses:
       response_uuid: response_uuid
       chat_uuid: chat_uuid
@@ -103,6 +121,7 @@ sicken-ollama_llm:
 
   model_introduction_request:
     sicken-model_introduction_requests:
+
 
 sicken-grok_llm:
   request_responded:
@@ -122,6 +141,15 @@ sicken-grok_llm:
       speech: speech
       gesture: gesture
 
+    sicken-standalone_speech_requests:
+      response_uuid: response_uuid
+      chat_uuid: chat_uuid
+      message_author: message_author
+      message: message
+      speech: speech
+      gesture: gesture
+  
+
     sicken-gui_responses:
       response_uuid: response_uuid
       chat_uuid: chat_uuid
@@ -157,6 +185,7 @@ sicken-grok_llm:
   model_introduction_request:
     sicken-model_introduction_requests:
 
+
 sicken-deepseek_llm:
   request_responded:
     sicken-speech_requests:
@@ -174,6 +203,15 @@ sicken-deepseek_llm:
       message: message
       speech: speech
       gesture: gesture
+
+    sicken-standalone_speech_requests:
+      response_uuid: response_uuid
+      chat_uuid: chat_uuid
+      message_author: message_author
+      message: message
+      speech: speech
+      gesture: gesture
+  
 
     sicken-gui_responses:
       response_uuid: response_uuid
@@ -211,7 +249,7 @@ sicken-deepseek_llm:
     sicken-model_introduction_requests:
 
 
-sicken-gui:
+sicken-gui_standalone:
   message_entered:
     sicken-response_requests:
       chat_uuid: chat_uuid
@@ -230,6 +268,38 @@ sicken-gui:
       message_author: message_author
       message_source: message_source
       message: message
+      
+  model_introduction:
+    sicken-model_introduction:
+      model_name: model_name
+      model_id: model_id
+      actions: actions
+
+sicken-gui_vtube_studio:
+  message_entered:
+    sicken-response_requests:
+      chat_uuid: chat_uuid
+      message_author: message_author
+      message_source: message_source
+      message: message
+
+    sicken-classification_requests:
+      chat_uuid: chat_uuid
+      message_author: profile_user_name
+      message_source: profile_platform
+      message: message
+
+    sicken-webchat_requests:
+      chat_uuid: chat_uuid
+      message_author: message_author
+      message_source: message_source
+      message: message
+      
+  model_introduction:
+    sicken-model_introduction:
+      model_name: model_name
+      model_id: model_id
+      actions: actions
 
 
 sicken-twitch_chat:
@@ -254,18 +324,21 @@ sicken-twitch_chat:
 
 sicken-speech_generator_openai:
   speech_generated:
+    sicken-standalone_speech_generation_finished:
+      response_uuid: response_uuid
+      speech_duration: speech_duration
+      speech_words: speech_words
+
     sicken-vtube_plugin_speech_generation_finished:
       response_uuid: response_uuid
       speech_duration: speech_duration
       speech_words: speech_words
 
-sicken-speech_generator_elevenlabs:
-  speech_generated:
-    sicken-vtube_plugin_speech_generation_finished:
-      response_uuid: response_uuid
-      speech_duration: speech_duration
-      speech_words: speech_words
-
+  model_introduction:
+      sicken-model_introduction:
+        model_name: model_name
+        model_id: model_id
+        actions: actions
 
 sicken-vtube_plugin:
   model_introduction:

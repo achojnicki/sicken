@@ -1,0 +1,27 @@
+live2d:
+    model: sicken
+    frame_duration: 0.025
+    refresh_delay: 0.005
+    whisper_lip_data: true
+
+log:
+    debug: false
+
+mongo:
+    host: localhost
+    port: 27017
+    db: sicken
+
+rabbitmq:
+    host: localhost
+    port: 5672
+    user: sicken-gui
+    password: password
+
+directories_posix:
+  speech: /opt/sicken/files/sicken/speech
+  live2d_models: /opt/sicken/live2d_models
+
+directories_nt:
+  speech: "C:\\sicken\\files\\sicken\\speech"
+  live2d_models: "c:\\sicken\\live2d_models"

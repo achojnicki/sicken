@@ -1,6 +1,6 @@
 from sicken.config import Config
 from sicken.log import Log
-from sicken.GUI import Sicken_GUI
+from sicken.GUI.GUI import Sicken_GUI
 from sicken.events import events
 from sicken.DB import DB
 
@@ -14,12 +14,10 @@ import wx
 
 
 class Sicken:
-	project_name="sicken-gui"
+	project_name="sicken-gui_vtube_studio"
 	def __init__(self):
 		self._active=True
-		
 		self._config=Config(self)
-
 		self._log=Log(
 			parent=self,
 			rabbitmq_host=self._config.rabbitmq.host,

@@ -1,0 +1,10 @@
+{
+	"Type": "Live2D Expression",
+	"Parameters": [
+		{
+			"Id": "ParamGLOWINGHEARTEYE",
+			"Value": -0.1,
+			"Blend": "Add"
+		}
+	]
+}
