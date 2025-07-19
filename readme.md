@@ -7,12 +7,12 @@ An AI VTuber based on OpenAI, XAI, or DeepSeek.
 👌 **VTube Studio Plugin** - Sicken is made as the VTube Studio Plugin. This Approach allows her to be used for both local entertainment and streaming.  
 🧠 **Memories** - Sicken supports remembering information apart from the context chat.  
 ✌️ **Guestures** - Sicken supports gestures.  
-🍎 **Multi Platform** - Sicken is a multi-platform application, supporting all the major PC and Mac platforms.
+🍎 **Multi Platform** - Sicken is a multi-platform application, supporting all the major PC and Mac platforms.  
 📝 **Knowledge Base** - Sicken has a built-in knowledge base system, allowing it to define its knowledge base in a categorised manner.  
 🔄️ **Model Template System** - Sicken has a built-in system of templates for models that allows extending the base of the models supported by Sicken by creating two files for each supported model. Generation of model parameters and a list of supported gestures is on a per-model basis.  
 
 ## Ongoing Features
-⚙️ **Standalone Live2D support in Sicken app** - Work is currently underway to add support for a native, standalone avatar directly to the Sicken app, allowing her to react to touch, and follow the cursor. 
+⚙️ **Standalone Live2D support in Sicken app** - Work is currently underway to add support for a native, standalone avatar directly to the Sicken app, allowing her to react to touch, and follow the cursor.  
 🎬 **Actions** - There is a plan to add support for actions, which Sicken would do. E.g., interacting with the host computer.  
 
 ## Installation
