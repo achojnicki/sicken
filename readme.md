@@ -2,9 +2,22 @@
 <img src="https://github.com/achojnicki/sicken/blob/main/docs/img/Sicken.png?raw=true" width="100%">  
 An AI VTuber based on OpenAI, XAI, or DeepSeek.
 
+## Features
+
+👌 **VTube Studio Plugin** - Sicken is made as the VTube Studio Plugin. This Approach allows her to be used for both local entertainment and streaming.  
+🧠 **Memories** - Sicken supports remembering information apart from the context chat.  
+✌️ **Guestures** - Sicken supports gestures.  
+🍎 **Multi Platform** - Sicken is a multi-platform application, supporting all the major PC and Mac platforms.
+📝 **Knowledge Base** - Sicken has a built-in knowledge base system, allowing it to define its knowledge base in a categorised manner.  
+🔄️ **Model Template System** - Sicken has a built-in system of templates for models that allows extending the base of the models supported by Sicken by creating two files for each supported model. Generation of model parameters and a list of supported gestures is on a per-model basis.  
+
+## Ongoing Features
+⚙️ **Standalone Live2D support in Sicken app** - Work is currently underway to add support for a native, standalone avatar directly to the Sicken app, allowing her to react to touch, and follow the cursor. 
+🎬 **Actions** - There is a plan to add support for actions, which Sicken would do. E.g., interacting with the host computer.  
+
 ## Installation
 
-For installation guides see the docs directory.
+For installation guides, see the docs directory.
 
 ## Usage
 
@@ -18,22 +31,21 @@ To start Sicken on Debian Linux, you'll need to run a terminal instance and star
 ```
 /opt/sicken/bin/sicken-concurrent
 ```
-on Mac:
+On Mac:
 ```
 python3.12 /opt/sicken/concurrent
 ```
-on Windows:
+On Windows:
 ```
 py c:\sicken\concurrent
 ```
 
-This will start the process manager of Sicken which starts submodules specified in the `sicken-concurrent_workers.yaml` config file.  
+This will start the process manager of Sicken, which starts submodules specified in the `sicken-concurrent_workers.yaml` config file.  
 
 > [!NOTE]
 >
 > VTube Studio must be on and running before starting Sicken's Concurrent
 
- 
 ## Videos
 
 Below are a few videos of Sicken in action.
