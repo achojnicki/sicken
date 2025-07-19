@@ -47,7 +47,11 @@ class SickenCanvas(MyCanvasBase):
 
 
         self.refresh_timer=wx.Timer(self)
+        self.animation_timer=wx.Timer(self)
+
+
         self.Bind(wx.EVT_TIMER, self.on_refresh, self.refresh_timer)
+        
         self.refresh_timer.Start(int(self._root._config.live2d.refresh_delay*1000))
 
     def OnMouseMotion(self, evt):

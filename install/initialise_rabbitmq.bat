@@ -69,6 +69,8 @@ py ./create_queue.py sicken-response_requests
 py ./create_queue.py sicken-speech_requests
 py ./create_queue.py sicken-vtube_plugin_speech_generation_finished
 py ./create_queue.py sicken-vtube_plugin_speech_requests
+py ./create_queue.py sicken-standalone_speech_generation_finished
+py ./create_queue.py sicken-standalone_speech_requests
 py ./create_queue.py sicken-model_introduction
 py ./create_queue.py sicken-model_introduction_requests
 py ./create_queue.py sicken-gui_responses
