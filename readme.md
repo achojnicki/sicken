@@ -38,7 +38,6 @@ This will start the process manager of Sicken which starts submodules specified 
 
 Below are the few videos of Sicken in action.
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/cwjDW99yS5U?si=AtL4baW_gK3RZSSk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 [https://www.youtube.com/watch?v=cwjDW99yS5U](https://www.youtube.com/watch?v=cwjDW99yS5U)  
 [https://www.youtube.com/watch?v=FZUz16MBOMM](https://www.youtube.com/watch?v=FZUz16MBOMM)  
 [https://www.youtube.com/watch?v=d4FViSgLyCI](https://www.youtube.com/watch?v=d4FViSgLyCI)  
