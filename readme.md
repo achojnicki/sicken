@@ -36,7 +36,7 @@ This will start the process manager of Sicken which starts submodules specified 
  
 ## Videos
 
-Below are the few videos of Sicken in action.
+Below are a few videos of Sicken in action.
 
 <table>
 	<tr>
