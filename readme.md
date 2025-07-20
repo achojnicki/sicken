@@ -46,6 +46,25 @@ This will start the process manager of Sicken, which starts submodules specified
 >
 > VTube Studio must be on and running before starting Sicken's Concurrent
 
+
+## Screenshots
+
+<table>
+	<tr>
+		<td>
+			<a href="https://github.com/achojnicki/sicken/blob/main/docs/img/Sicken_memories_2.png?raw=true"><img src="https://github.com/achojnicki/sicken/blob/main/docs/img/Sicken_memories_2.png?raw=true"></a>
+		</td>
+		<td>
+			<a href="https://github.com/achojnicki/sicken/blob/main/docs/img/Sicken_cat_ears.png?raw=true"><img src="https://github.com/achojnicki/sicken/blob/main/docs/img/Sicken_cat_ears.png?raw=true"></a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/achojnicki/sicken/blob/main/docs/img/Sicken_log.png?raw=true"><img src="https://github.com/achojnicki/sicken/blob/main/docs/img/Sicken_log.png?raw=true"></a>
+		</td>
+	</tr>
+</table>
+
 ## Videos
 
 Below are a few videos of Sicken in action.
