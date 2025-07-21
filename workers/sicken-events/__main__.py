@@ -1,5 +1,6 @@
 from sicken.config import Config
 from sicken.log import Log
+from sicken.paths import Paths
 
 from pika import BlockingConnection, ConnectionParameters, PlainCredentials
 from yaml import safe_load, dump
@@ -26,8 +27,6 @@ class EventParentNotFound(EventsException):
 
 
 
-EVENTS_FILE='/opt/sicken/configs/events.yaml' if system()=='Linux' or system()=='Darwin' else 'C:\\sicken\\configs\\events.yaml' 
-
 class Events:
 	project_name="sicken-events"
 	def __init__(self):
@@ -45,6 +44,7 @@ class Events:
 			rabbitmq_passwd=self._config.rabbitmq.password,
 			debug=self._config.log.debug,
 			)
+		self._paths=Paths()
 
 		self._rabbitmq_connection=BlockingConnection(
 			ConnectionParameters(
@@ -71,7 +71,7 @@ class Events:
 		self._mongo_db=self._mongo_cli[self._config.mongo.db]
 		self._metrics=self._mongo_db['events_metrics']
 
-		self._events_file=Path(EVENTS_FILE)
+		self._events_file=Path(self._paths("EVENTS_FILE_PATH"))
 		if self._events_file.is_file():
 			self._log.debug('Events file detected. Opening...')
 			self._load_events()

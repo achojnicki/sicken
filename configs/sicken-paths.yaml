@@ -29,3 +29,7 @@ CONCURRENT_LOGS_DIRECTORY:
 CONCURRENT_MODULES_DIRECTORY:
   nt: "C:\\sicken\\modules"
   posix: /opt/sicken/modules
+
+EVENTS_FILE_PATH:
+  nt: 'C:\\sicken\\configs\\events.yaml'
+  posix: /opt/sicken/configs/events.yaml

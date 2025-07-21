@@ -1,4 +1,5 @@
 from .exceptions import EventsFileNotFound, EventNotFound
+from sicken.paths import Paths
 
 from pika import BlockingConnection, ConnectionParameters, PlainCredentials
 from yaml import safe_load, dump
@@ -9,7 +10,6 @@ from pprint import pprint
 from datetime import datetime
 from platform import system
 
-EVENTS_FILE='/opt/sicken/configs/events.yaml' if system()=='Linux' or system()=='Darwin' else 'C:\\sicken\\configs\\events.yaml' 
 
 class AttrDict(dict):
 	def __init__(self, *args, **kwargs):
@@ -21,14 +21,13 @@ class events:
 		self._events=[]
 
 		self._root=root
-
 		self._config=root._config
-		
 		self._log=None
 		if hasattr(root,'_log'):
 			self._log=root._log
 
-		self._events_file=Path(EVENTS_FILE)
+		self._paths=Paths()
+		self._events_file=Path(self._paths("EVENTS_FILE_PATH"))
 
 		if self._events_file.is_file():
 			if self._log:
