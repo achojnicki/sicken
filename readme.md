@@ -17,7 +17,7 @@ An AI VTuber based on OpenAI, XAI, or DeepSeek.
 
 ## Installation
 
-For installation guides, see the docs directory.
+For installation guides, see the docs directory, or the videos below.
 
 ## Usage
 
