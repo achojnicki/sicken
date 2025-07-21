@@ -7,7 +7,6 @@ from pprint import pprint
 from base64 import b64encode
 from time import time, sleep
 from math import ceil
-from pprint import pprint
 from random import randint
 import importlib.util
 from sys import modules, exit
@@ -271,7 +270,7 @@ class Animation_Seq:
 		self._duration=0.0
 
 	def add_action(self, action):
-		print(action)
+		#print(action)
 		self._actions[action['action_name']]=action
 
 	def _adaptive_smooth(self, int_list, alpha=0.4):
@@ -328,7 +327,7 @@ class Animation_Seq:
 
 		for action in self._actions:
 			if not action in self._live2d_model_manifest['actions']:
-				print('Action not defined in the manifest')
+				self._log.fatal(f'Action {action} not defined in the manifest')
 
 			if action in self._live2d_model_manifest['actions'] and action != 'speak':
 				data={}
@@ -411,7 +410,7 @@ class Model:
 		self._actions = af.sequence
 
 		m=0
-		print('---')
+		#print('---')
 		for action in self._actions:
 			for prop in self._actions[action]:
 				if len(self._actions[action][prop])>m:
@@ -433,10 +432,10 @@ class Model:
 
 			self._processed_actions.append(ac)
 			
-		for action in self._actions:
-			print(action, self._actions[action])
+		#for action in self._actions:
+			#print(action, self._actions[action])
 			
-		pprint(self._processed_actions)
+		#pprint(self._processed_actions)
 
 
 	def play_actions(self, model_id):

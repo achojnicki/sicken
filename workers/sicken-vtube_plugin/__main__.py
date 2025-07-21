@@ -127,7 +127,7 @@ class Sicken_VTube_Plugin:
 		message=loads(body.decode('utf8'))
 		self._log.info('Received speech_request. Waiting for the sicken-speech_generator to finish generating speech.')
 		self._log.debug(message)
-		print(message)
+		#print(message)
 		if message:
 			self._speeches[message['response_uuid']]={
 				"response_uuid": message['response_uuid'],
@@ -153,7 +153,7 @@ class Sicken_VTube_Plugin:
 		message=loads(body.decode('utf8'))
 		self._log.info('Received generation_finished signal. Starting playing voice and animations')
 		self._log.debug(message)
-		print(message)
+		#print(message)
 		if message:
 			if message['response_uuid'] in self._speeches:
 				actions=[]

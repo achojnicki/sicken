@@ -23,7 +23,7 @@ class Memories:
 
 			generated_memories={}
 			for memory in memories:
-				print(memory, memories[memory])
+				#print(memory, memories[memory])
 				classification_definition=self._db.get_classification_definition_by_classification_uuid(
 					classification_uuid=memories[memory]['classification_uuid'])
 
@@ -32,7 +32,7 @@ class Memories:
 				cl={
 					"memory_value": memories[memory]['memory_value'],			
 					"classification_name": classification_definition['classification_name'],
-					#"classification_description": classification_definition['classification_description'],
+					"classification_description": classification_definition['classification_description'],
 					"classification_group": classification_group['classification_group_name'],
 					"sickens_comment": memories[memory]['sickens_comment']
 

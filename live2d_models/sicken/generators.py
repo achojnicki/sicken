@@ -11,13 +11,13 @@ class generators(Animation_Seq):
 		seq=[]
 		for word_index in range(0,len(words)):
 			frame=self._frame
-			print(words[word_index]['word'])
+			#print(words[word_index]['word'])
 			start=words[word_index]['start']
 			end=words[word_index]['end']
 			duration=end-start
 			word_len=len(words[word_index]['word'])
 
-			print(f'start: {start}, end: {end}, duration: {duration}, word_len: {word_len}')
+			#print(f'start: {start}, end: {end}, duration: {duration}, word_len: {word_len}')
 			for letter in words[word_index]['word']:
 				p=duration/word_len
 				iters=p/frame
@@ -32,7 +32,7 @@ class generators(Animation_Seq):
 							)
 						else:
 							path=[data[letter.lower()]]
-						print(f'path: {path}')
+						#print(f'path: {path}')
 
 						for repeat in range(0,round(iters)):
 							seq.append(int(path[repeat]))
@@ -41,14 +41,14 @@ class generators(Animation_Seq):
 						for repeats in range(0,round(iters)):
 							seq.append(seq[-1])
 
-				print(f'\tletter: {letter} iters: {iters}, seq[-1]:{seq[-1]}')
+				#print(f'\tletter: {letter} iters: {iters}, seq[-1]:{seq[-1]}')
 
 			if (len(words)-1)>word_index:
 				pause_duration=words[word_index+1]['start']-words[word_index]['end']
-				print(f"pause_duration: {pause_duration}")
+				#print(f"pause_duration: {pause_duration}")
 				if pause_duration>frame:
 					iters=pause_duration/frame
-					print(f'\titers: {iters}')
+					#print(f'\titers: {iters}')
 					for repeats in range(0, round(iters)):
 						seq.append(0)
 
@@ -59,13 +59,13 @@ class generators(Animation_Seq):
 		seq=[]
 		for word_index in range(0,len(words)):
 			frame=self._frame
-			print(words[word_index]['word'])
+			#print(words[word_index]['word'])
 			start=words[word_index]['start']
 			end=words[word_index]['end']
 			duration=end-start
 			word_len=len(words[word_index]['word'])
 
-			print(f'start: {start}, end: {end}, duration: {duration}, word_len: {word_len}')
+			#print(f'start: {start}, end: {end}, duration: {duration}, word_len: {word_len}')
 			for letter in words[word_index]['word']:
 				iters=(duration/word_len)/frame
 				
@@ -79,7 +79,7 @@ class generators(Animation_Seq):
 							)
 						else:
 							path=[data[letter.lower()]]
-						print(f'path: {path}')
+						#print(f'path: {path}')
 
 						for repeat in range(0,round(iters)):
 							seq.append(int(path[repeat]))
@@ -88,14 +88,14 @@ class generators(Animation_Seq):
 						for repeats in range(0,round(iters)):
 							seq.append(seq[-1])
 
-				print(f'\tletter: {letter} iters: {iters}, seq[-1]:{seq[-1]}')
+				#print(f'\tletter: {letter} iters: {iters}, seq[-1]:{seq[-1]}')
 
 			if (len(words)-1)>word_index:
 				pause_duration=words[word_index+1]['start']-words[word_index]['end']
-				print(f"pause_duration: {pause_duration}")
+				#print(f"pause_duration: {pause_duration}")
 				if pause_duration>frame:
 					iters=pause_duration/frame
-					print(f'\titers" {iters}')
+					#print(f'\titers" {iters}')
 					for repeats in range(0, round(iters)):
 						seq.append(40)
 

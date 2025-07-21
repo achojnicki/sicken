@@ -12,7 +12,7 @@ import wx
 class Sicken_GUI(wx.Frame):
 	def __init__(self, root):
 		self._root=root
-		wx.Frame.__init__(self, None, title="Sicken.AI", size=(1000,1000), style=wx.DEFAULT_FRAME_STYLE)
+		wx.Frame.__init__(self, None, title="Sicken.ai", size=(1000,1000), style=wx.DEFAULT_FRAME_STYLE)
 
 		self._notebook=wx.Notebook(self)
 		self._chat_page=Chat_Page_Standalone(self._root, self._notebook, self)

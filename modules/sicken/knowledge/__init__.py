@@ -17,8 +17,6 @@ class Knowledge:
 		
 		generated_knowledge={}
 		for knowledge_item in knowledge:
-			print('aaa')
-			print(knowledge_item)
 			knowledge_group=self._db.get_knowledge_group_by_knowledge_group_uuid(
 				knowledge_group_uuid=knowledge[knowledge_item]['knowledge_group_uuid'])
 			cl={

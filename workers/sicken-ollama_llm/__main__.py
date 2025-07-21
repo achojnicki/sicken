@@ -16,7 +16,6 @@ from pydantic import BaseModel
 
 from pika import BlockingConnection, PlainCredentials, ConnectionParameters
 from json import loads, dumps
-from pprint import pprint
 from pathlib import Path
 from uuid import uuid4
 from time import time
@@ -91,7 +90,6 @@ class Ollama_LLM:
 			self._log.debug(message)
 
 			if message:
-				pprint(message)
 				self._model_id=message['model_id']
 				self._model_name=message['model_name']
 				self._actions=message['actions']
@@ -180,8 +178,6 @@ class Ollama_LLM:
 				self._log.warning('Recieved the message request, but the sicken-vtube_plugin didn\'t introduced model and it\'s features. Is the plugin running and does user allowed connection of the plugin?')
 
 			if message and self._model_id:
-				print('Queue message:')
-				print(message)
 				self._log.debug(message)
 				response_uuid=str(uuid4())
 
@@ -190,15 +186,11 @@ class Ollama_LLM:
 					profile_platform=message['message_source']))
 
 				prompt=self._build_prompt(msg=message, memories=memories)
-				print('Prompt:')
-				pprint(prompt)
 				self._log.debug(prompt)
 
 				response=self._get_model_response(
 						prompt=prompt
 					)
-				print('Model response:')
-				print(response)
 
 				response=response.replace('```json','').replace('```','')
 				self._log.debug(response)
