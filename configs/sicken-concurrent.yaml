@@ -1,7 +1,6 @@
 general:
     daemonize: false
     start_workers: true
-    start_uwsgi_workers: true
 
 log:
     debug: false
@@ -14,22 +13,6 @@ log:
 daemon:
     pid_file: /opt/sicken/sicken-concurrent.pid
 
-uwsgi:
-    uwsgi_executable_path: /usr/local/bin/uwsgi
 
 scheduler:
     interval: 0.1
-
-directories_posix:
-    main_directory: /opt/sicken
-    workers_directory: /opt/sicken/workers
-    logs_directory: /opt/sicken/logs
-    ini_directory: /opt/sicken/uwsgi_inis
-    modules_directory: /opt/sicken/modules
-    
-directories_nt:
-    main_directory: "C:\\sicken"
-    workers_directory: "C:\\sicken\\workers"
-    logs_directory: "C:\\sicken\\logs"
-    ini_directory: "C:\\sicken\\uwsgi_inis"
-    modules_directory: "C:\\sicken\\modules"

@@ -1,5 +1,5 @@
 from sicken.config import Config
-
+from sicken.paths import Paths
 from sicken.log import Log
 from sicken.events import events
 
@@ -29,7 +29,7 @@ class Speech_Generator:
 			rabbitmq_passwd=self._config.rabbitmq.password,
 			debug=self._config.log.debug,
 			)
-
+		self._paths=Paths()
 		self._openai=OpenAI(api_key=self._config.openai.api_key)
 
 		if self._config.speech.local_whisper_lip_data:
@@ -54,7 +54,7 @@ class Speech_Generator:
 			on_message_callback=self._speech_request
 		)
 
-		self._speech_dir=Path(self._config.directories_posix.speech if system()=='Linux' or system()=='Darwin' else self._config.directories_nt.speech)
+		self._speech_dir=Path(self._paths('VTUBE_PLUGIN_LIVE2D_MODELS_PATH'))
 		self._events=events(self)
 
 

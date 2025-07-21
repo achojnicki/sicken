@@ -19,11 +19,3 @@ rabbitmq:
   port: 5672
   user: sicken-vtube_plugin
   password: password
-  
-directories_posix:
-  speech: /opt/sicken/files/sicken/speech
-  live2d_models: /opt/sicken/live2d_models
-
-directories_nt:
-  speech: "C:\\sicken\\files\\sicken\\speech"
-  live2d_models: "c:\\sicken\\live2d_models"

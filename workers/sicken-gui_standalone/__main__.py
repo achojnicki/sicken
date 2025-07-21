@@ -3,6 +3,7 @@ from sicken.log import Log
 from sicken.GUI.GUI_STANDALONE import Sicken_GUI
 from sicken.events import events
 from sicken.DB import DB
+from sicken.paths import Paths
 
 from pika import BlockingConnection, PlainCredentials, ConnectionParameters
 from uuid import uuid4
@@ -10,10 +11,8 @@ from time import time
 from threading import Thread
 from json import loads
 
-
 import wx
 import live2d.v3 as live2d
-
 
 class Sicken:
 	project_name="sicken-gui_standalone"
@@ -21,6 +20,7 @@ class Sicken:
 		self._active=True
 		
 		self._config=Config(self)
+		self._paths=Paths()
 
 		self._log=Log(
 			parent=self,

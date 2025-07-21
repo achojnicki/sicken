@@ -60,20 +60,7 @@ To install Sicken on a MacOS machine you'll need:
 
 	The modification requires changing the `api_key` property of the `openai` tree to your API key obtained from [https://platform.openai.com](https://platform.openai.com)
 
-6. **Installation is complete. To start Sicken's main process run in the terminal:**
+6. **Installation is complete. To start Sicken run in the terminal:**
 	```
-	python3.12 /opt/sicken/concurrent
+	python3.12 /opt/sicken
 	```
-	
-	To interact with Sicken you can use the `sicken-text_input` command line tool. To start it run in the terminal. 
-	
-	```
-	python3.12 /opt/sicken/bin/sicken-text_input
-	```
-
-	There is also a `sicken-microphone_input` command line tool, but this early version isn't ready for usage yet.
-
-
-> [!NOTE]
-> 
-> Using `sicken-microphone_input` does require granting microphone permission to the terminal app running the tool.

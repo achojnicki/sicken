@@ -29,15 +29,15 @@ To operate Sicken you'll need:
 
 To start Sicken on Debian Linux, you'll need to run a terminal instance and start the following command:
 ```
-/opt/sicken/bin/sicken-concurrent
+python3 /opt/sicken
 ```
 On Mac:
 ```
-python3.12 /opt/sicken/concurrent
+python3.12 /opt/sicken
 ```
 On Windows:
 ```
-py c:\sicken\concurrent
+py c:\sicken
 ```
 
 This will start the process manager of Sicken, which starts submodules specified in the `sicken-concurrent_workers.yaml` config file.  

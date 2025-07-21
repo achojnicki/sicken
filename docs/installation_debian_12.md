@@ -135,12 +135,9 @@ To install and operate Sicken on the Debian Bookworm machine, you'll need:
 	$ python3 /opt/sicken/tools/load_classifications.py
 	```
 
-6. **Updating the `$PATH`.**
 
-	To allow the shell to execute the `sicken-concurrent` without needing to point to it by the path, you may want to change the `$PATH` environmental variable of your account's profile. To do this, you need to modify the `~/.bashrc` file by adding the line `export PATH=$PATH:/opt/sicken/bin` at the end of the file
-
-7. **Installation is complete. To start Sicken, simply type in the terminal `sicken-concurrent`.**
+6. **Installation is complete. To start Sicken, simply type in the terminal `python3 /opt/sicken`.**
 
 > [!NOTE]
 > 
-> VTube Studio must be up and running before starting `sicken-concurrent`.
+> VTube Studio must be up and running before starting sicken-concurrent.

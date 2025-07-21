@@ -1,4 +1,4 @@
-from constants.tasks import TIME_DIVIDER
+from .constants.tasks import TIME_DIVIDER
 
 from time import sleep,time
 

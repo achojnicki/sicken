@@ -24,9 +24,3 @@ rabbitmq:
     port: 5672
     user: sicken-speech_generator
     password: password
-
-directories_posix:
-    speech: /opt/sicken/files/sicken/speech
-
-directories_nt:
-    speech: "C:\\sicken\\files\\sicken\\speech"

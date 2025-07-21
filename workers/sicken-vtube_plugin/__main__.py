@@ -1,4 +1,5 @@
 from sicken.config import Config
+from sicken.paths import Paths
 
 from sicken.events import events
 from sicken.log import Log
@@ -30,10 +31,10 @@ class Sicken_VTube_Plugin:
 			rabbitmq_passwd=self._config.rabbitmq.password,
 			debug=self._config.log.debug,
 			)
+		self._paths=Paths()
 
-
-		self._model_path=Path(self._config.directories_posix.live2d_models if system()=='Linux' or system()=='Darwin' else self._config.directories_nt.live2d_models).joinpath(self._config.model.model).joinpath('model.yaml')
-		self._generators_path=Path(self._config.directories_posix.live2d_models if system()=='Linux' or system()=='Darwin' else self._config.directories_nt.live2d_models).joinpath(self._config.model.model).joinpath('generators.py')
+		self._model_path=Path(self._paths('VTUBE_PLUGIN_LIVE2D_MODELS_PATH')).joinpath(self._config.model.model).joinpath('model.yaml')
+		self._generators_path=Path(self._paths('VTUBE_PLUGIN_LIVE2D_MODELS_PATH')).joinpath(self._config.model.model).joinpath('generators.py')
 		with open(self._model_path, 'r') as file:
 			self._live2d_model_manifest=safe_load(file.read())
 
@@ -52,7 +53,7 @@ class Sicken_VTube_Plugin:
 
 		self._events=events(self)
 
-		self._speech_dir=Path(self._config.directories_posix.speech if system()=='Linux' or system()=='Darwin' else self._config.directories_nt.speech)
+		self._speech_dir=Path(self._paths('VTUBE_PLUGIN_SPEECH_PATH'))
 
 		self._speeches={}
 		self._is_speaking=False

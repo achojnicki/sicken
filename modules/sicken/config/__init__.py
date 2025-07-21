@@ -31,6 +31,9 @@ class Config:
             for item in config_data:
                 self._config[item]=AttrDict(config_data[item])
     
+    def has_category(self, category):
+        return category in self._config
+
     def save(self):
         d={}
         for data in self._config:
@@ -42,5 +45,8 @@ class Config:
     def __getattr__(self, attr):
         return self._config[attr]
 
+    def __getitem__(self, attr):
+        return self._config[attr]
+        
     def __repr__(self):
         return pformat(self._config)

@@ -136,10 +136,10 @@ class Chat_Page_Standalone(wx.Panel):
 
         self.SetBackgroundColour((32,34,39))
     
-        self._speech_dir=Path(self._root._config.directories_posix.speech if system()=='Linux' or system()=='Darwin' else self._root._config.directories_nt.speech)
-        self._model_path=Path(self._root._config.directories_posix.live2d_models if system()=='Linux' or system()=='Darwin' else self._root._config.directories_nt.live2d_models).joinpath(self._root._config.live2d.model).joinpath('model.yaml')
-        self._generators_path=Path(self._root._config.directories_posix.live2d_models if system()=='Linux' or system()=='Darwin' else self._root._config.directories_nt.live2d_models).joinpath(self._root._config.live2d.model).joinpath('generators.py')
-        self._live2d_model_path=Path(self._root._config.directories_posix.live2d_models if system()=='Linux' or system()=='Darwin' else self._root._config.directories_nt.live2d_models).joinpath(self._root._config.live2d.model).joinpath('model')
+        self._speech_dir=Path(self._root._paths('VTUBE_PLUGIN_SPEECH_PATH'))
+        self._model_path=Path(self._root._paths('VTUBE_PLUGIN_LIVE2D_MODELS_PATH')).joinpath(self._root._config.live2d.model).joinpath('model.yaml')
+        self._generators_path=Path(self._root._paths('VTUBE_PLUGIN_LIVE2D_MODELS_PATH')).joinpath(self._root._config.live2d.model).joinpath('generators.py')
+        self._live2d_model_path=Path(self._root._paths('VTUBE_PLUGIN_LIVE2D_MODELS_PATH')).joinpath(self._root._config.live2d.model).joinpath('model')
 
         with open(self._model_path, 'r') as file:
             self._live2d_model_manifest=safe_load(file.read())

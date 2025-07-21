@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
 
-from workers_manager import Workers_manager
-from scheduler import Scheduler
-from daemon import Daemon
+from .workers_manager import Workers_manager
+from .scheduler import Scheduler
+from .daemon import Daemon
+from .adislog import adislog
+from .adisconfig import adisconfig
 
 from platform import system
-from adislog import adislog
 from pathlib import Path
-from adisconfig import adisconfig
 from sys import exit
 from signal import signal, SIGTERM, SIGINT
 from platform import system
+
 
 class sickenconcurrent:
     _active=None
@@ -21,12 +22,11 @@ class sickenconcurrent:
     _workers_manager=None
     _scheduler=None
     
-    def __init__(self):
+    def __init__(self, paths):
+
+        self._paths=paths
         try:
-            if system()=='Linux' or system()=='Darwin':
-                self._config=adisconfig('/opt/sicken/configs/sicken-concurrent.yaml')
-            else:
-                self._config=adisconfig('C:\\\\sicken\\configs\\sicken-concurrent.yaml')
+            self._config=adisconfig(self._paths("CONCURRENT_MAIN_CONFIG"))
 
         except:
             print("Fatal error during loading the main config file. Exitting...")
@@ -34,10 +34,7 @@ class sickenconcurrent:
             exit(1)
         
         try:
-            if system()=='Linux' or system()=='Darwin':
-                self._config_workers=adisconfig('/opt/sicken/configs/sicken-concurrent_workers.yaml')
-            else:
-                self._config_workers=adisconfig('C:\\\\sicken\\configs\\sicken-concurrent_workers.yaml')
+            self._config_workers=adisconfig(self._paths("CONCURRENT_WORKERS_CONFIG"))
         except:
             print("Fatal error during loading the workers config file. Exitting...")
             exit(2)
@@ -64,7 +61,7 @@ class sickenconcurrent:
             self._log=adislog(
                 project_name="sickens-concurrent",
                 backends=_backends,
-                log_file=Path(self._config.directories_posix.logs_directory if system()=='Linux' or system()=='Darwin' else self._config.directories_nt.logs_directory).joinpath("sicken-concurrent.log"),
+                log_file=Path(self._paths("CONCURRENT_LOGS_DIRECTORY")).joinpath("sicken-concurrent.log"),
                 debug=self._config.log.debug,
                 )
         except:
@@ -148,6 +145,3 @@ class sickenconcurrent:
             self._log.exception()
             exit(6)
 
-if __name__=="__main__":
-    sc=sickenconcurrent()
-    sc.start()

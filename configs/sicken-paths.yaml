@@ -1,0 +1,31 @@
+VTUBE_PLUGIN_SPEECH_PATH:
+  nt: "C:\\sicken\\files\\sicken\\speech"
+  posix: /opt/sicken/files/sicken/speech
+
+VTUBE_PLUGIN_LIVE2D_MODELS_PATH:
+  nt: "c:\\sicken\\live2d_models"
+  posix: /opt/sicken/live2d_models
+
+CONCURRENT_MAIN_CONFIG:
+  nt: "C:\\sicken\\configs\\sicken-concurrent.yaml"
+  posix: '/opt/sicken/configs/sicken-concurrent.yaml'
+
+CONCURRENT_WORKERS_CONFIG:
+  nt: "C:\\sicken\\configs\\sicken-concurrent_workers.yaml"
+  posix: /opt/sicken/configs/sicken-concurrent_workers.yaml
+
+CONCURRENT_MAIN_DIRECTORY:
+  nt: "C:\\sicken"
+  posix: /opt/sicken
+
+CONCURRENT_WORKERS_DIRECTORY:
+  nt: "C:\\sicken\\workers"
+  posix: /opt/sicken/workers
+
+CONCURRENT_LOGS_DIRECTORY:
+  nt: "C:\\sicken\\logs"
+  posix: /opt/sicken/logs
+
+CONCURRENT_MODULES_DIRECTORY:
+  nt: "C:\\sicken\\modules"
+  posix: /opt/sicken/modules
