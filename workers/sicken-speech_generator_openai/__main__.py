@@ -54,7 +54,7 @@ class Speech_Generator:
 			on_message_callback=self._speech_request
 		)
 
-		self._speech_dir=Path(self._paths('VTUBE_PLUGIN_LIVE2D_MODELS_PATH'))
+		self._speech_dir=Path(self._paths('VTUBE_PLUGIN_SPEECH_PATH'))
 		self._events=events(self)
 
 
