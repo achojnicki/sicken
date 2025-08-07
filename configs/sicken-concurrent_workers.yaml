@@ -14,7 +14,7 @@ sicken-events:
 
 # An OpenAI worker for Sicken. To run Sicken, at least one of the worker with suffix _llm have to be on.
 sicken-openai_llm:
-  enable: true
+  enable: false
   workers_count: 1
   uid: 7676
   gid: 7676
@@ -28,7 +28,7 @@ sicken-deepseek_llm:
 
 # A Grok worker for Sicken. To run Sicken, at least one of the worker with suffix _llm have to be on.
 sicken-grok_llm:
-  enable: false
+  enable: true
   workers_count: 1
   uid: 7676
   gid: 7676
@@ -82,6 +82,13 @@ sicken-twitch_chat:
   uid: 7676
   gid: 7676
 
+# A TikTok Integration. Responsible for delivering messages from the TikTok stream chat to Sicken and sending Sicken's responses back to the chat.
+sicken-tiktok_chat:
+  enable: False
+  workers_count: 1
+  uid: 7676
+  gid: 7676
+
 # A GUI app responsible of displaying the chat from streaming platforms on the stream's video.
 sicken-chat_viewer:
   enable: false
@@ -92,6 +99,13 @@ sicken-chat_viewer:
 # A GUI app responsible of displaying the subtitles of Sicken speeches.
 sicken-bottom_bar:
   enable: false
+  workers_count: 1
+  uid: 7676
+  gid: 7676
+
+#Commands in the GUI app
+sicken-commands:
+  enable: true
   workers_count: 1
   uid: 7676
   gid: 7676

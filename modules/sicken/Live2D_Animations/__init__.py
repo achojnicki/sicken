@@ -25,7 +25,7 @@ class Animation_Seq:
 		self._sequence={}
 		self._words=[]
 		self._duration=0.0
-
+		
 	def add_action(self, action):
 		print(action)
 		self._actions[action['action_name']]=action
@@ -117,6 +117,8 @@ class Animation_Model:
 
 		self._actions={}
 		self._processed_actions=[]
+		self._animation_frame=0
+		self._play_actions=False
 
 		self._frame_duration=self._root._config.live2d.frame_duration
 
@@ -173,37 +175,32 @@ class Animation_Model:
 			
 		pprint(self._processed_actions)
 
+	def clean_actions(self):
+		self._actions={}
+		self._processed_actions=[]
+		self._play_actions=False
+		self._animation_frame=0
 
 	def play_actions(self):
-		CallAfter(self.play_action, 0, None)
+		self._play_actions=True
+
+	def play_action_frame(self,timestamp,):
+		if self._processed_actions and self._play_actions:
+
+			actions_frame=self._processed_actions[self._animation_frame]
+			parameters={}
+			for action in actions_frame:
+				parameters[action['prop']]=action['value']
+			
+
+			for param in parameters:
+				self._parent.update_parameters(
+					param_id=self._live2d_model_manifest['parameters_mapping'][param],
+					value=parameters[param])
+			self._parent.update_model()
 
 
-	def play_action(self,index, et):
-		if et:
-			while int(time()*1000)<et:
-				sleep(0.001)
-
-		print(f'Expected time: {et}, time: {int(time()*1000)}')
-		t=time()
-		actions_frame=self._processed_actions[index]
-		parameters={}
-		for action in actions_frame:
-			parameters[action['prop']]=action['value']
-		
-
-		for param in parameters:
-			self._parent.update_parameters(
-				param_id=self._live2d_model_manifest['parameters_mapping'][param],
-				value=parameters[param])
-		self._parent.update_model()
-
-		dur=time()-t
-		print('dur:',dur)
-		if dur<int(self._frame_duration*1000):
-			d=int((self._frame_duration-dur)*1000)
-		else:
-			d=0
-		print("d:",d)
-		if index+1<len(self._processed_actions):
-			et=(int(time()*1000)+d)-500
-			CallLater(d, self.play_action, index+1, et )
+			if self._animation_frame+1==len(self._processed_actions):
+				self.clean_actions()
+			else:
+				self._animation_frame+=1

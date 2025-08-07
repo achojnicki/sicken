@@ -1,5 +1,6 @@
 model:
   model: sicken
+
 vtube:
   host: localhost
   port: 8001

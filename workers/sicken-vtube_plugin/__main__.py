@@ -33,10 +33,7 @@ class Sicken_VTube_Plugin:
 			)
 		self._paths=Paths()
 
-		self._model_path=Path(self._paths('VTUBE_PLUGIN_LIVE2D_MODELS_PATH')).joinpath(self._config.model.model).joinpath('model.yaml')
-		self._generators_path=Path(self._paths('VTUBE_PLUGIN_LIVE2D_MODELS_PATH')).joinpath(self._config.model.model).joinpath('generators.py')
-		with open(self._model_path, 'r') as file:
-			self._live2d_model_manifest=safe_load(file.read())
+		
 
 		self.rabbitmq_conn = BlockingConnection(
 			ConnectionParameters(
@@ -49,7 +46,7 @@ class Sicken_VTube_Plugin:
 			)
 		)
 		self._api_connection=API_Connection(self)
-		self._model=Model(self)
+		
 
 		self._events=events(self)
 
@@ -75,14 +72,13 @@ class Sicken_VTube_Plugin:
 			auto_ack=True,
 			on_message_callback=self._generation_finished
 		)
-
-		self._model_introduction_requests_channel = self.rabbitmq_conn.channel()
-		self._model_introduction_requests_channel.basic_consume(
-			queue='sicken-model_introduction_requests',
+		
+		self._vtube_plugin_load_model_channel = self.rabbitmq_conn.channel()
+		self._vtube_plugin_load_model_channel.basic_consume(
+			queue='sicken-vtube_plugin_load_model_requests',
 			auto_ack=True,
-			on_message_callback=self._model_introduction_request
+			on_message_callback=self._load_model_command
 		)
-
 
 	def _play_sound(self, file):
 		playsound(str(file))
@@ -112,8 +108,8 @@ class Sicken_VTube_Plugin:
 		t.daemon=True
 		t.start()
 
-	def _model_introduction_request(self, channel, method, properties, body):
-		self._log.info('Received Vtube Model introduction request. Sending...')
+	def _model_introduction_request(self):
+		self._log.info('Sending model parameters introduction...')
 		self._events.event(
 				event_name="model_introduction",
 				event_data={
@@ -122,11 +118,10 @@ class Sicken_VTube_Plugin:
 					"actions": self._live2d_model_manifest['actions']
 					}
 				)
-		self._log.success('Vtube Model introduction request answered successfully.')
+		self._log.success('Vtube Model introduction sent successfully.')
 
 	def _speech_request(self, channel, method, properties, body):
 		message=loads(body.decode('utf8'))
-		self._log.info('Received speech_request. Waiting for the sicken-speech_generator to finish generating speech.')
 		self._log.debug(message)
 		#print(message)
 		if message:
@@ -140,6 +135,7 @@ class Sicken_VTube_Plugin:
 			}
 
 			if not message['speech'] and message['gesture']:
+				self._log.info('Received gesture request.')
 				actions=[]
 				if self._speeches[message['response_uuid']]['gesture']:
 					actions.append({
@@ -149,6 +145,8 @@ class Sicken_VTube_Plugin:
 				self._model.set_actions(actions=actions)
 				self._model.play_actions(self._live2d_model_manifest['model']['model_id'])
 				self._is_speaking=False
+			else:
+				self._log.info('Received speech_request. Waiting for the sicken-speech_generator to finish generating speech.')
 
 	def _generation_finished(self, channel, method, properties, body):
 		message=loads(body.decode('utf8'))
@@ -184,14 +182,58 @@ class Sicken_VTube_Plugin:
 					self._awaiting.append(message['response_uuid'])
 
 
+	def _load_model(self, model):
+
+		self._model_path=Path(self._paths('VTUBE_PLUGIN_LIVE2D_MODELS_PATH')).joinpath(model).joinpath('model.yaml')
+		self._generators_path=Path(self._paths('VTUBE_PLUGIN_LIVE2D_MODELS_PATH')).joinpath(model).joinpath('generators.py')
+		with open(self._model_path, 'r') as file:
+			self._log.debug(f"Loading {model}'s manifest file")
+			self._live2d_model_manifest=safe_load(file.read())
+
+		self._model=Model(self)
+		self._model.load_model(self._live2d_model_manifest['model']['model_id'])
+
+		self._model_introduction_request()
+
+
+	def _load_model_command(self, channel, method, properties, body):
+		self._log.info('Model loading request received.')
+		message=loads(body.decode('utf8'))
+		if message:
+			try:
+				self._load_model(message['model'])
+				self._log.success(f"model {message['model']} loaded successfully")
+
+				self._events.event(
+					event_name="command_feedback",
+					event_data={
+						"message": "Model loaded sucessfully"
+						}
+					)
+			except:
+				self._events.event(
+					event_name="command_feedback",
+					event_data={
+						"message": "Error during loading model"
+						}
+					)
+				self._log.exception('Error during loading model by the command')
+
 	def start(self):
 		self._active=True
+		# Initialisation of the connection with the VTube Studio API.
 		self._api_connection.init_connection(
 			host=self._config.vtube.host,
 			port=self._config.vtube.port)
-		self._model.load_model(self._live2d_model_manifest['model']['model_id'])
+
+		# Loading Live2D model specified in the config file
+		self._load_model(self._config.model.model)
+
+		# Initialisating RabbitMQ Connection
 		self._init_rabbitmq()
-		self._speech_requests_channel.start_consuming()
+
+		# Starting listening for the messages from the RabbitMQ queues.
+		self._vtube_plugin_load_model_channel.start_consuming()
 
 
 

@@ -65,11 +65,22 @@ class Sicken:
 			on_message_callback=self._logs
 		)
 
+		self._gui_commands_feedback_channel = self.rabbitmq_conn.channel()
+		self._gui_commands_feedback_channel.basic_consume(
+			queue='sicken-gui_commands_feedback',
+			auto_ack=True,
+			on_message_callback=self._command_feedback
+		)
+
 	def _gui_response(self, channel, method, properties, body):
 		message=loads(body.decode('utf8'))
-		print(message)
 		if message and message['speech']:
 			self._sicken_gui._chat_page.add_sickens_message(message['speech'])
+
+	def _command_feedback(self, channel, method, properties, body):
+		message=loads(body.decode('utf8'))
+		if message and message['message']:
+			self._sicken_gui._chat_page.add_system_message(message['message'], esc=False)
 
 	def _logs(self, channel, method, properties, body):
 		message=loads(body.decode('utf8'))
@@ -81,7 +92,7 @@ class Sicken:
 	def start(self):
 		self._sicken_gui.Show()
 
-		t=Thread(target=self._gui_responses_channel.start_consuming, args=[])
+		t=Thread(target=self._gui_commands_feedback_channel.start_consuming, args=[])
 		t.daemon=True
 		t.start()
 

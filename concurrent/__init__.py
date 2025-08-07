@@ -13,7 +13,7 @@ from signal import signal, SIGTERM, SIGINT
 from platform import system
 
 
-class sickenconcurrent:
+class SickenConcurrent:
     _active=None
 
     _daemon=None

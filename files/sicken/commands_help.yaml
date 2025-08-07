@@ -1,0 +1,13 @@
+help: 
+  args:
+  message: Displays help message
+
+load_model:
+  args:
+    - model_name
+  message: Loads model
+
+gesture:
+  args:
+    - gesture_name
+  message: Plays gesture animation

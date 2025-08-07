@@ -22,6 +22,9 @@ call rabbitmqctl.bat add_user sicken-grok_llm password
 call rabbitmqctl.bat add_user sicken-classification password
 call rabbitmqctl.bat add_user sicken-chat_viewer password
 call rabbitmqctl.bat add_user sicken-bottom_bar password
+call rabbitmqctl.bat add_user sicken-commands password
+call rabbitmqctl.bat add_user sicken-tiktok_chat password
+
 call rabbitmqctl.bat add_user admin sicken
 
 
@@ -43,6 +46,8 @@ call rabbitmqctl.bat set_permissions -p / sicken-gui ".*" ".*" ".*"
 call rabbitmqctl.bat set_permissions -p / sicken-classification ".*" ".*" ".*"
 call rabbitmqctl.bat set_permissions -p / sicken-chat_viewer ".*" ".*" ".*"
 call rabbitmqctl.bat set_permissions -p / sicken-bottom_bar ".*" ".*" ".*"
+call rabbitmqctl.bat set_permissions -p / sicken-tiktok_chat ".*" ".*" ".*"
+call rabbitmqctl.bat set_permissions -p / sicken-commands ".*" ".*" ".*"
 call rabbitmqctl.bat set_permissions -p / admin ".*" ".*" ".*"
 
 call rabbitmqctl.bat set_topic_permissions sicken-logs "" ".*" ".*"
@@ -60,6 +65,8 @@ call rabbitmqctl.bat set_topic_permissions sicken-gui "" ".*" ".*"
 call rabbitmqctl.bat set_topic_permissions sicken-classification "" ".*" ".*"
 call rabbitmqctl.bat set_topic_permissions sicken-chat_viewer "" ".*" ".*"
 call rabbitmqctl.bat set_topic_permissions sicken-bottom_bar "" ".*" ".*"
+call rabbitmqctl.bat set_topic_permissions sicken-tiktok_chat "" ".*" ".*"
+call rabbitmqctl.bat set_topic_permissions sicken-commands "" ".*" ".*"
 call rabbitmqctl.bat set_topic_permissions admin "" ".*" ".*"
 
 echo 'Creating RabbitMQ Queues'
@@ -80,6 +87,9 @@ py ./create_queue.py sicken-webchat_requests
 py ./create_queue.py sicken-webchat_responses
 py ./create_queue.py sicken-subtitles
 py ./create_queue.py sicken-classification_requests
+py ./create_queue.py sicken-command_requests
+py ./create_queue.py sicken-command_feedback
+py ./create_queue.py sicken-gui_commands_feedback
 
 
 echo 'Enable RabbitMQ Managment plugin'

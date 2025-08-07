@@ -86,6 +86,8 @@ run "rabbitmqctl add_user sicken-grok_llm password"
 run "rabbitmqctl add_user sicken-classification password"
 run "rabbitmqctl add_user sicken-chat_viewer password"
 run "rabbitmqctl add_user sicken-bottom_bar password"
+run "rabbitmqctl add_user sicken-tiktok_chat password"
+run "rabbitmqctl add_user sicken-commands password"
 run "rabbitmqctl add_user admin sicken"
 
 
@@ -106,6 +108,8 @@ rabbitmqctl set_permissions -p / sicken-gui ".*" ".*" ".*"
 rabbitmqctl set_permissions -p / sicken-classification ".*" ".*" ".*"
 rabbitmqctl set_permissions -p / sicken-chat_viewer ".*" ".*" ".*"
 rabbitmqctl set_permissions -p / sicken-bottom_bar ".*" ".*" ".*"
+rabbitmqctl set_permissions -p / sicken-tiktok_chat ".*" ".*" ".*"
+rabbitmqctl set_permissions -p / sicken-commands ".*" ".*" ".*"
 rabbitmqctl set_permissions -p / admin ".*" ".*" ".*"
 
 rabbitmqctl set_topic_permissions sicken-logs "" ".*" ".*"
@@ -123,6 +127,8 @@ rabbitmqctl set_topic_permissions sicken-gui "" ".*" ".*"
 rabbitmqctl set_topic_permissions sicken-classification "" ".*" ".*"
 rabbitmqctl set_topic_permissions sicken-chat_viewer "" ".*" ".*"
 rabbitmqctl set_topic_permissions sicken-bottom_bar "" ".*" ".*"
+rabbitmqctl set_topic_permissions sicken-tiktok_chat "" ".*" ".*"
+rabbitmqctl set_topic_permissions sicken-commands "" ".*" ".*"
 rabbitmqctl set_topic_permissions admin "" ".*" ".*"
 
 print 'Creating RabbitMQ Queues'
@@ -143,12 +149,15 @@ run '/usr/local/bin/python3.12 create_queue.py sicken-webchat_requests'
 run '/usr/local/bin/python3.12 create_queue.py sicken-webchat_responses'
 run '/usr/local/bin/python3.12 create_queue.py sicken-subtitles'
 run '/usr/local/bin/python3.12 create_queue.py sicken-classification_requests'
+run '/usr/local/bin/python3.12 create_queue.py sicken-command_requests'
+run '/usr/local/bin/python3.12 create_queue.py sicken-command_feedback'
+run '/usr/local/bin/python3.12 create_queue.py sicken-gui_commands_feedback'
 
 print "Enable RabbitMQ Managment plugin"
 run "rabbitmq-plugins enable rabbitmq_management"
 
-print "Pulling Gemma3:4b model(may take a while)"
-ollama pull gemma3:4b
+#print "Pulling Gemma3:4b model(may take a while)"
+#ollama pull gemma3:4b
 
 run "mkdir /opt/sicken/logs"
 run "mkdir /opt/sicken/files"

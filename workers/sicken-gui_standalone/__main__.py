@@ -156,7 +156,7 @@ class Sicken:
 					self._sicken_gui._chat_page._animation_model.set_actions(actions=actions)
 					self._sicken_gui._chat_page.play_sound(self._sicken_gui._chat_page._speech_dir.joinpath(f"{message['response_uuid']}.mp3"))
 					self._sicken_gui._chat_page._animation_model.play_actions()
-					self._sicken_gui._chat_page._is_speaking=False
+					#self._sicken_gui._chat_page._is_speaking=False
 
 					del self._sicken_gui._chat_page._speeches[message['response_uuid']]
 

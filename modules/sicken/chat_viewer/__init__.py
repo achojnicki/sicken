@@ -27,8 +27,8 @@ class Chat_Viewer_GUI(wx.Frame):
 
 		self.SetBackgroundColour((32,34,39))
 	
-		self.SetMinSize((self._config.window.width,self._config.window.height))
-		self.SetMaxSize((self._config.window.width,self._config.window.height))
+		#self.SetMinSize((self._config.window.width,self._config.window.height))
+		#self.SetMaxSize((self._config.window.width,self._config.window.height))
 		self.Show(True)
 	
 

@@ -40,6 +40,8 @@ actions:
       MouthOpen:
         mode: divine
         generator: _generate_speak_range
+        smoother: null
+        smoother_alpha: 0.8
         data: 
           a: 30
           o: 30

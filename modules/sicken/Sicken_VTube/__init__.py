@@ -362,13 +362,13 @@ class Model:
 		self._frame_duration=self._root._config.vtube.frame_duration
 
 		try:
-			self._log.info('Loading Model\'s generators')
+			self._log.debug('Loading Model\'s generators')
 			spec = importlib.util.spec_from_file_location("generators", self._generators_path)
 			generators = importlib.util.module_from_spec(spec)
 			modules["generators"] = generators
 			spec.loader.exec_module(generators)
 			self._generators=generators
-			self._log.success('Generators loaded successfully.')
+			self._log.success(f' Model\'s generators loaded successfully.')
 		except:
 			self._log.exception('Exception occured during loading generators')
 			raise

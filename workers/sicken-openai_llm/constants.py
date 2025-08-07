@@ -24,7 +24,7 @@ You must respond in JSON format as there is an interpreter of your responses whi
 \"\"\"
 {
 	"speech": "Hello, how are you?"
-	"gestures": null
+	"gesture": null
 }
 \"\"\"
 \"\"\"

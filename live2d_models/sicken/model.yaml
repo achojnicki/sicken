@@ -295,7 +295,7 @@ actions:
         stop: 0
         step: 1
 
-  gloving_loving_look:
+  glowing_loving_look:
     description: Look with a hearts in the eyes
     parameters:
       GlowingHeartEyes:

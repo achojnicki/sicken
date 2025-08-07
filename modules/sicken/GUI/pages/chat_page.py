@@ -37,7 +37,17 @@ class Chat_Page(wx.Panel):
         self.textctrl.Bind(wx.EVT_TEXT_ENTER, self.enter_event)
         
         self.Show(True)
-    
+
+    def parse_command(self, cmd):
+        cmd=cmd.replace('/','')
+
+        cmd=cmd.split(' ')
+        command=cmd[0]
+        del cmd[0]
+        args=cmd
+
+        return [command, args]
+
 
     def enter_event(self, event):
         msg=self.textctrl.GetValue()
@@ -45,29 +55,57 @@ class Chat_Page(wx.Panel):
             self.textctrl.SetValue("")
             self.add_user_message(msg)
 
-            self._root._events.event(
-                    event_name="message_entered",
-                    event_data={
-                        "chat_uuid": self._root._chat_uuid,
-                        "message_author": "Unknown",
-                        "message_source": "sicken-gui",
-                        "message": msg 
-                        }
-                    )
-            
+            if msg[0]!='/':
+                self._root._events.event(
+                        event_name="message_entered",
+                        event_data={
+                            "chat_uuid": self._root._chat_uuid,
+                            "message_author": "Unknown",
+                            "message_source": "sicken-gui",
+                            "message": msg 
+                            }
+                        )
+            else:
+                cmd, args=self.parse_command(msg)
+                self._root._events.event(
+                        event_name="command_entered",
+                        event_data={
+                            "chat_uuid": self._root._chat_uuid,
+                            "message_author": "Unknown",
+                            "message_source": "sicken-gui",
+                            "cmd": cmd,
+                            "args": args
+                          }
+                        )
             
     def add_user_message(self, message):
         message=escape(message)
         self.html.RunScript('add_user_message("{0}");'.format(message))
 
-    def add_sickens_message(self, message):
+    def add_sickens_message(self, message, esc=True):
         message=message.replace('\r','')
         message=message.replace('\t','')
-        message=escape(message)
+        
+        if esc:
+            message=escape(message)
         message=message.replace('\n','<br>')
 
         s='add_sickens_message("{0}");'.format(message)
-        print(s)
+        #print(s)
+        wx.CallAfter(self.html.RunScript, s)
+
+    def add_system_message(self, message, esc=True):
+        message=message.replace('\r','')
+        message=message.replace('\t','')
+        
+        if esc:
+            message=escape(message)
+            message=message.replace('\n','<br>')
+        else:
+            message=message.replace('\n','')
+
+        s='add_system_message("{0}");'.format(message)
+        #print(s)
         wx.CallAfter(self.html.RunScript, s)
 
 

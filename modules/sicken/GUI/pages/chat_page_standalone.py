@@ -45,14 +45,17 @@ class SickenCanvas(MyCanvasBase):
         self._root=root
         self._live2d_model=None
 
+    def initTimers(self):
 
         self.refresh_timer=wx.Timer(self)
         self.animation_timer=wx.Timer(self)
 
 
         self.Bind(wx.EVT_TIMER, self.on_refresh, self.refresh_timer)
+        self.Bind(wx.EVT_TIMER, self._root._sicken_gui._chat_page._animation_model.play_action_frame, self.animation_timer)
         
         self.refresh_timer.Start(int(self._root._config.live2d.refresh_delay*1000))
+        self.animation_timer.Start(int(self._root._config.live2d.frame_duration*1000))
 
     def OnMouseMotion(self, evt):
         x, y = evt.GetPosition()
@@ -113,7 +116,6 @@ class Chat_Page_Standalone(wx.Panel):
         self.sizer=wx.BoxSizer(wx.VERTICAL)
         self.inner_sizer=wx.BoxSizer(wx.HORIZONTAL)
 
-        self.canvas=SickenCanvas(self, self._root)
 
         self.html=wx.html2.WebView.New(self)
         self.html.SetPage(self.chat_template,"")
@@ -128,11 +130,7 @@ class Chat_Page_Standalone(wx.Panel):
             )
 
 
-        self.inner_sizer.Add(self.canvas, 7, wx.EXPAND)
-        self.inner_sizer.Add(self.html, 5, wx.EXPAND)
-        self.sizer.Add(self.inner_sizer, 9, wx.EXPAND)
-        self.sizer.Add(self.textctrl, 0, wx.EXPAND)
-        self.SetSizer(self.sizer)
+       
 
         self.SetBackgroundColour((32,34,39))
     
@@ -147,8 +145,14 @@ class Chat_Page_Standalone(wx.Panel):
         self._model3_path=Path(self._live2d_model_path).joinpath(self._live2d_model_manifest['model']['model3_file'])
 
         self._animation_model=Animation_Model(self, self._root)
-
+        self.canvas=SickenCanvas(self, self._root)
         self.textctrl.Bind(wx.EVT_TEXT_ENTER, self.enter_event)
+
+        self.inner_sizer.Add(self.canvas, 7, wx.EXPAND)
+        self.inner_sizer.Add(self.html, 5, wx.EXPAND)
+        self.sizer.Add(self.inner_sizer, 9, wx.EXPAND)
+        self.sizer.Add(self.textctrl, 0, wx.EXPAND)
+        self.SetSizer(self.sizer)
 
         self.Show(True)
     
@@ -194,6 +198,7 @@ class Chat_Page_Standalone(wx.Panel):
 
 
     def init_canvas(self):
+        self.canvas.initTimers()
         self._live2d_model=live2d.LAppModel()
         self._live2d_model.LoadModelJson(str(self._model3_path))
         self._live2d_model.Resize(*self.canvas.GetSize())

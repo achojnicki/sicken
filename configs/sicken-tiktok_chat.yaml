@@ -1,0 +1,16 @@
+tiktok:
+  channel: "@adrianchojnicki"
+
+log:
+  debug: false
+
+mongo:
+  host: localhost
+  port: 27017
+  db: sicken
+
+rabbitmq:
+  host: localhost
+  port: 5672
+  user: sicken-tiktok_chat
+  password: password

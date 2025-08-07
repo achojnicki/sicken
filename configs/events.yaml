@@ -24,7 +24,6 @@ sicken-openai_llm:
       speech: speech
       gesture: gesture
   
-
     sicken-gui_responses:
       response_uuid: response_uuid
       chat_uuid: chat_uuid
@@ -56,9 +55,6 @@ sicken-openai_llm:
       message: message
       speech: speech
       gesture: gesture
-
-  model_introduction_request:
-    sicken-model_introduction_requests:
 
 
 sicken-ollama_llm:
@@ -119,9 +115,6 @@ sicken-ollama_llm:
       speech: speech
       gesture: gesture
 
-  model_introduction_request:
-    sicken-model_introduction_requests:
-
 
 sicken-grok_llm:
   request_responded:
@@ -149,7 +142,6 @@ sicken-grok_llm:
       speech: speech
       gesture: gesture
   
-
     sicken-gui_responses:
       response_uuid: response_uuid
       chat_uuid: chat_uuid
@@ -182,8 +174,6 @@ sicken-grok_llm:
       speech: speech
       gesture: gesture
 
-  model_introduction_request:
-    sicken-model_introduction_requests:
 
 
 sicken-deepseek_llm:
@@ -211,7 +201,6 @@ sicken-deepseek_llm:
       message: message
       speech: speech
       gesture: gesture
-  
 
     sicken-gui_responses:
       response_uuid: response_uuid
@@ -244,10 +233,6 @@ sicken-deepseek_llm:
       message: message
       speech: speech
       gesture: gesture
-
-  model_introduction_request:
-    sicken-model_introduction_requests:
-
 
 sicken-gui_standalone:
   message_entered:
@@ -301,8 +286,35 @@ sicken-gui_vtube_studio:
       model_id: model_id
       actions: actions
 
+  command_entered:
+    sicken-command_requests:
+      chat_uuid: chat_uuid
+      message_author: message_author
+      message_source: message_source
+      cmd: cmd
+      args: args
 
 sicken-twitch_chat:
+  message_entered:
+    sicken-response_requests:
+      chat_uuid: chat_uuid
+      message_author: message_author
+      message_source: message_source
+      message: message
+      
+    sicken-classification_requests:
+      chat_uuid: chat_uuid
+      message_author: profile_user_name
+      message_source: profile_platform
+      message: message
+
+    sicken-webchat_requests:
+      chat_uuid: chat_uuid
+      message_author: message_author
+      message_source: message_source
+      message: message
+
+sicken-tiktok_chat:
   message_entered:
     sicken-response_requests:
       chat_uuid: chat_uuid
@@ -346,3 +358,25 @@ sicken-vtube_plugin:
       model_name: model_name
       model_id: model_id
       actions: actions
+
+  command_feedback:
+    sicken-command_feedback:
+      message: message
+
+sicken-commands:
+  command_feedback:
+    sicken-gui_commands_feedback:
+      message: message
+
+  load_model:
+    sicken-vtube_plugin_load_model_requests:
+      model: model
+
+  gesture:
+    sicken-vtube_plugin_speech_requests:
+      response_uuid: response_uuid
+      chat_uuid: chat_uuid
+      message_author: message_author
+      message: message
+      speech: speech
+      gesture: gesture

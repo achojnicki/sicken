@@ -1,8 +1,7 @@
-from concurrent import sickenconcurrent
+from concurrent import SickenConcurrent
 from modules.sicken.paths import Paths
 
 if __name__=="__main__":
-	
 	paths=Paths()
-	sc=sickenconcurrent(paths)
+	sc=SickenConcurrent(paths)
 	sc.start()
