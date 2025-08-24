@@ -16,7 +16,7 @@
 
       #chat_container {margin: 5px; overflow: auto;padding-bottom: 5px;}
       .top{background: rgb(43, 45, 49); display: flex; flex-flow: row nowrap; justify-content: left; align-content: left; align-items: left; border-bottom: solid 1px black;border-top:solid 1px black;}
-      .sickens_message_div, .users_message_div {padding: 5px; margin: 5px;margin-bottom: 20px; border-radius: 15px; width: fit-content;max-width: 900px;background: rgb(129,90,156);border: solid 1px rgb(129,90,156)}
+      .sickens_message_div, .users_message_div {padding: 5px; margin: 5px;margin-bottom: 20px; border-radius: 15px; width: fit-content;max-width: 400px;background: rgb(129,90,156);border: solid 1px rgb(129,90,156)}
       .sickens_message_div {margin-left: 5px; margin-right: auto; /*background: rgb(129,90,156);border: solid 1px rgb(129,90,156)*/}
       .system_message_div {margin-left: 5px; margin-right: auto; background: gray;border:margin-bottom: 20px; lightgray;padding: 5px; margin: 5px; width: fit-content;max-width: 700px}
       .users_message_div {margin-right: 5px; margin-left: auto; /*background: rgb(19,122,127);border: solid 1px rgb(19,122,127)*/}

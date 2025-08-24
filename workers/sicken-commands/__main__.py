@@ -148,6 +148,13 @@ class Commands:
 							"message": self._get_single_help_message(message['args'][0])
 							}
 						)
+			if message['cmd'] == 'credits' or message['cmd'] == 'credit':
+				if len(message['args'])==0:
+					self._events.event(
+						event_name="command_feedback",
+						event_data={
+							"message": "Sicken App by Adrian Chojnicki.<br>Live2D model by Introvert Studio Limited.<br>Sicken is based on an Open Source software."
+						})
 			if message['cmd'] == 'load_model':
 				if len(message['args'])==1:
 					self._events.event(
