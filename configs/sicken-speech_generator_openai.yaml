@@ -4,9 +4,6 @@ openai:
     tts_voice: nova
     transcription_model: whisper-1
 
-speech:
-    api_whisper_lip_data: true
-    local_whisper_lip_data: false
 
 whisper:
     model: base

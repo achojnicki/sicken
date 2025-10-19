@@ -13,8 +13,6 @@ from openai import OpenAI
 from platform import system
 
 import requests
-import whisper
-
 class Speech_Generator:
 	project_name="sicken-speech_generator_openai"
 
@@ -32,8 +30,6 @@ class Speech_Generator:
 		self._paths=Paths()
 		self._openai=OpenAI(api_key=self._config.openai.api_key)
 
-		if self._config.speech.local_whisper_lip_data:
-			self._model=whisper.load_model(self._config.whisper.model)
 
 		self._rabbitmq_conn = BlockingConnection(
 			ConnectionParameters(
@@ -90,33 +86,20 @@ class Speech_Generator:
 
 			words=None
 			duration=None
-			if self._config.speech.api_whisper_lip_data:
-				self._log.info('Using cloud Whisper for transcription')
-				transcription = self._openai.audio.transcriptions.create(
-					model=self._config.openai.transcription_model,
-					file=file,
-					response_format="verbose_json",
-					timestamp_granularities=["word"]
-				)
 
-				words=[]
-				for word in transcription.words:
-					words.append(dict(word))
+			self._log.info('Using cloud Whisper for transcription')
+			transcription = self._openai.audio.transcriptions.create(
+				model=self._config.openai.transcription_model,
+				file=file,
+				response_format="verbose_json",
+				timestamp_granularities=["word"]
+			)
 
-				duration = transcription.duration
-			elif self._config.speech.local_whisper_lip_data:
-				self._log.info('Using local Whisper for transcription')
-				transcription=self._model.transcribe(
-					str(file),
-					word_timestamps=True)
+			words=[]
+			for word in transcription.words:
+				words.append(dict(word))
 
-				words=[]
-				for segment in transcription['segments']:
-					for word in segment['words']:
-						word['word']=word['word'].replace(' ','')
-						words.append(word)
-
-				duration=words[-1]['end']
+			duration = transcription.duration
 
 			self._log.success('Transcription finished')
 			self._notify_vtube_plugin(message['response_uuid'], duration, words)
