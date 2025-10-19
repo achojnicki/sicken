@@ -48,7 +48,7 @@ run "winget install -e --id Python.Python.3.12 --disable-interactivity --accept-
 
 print "2nd stage installation of dependencies(may take a while)"
 run "py -3.12 -m pip install --upgrade setuptools wheel"
-run "py -3.12 -m pip install --break-system-packages numpy openai playsound==1.2.2 flask flask-socketio python-socketio psutil tabulate colored pymongo pyyaml pika websockets twitchapi wxpython openai-whisper"
+run "py -3.12 -m pip install --break-system-packages numpy openai playsound==1.2.2 flask flask-socketio python-socketio psutil tabulate colored pymongo pyyaml pika websockets twitchapi wxpython"
 
 print "Installing MongoDB database"
 run "winget install -e --id MongoDB.Server --disable-interactivity --accept-package-agreements --scope machine"
