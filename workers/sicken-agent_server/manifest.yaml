@@ -1,0 +1,3 @@
+name: sicken-agent_server
+exec: __DEFAULT_PYTHON_3__
+script: __main__.py

@@ -31,7 +31,7 @@ class Chats:
 		return messages
 
 
-	def add_chat_message(self, chat_uuid, message_author, message_source, speech=None, gesture=None, msg=None):
+	def add_chat_message(self, chat_uuid, message_author, message_source, speech=None, gesture=None, func_name=None,msg=None):
 		if not self.get_chat(chat_uuid):
 			raise ChatNotFoundException
 
@@ -49,5 +49,8 @@ class Chats:
 
 		if msg:
 			message['message']=msg
+
+		if func_name:
+			message['func_name']=func_name
 
 		self._chat_messages_collection.insert_one(message)

@@ -1,4 +1,4 @@
-from concurrent import SickenConcurrent
+from sicken_concurrent import SickenConcurrent
 from modules.sicken.paths import Paths
 
 if __name__=="__main__":

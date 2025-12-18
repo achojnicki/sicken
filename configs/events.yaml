@@ -57,6 +57,83 @@ sicken-openai_llm:
       gesture: gesture
 
 
+sicken-agent_server:
+  command_executed:
+    sicken-agent_command_execution_response:
+      command_uuid: command_uuid
+      command: command
+      exit_code: exit_code
+      stdout: stdout
+      stderr: stderr
+
+sicken-openai_llm_commands:
+  execute_command:
+    sicken-agent_command_execution_requests:
+      command_uuid: command_uuid
+      command: command
+
+  command_feedback:
+    sicken-gui_commands_feedback:
+      message: message
+      
+  request_responded:
+    sicken-speech_requests:
+      response_uuid: response_uuid
+      chat_uuid: chat_uuid
+      message_author: message_author
+      message: message
+      speech: speech
+      gesture: gesture
+
+    sicken-vtube_plugin_speech_requests:
+      response_uuid: response_uuid
+      chat_uuid: chat_uuid
+      message_author: message_author
+      message: message
+      speech: speech
+      gesture: gesture
+
+    sicken-standalone_speech_requests:
+      response_uuid: response_uuid
+      chat_uuid: chat_uuid
+      message_author: message_author
+      message: message
+      speech: speech
+      gesture: gesture
+  
+    sicken-gui_responses:
+      response_uuid: response_uuid
+      chat_uuid: chat_uuid
+      message_author: message_author
+      message: message
+      speech: speech
+      gesture: gesture
+
+    sicken-twitch_responses:
+      response_uuid: response_uuid
+      chat_uuid: chat_uuid
+      message_author: message_author
+      message: message
+      speech: speech
+      gesture: gesture
+
+    sicken-webchat_responses:
+      response_uuid: response_uuid
+      chat_uuid: chat_uuid
+      message_author: message_author
+      message: message
+      speech: speech
+      gesture: gesture
+
+    sicken-subtitles:
+      response_uuid: response_uuid
+      chat_uuid: chat_uuid
+      message_author: message_author
+      message: message
+      speech: speech
+      gesture: gesture
+
+
 sicken-ollama_llm:
   request_responded:
     sicken-speech_requests:

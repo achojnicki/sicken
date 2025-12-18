@@ -19,6 +19,12 @@ sicken-openai_llm:
   uid: 7676
   gid: 7676
 
+sicken-openai_llm_commands:
+  enable: true
+  workers_count: 1
+  uid: 7676
+  gid: 7676
+
 # A DeepSeek worker for Sicken. To run Sicken, at least one of the worker with suffix _llm have to be on.
 sicken-deepseek_llm:
   enable: false
@@ -28,7 +34,7 @@ sicken-deepseek_llm:
 
 # A Grok worker for Sicken. To run Sicken, at least one of the worker with suffix _llm have to be on.
 sicken-grok_llm:
-  enable: true
+  enable: false
   workers_count: 1
   uid: 7676
   gid: 7676
