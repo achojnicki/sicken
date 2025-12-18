@@ -38,7 +38,7 @@ class sicken_agent:
 	def start(self):
 		self.connect()
 		self.ping()
-		#self._socketio.wait()
+		self._socketio.wait()
 
 	def _execute_command(self, data):
 		command_uuid=data['command_uuid']

@@ -94,11 +94,11 @@ class agent_server:
 					if self._agents[agent]['last_ping']:
 						if time() - self._agents[agent]['last_ping']>=10:
 							print('removing agent', self._agents[agent]['sid'])
-							with self._sid2client_uuid_lock:
-								del self._sid2client_uuid[self._clients[client]['sid']]
+							with self._sid2agent_uuid_lock:
+								del self._sid2agent_uuid[self._agents[agent]['sid']]
 
 							with self._clients_lock:
-								del self._clients[client]
+								del self._agents[agent]['sid']
 
 				self.socketio.sleep(0.1)
 			except RuntimeError:
