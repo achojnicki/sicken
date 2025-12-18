@@ -90,6 +90,8 @@ py ./create_queue.py sicken-classification_requests
 py ./create_queue.py sicken-command_requests
 py ./create_queue.py sicken-command_feedback
 py ./create_queue.py sicken-gui_commands_feedback
+py ./create_queue.py sicken-agent_command_execution_requests
+py ./create_queue.py sicken-agent_command_execution_response
 
 
 echo 'Enable RabbitMQ Managment plugin'
