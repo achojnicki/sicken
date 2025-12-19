@@ -39,6 +39,11 @@ class agent_server:
 		self.application.config['SECRET_KEY'] = self._config.agent_server.secret
 
 		self._commands={}
+		self._commands_lock=Lock()
+		
+		self._processes={}
+		self._processes_lock=Lock()
+
 		self._agents={}
 		self._sid2agent_uuid={}
 
@@ -67,11 +72,17 @@ class agent_server:
 			on_message_callback=self._command_execution_request
 		)
 
+		self.agent_spawn_proceses_requests_channel = self.rabbitmq_conn.channel()
+		self.agent_spawn_proceses_requests_channel.basic_consume(
+			queue='sicken-agent_spawn_proceses_requests',
+			auto_ack=True,
+			on_message_callback=self._spawn_process_request
+		)
+
 	
 	def start(self):
 		try:
-			self.socketio.start_background_task(target=self.agent_command_execution_requests_channel.start_consuming)
-
+			self.socketio.start_background_task(target=self.agent_spawn_proceses_requests_channel.start_consuming)
 			self.socketio.start_background_task(target=self._agents_checker)
 
 			self.socketio.run(self.application, host=self._config.agent_server.host, port=self._config.agent_server.port)
@@ -130,18 +141,40 @@ class agent_server:
 				print('agent_ping', agent_uuid, request.remote_addr)
 
 
+	def _spawn_process_request(self, channel, method, properties, body):
+		data=loads(body.decode('utf8'))
+		process_uuid=data['process_uuid']
+
+		with self._processes_lock:
+			self._processes[process_uuid]={
+				"process_uuid": process_uuid,
+				"cmd": data['command']
+			}
+		
+		for agent in self._agents:
+			print("sid", self._agents[agent]['sid'])
+
+			self.socketio.emit(
+				'spawn_process_request',
+					{
+					"process_uuid": self._processes[process_uuid]['process_uuid'],
+					"command": self._processes[process_uuid]['command']
+					},
+				to=self._agents[agent]['sid']
+				)
+
 
 	def _command_execution_request(self, channel, method, properties, body):
 		data=loads(body.decode('utf8'))
 		command_uuid=data['command_uuid']
-
-		self._commands[data['command_uuid']]={
-			"command_uuid": data['command_uuid'],
-			"command": data["command"],
-			"exitcode": None,
-			"stdout": None,
-			"stderr": None
-		}
+		with self._commands_lock:
+			self._commands[data['command_uuid']]={
+				"command_uuid": data['command_uuid'],
+				"command": data["command"],
+				"exitcode": None,
+				"stdout": None,
+				"stderr": None
+			}
 
 		for agent in self._agents:
 			print("sid", self._agents[agent]['sid'])

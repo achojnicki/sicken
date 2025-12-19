@@ -30,20 +30,28 @@ class sicken_agent:
 
 		self._socketio=socketio.Client(logger=False, engineio_logger=False)
 		self._socketio.on('command_request', namespace="/", handler=self._execute_command)
-		self._socketio.on('spawn_process', namespace="/", handler=self._execute_command)
+		self._socketio.on('spawn_process_request', namespace="/", handler=self._spawn_process)
 
 
 		self._processes={}
 		self._processes_lock=Lock()
 
-	def spawn_process(self,process_uuid, cmd, args=[]):
+
+	def spawn_process(self, data):
+
+		self._spawn_process(
+			process_uuid=data['process_uuid'],
+			cmd=data['command']
+			)
+	def _spawn_process(self,process_uuid, cmd):
 		master_fd, slave_fd = pty.openpty()
 
 		terminal=pyte.Screen(COLS, ROWS)
 		stream=pyte.Stream(screen)
 
 		process=Popen(
-		    [cmd, *args],
+		    [cmd],
+		    shell=True,
 		    stdin=slave_fd,
 		    stdout=slave_fd,
 		    stderr=slave_fd,
