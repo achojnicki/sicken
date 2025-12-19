@@ -2,18 +2,20 @@ from adisconfig import adisconfig
 from adislog import adislog
 
 from threading import Thread, Event, Lock
-import socketio
 from time import sleep
 from subprocess import Popen, PIPE
-from os import getpid, kill
+from os import getpid, kill, read
 from signal import SIGTERM
+from select import select
 
-
+import socketio
 import socket
+import pyte
+import pty
 
 SOCKETIO_URL='ws://{server_addr}:{server_port}/socket.io/'
 
-
+COLS, ROWS= 80, 24
 
 class sicken_agent:
 	def __init__(self, ):
@@ -28,6 +30,63 @@ class sicken_agent:
 
 		self._socketio=socketio.Client(logger=False, engineio_logger=False)
 		self._socketio.on('command_request', namespace="/", handler=self._execute_command)
+		self._socketio.on('spawn_process', namespace="/", handler=self._execute_command)
+
+
+		self._processes={}
+		self._processes_lock=Lock()
+
+	def spawn_process(self,process_uuid, cmd, args=[]):
+		master_fd, slave_fd = pty.openpty()
+
+		terminal=pyte.Screen(COLS, ROWS)
+		stream=pyte.Stream(screen)
+
+		process=Popen(
+		    [cmd, *args],
+		    stdin=slave_fd,
+		    stdout=slave_fd,
+		    stderr=slave_fd,
+		    close_fds=True
+		)
+
+		os.close(slave_fd)
+
+		stdout_lock=Lock()
+
+
+		with self._processes_lock:
+			self._processes[process_uuid]={
+				"process_uuid": process_uuid,
+				"process": p,
+				"pty_master_fd": master_fd,
+				"pty_slave_fd": slave_fd,
+				"terminal": terminal,
+				"terminal_stream": stream,
+				"terminal_lock": stdout_lock
+			}
+
+
+	def _terminal_updater_thread(self):
+		for process_uuid in self._processes:
+			process=self._processes[process_uuid]
+
+			with process['terminal_lock']:
+				r, _, _ = select([process['pty_master_fd']], [], [], 0.1)
+
+				if process['pty_master_fd'] in r:
+					data=read(process['pty_master_fd'], 4096)
+					if not data:
+						continue
+
+					process['terminal_stream'].feed(data.decode(errors='ignore'))
+
+
+	def obtain_process_terminal(self, process_uuid):
+		process=self._processes[process_uuid]
+
+		with process['terminal_lock']:
+			return process['terminal'].display
 
 	def connect(self):
 		self._log.info('Connecting to the agent server at:', SOCKETIO_URL.format(
@@ -57,9 +116,16 @@ class sicken_agent:
 
 	def ping(self):
 		t=Thread(target=self._ping, args=())
+		t.daemon=True
+		t.start()
+
+	def terminal_updater_thread(self):
+		t=Thread(target=self._terminal_updater_thread, args=())
+		t.daemon=True
 		t.start()
 
 	def start(self):
+		self.terminal_updater_thread()
 		self.connect()
 		self.ping()
 		self._socketio.wait()
