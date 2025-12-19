@@ -4,7 +4,7 @@ from adislog import adislog
 from threading import Thread, Event, Lock
 from time import sleep
 from subprocess import Popen, PIPE
-from os import getpid, kill, read
+from os import getpid, kill, read, close
 from signal import SIGTERM
 from select import select
 
@@ -31,6 +31,7 @@ class sicken_agent:
 		self._socketio=socketio.Client(logger=False, engineio_logger=False)
 		self._socketio.on('command_request', namespace="/", handler=self._execute_command)
 		self._socketio.on('spawn_process_request', namespace="/", handler=self.spawn_process)
+		self._socketio.on('process_terminal_snapshot_request', namespace="/", handler=self.process_terminal_snapshot_request)
 
 
 		self._processes={}
@@ -43,6 +44,7 @@ class sicken_agent:
 			process_uuid=data['process_uuid'],
 			cmd=data['command']
 			)
+
 	def _spawn_process(self,process_uuid, cmd):
 		master_fd, slave_fd = pty.openpty()
 
@@ -58,7 +60,7 @@ class sicken_agent:
 		    close_fds=True
 		)
 
-		os.close(slave_fd)
+		close(slave_fd)
 
 		stdout_lock=Lock()
 
@@ -66,6 +68,7 @@ class sicken_agent:
 		with self._processes_lock:
 			self._processes[process_uuid]={
 				"process_uuid": process_uuid,
+				"command": cmd,
 				"process": p,
 				"pty_master_fd": master_fd,
 				"pty_slave_fd": slave_fd,
@@ -90,7 +93,23 @@ class sicken_agent:
 					process['terminal_stream'].feed(data.decode(errors='ignore'))
 
 
-	def obtain_process_terminal(self, process_uuid):
+	def process_terminal_snapshot_request(self, data):
+		process=self._processes[data['process_uuid']]
+
+		snapshot=self._screen_snapshot(data['process_uuid'])
+		
+
+
+		self._socketio.emit(
+			'process_terminal_snapshot_response',
+			{
+				"process_uuid": process['process_uuid'],
+				"command": process['command'],
+				"terminal_snapshot": snapshot
+			},
+			namespace="/")
+
+	def _screen_snapshot(self, process_uuid):
 		process=self._processes[process_uuid]
 
 		with process['terminal_lock']:

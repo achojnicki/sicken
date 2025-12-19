@@ -79,6 +79,13 @@ class agent_server:
 			on_message_callback=self._spawn_process_request
 		)
 
+		self.agent_process_terminal_snapshot_request_channel = self.rabbitmq_conn.channel()
+		self.agent_process_terminal_snapshot_request_channel.basic_consume(
+			queue='sicken-agent_process_terminal_snapshot_requests',
+			auto_ack=True,
+			on_message_callback=self._process_terminal_snapshot_request
+		)
+
 	
 	def start(self):
 		try:
@@ -148,7 +155,7 @@ class agent_server:
 		with self._processes_lock:
 			self._processes[process_uuid]={
 				"process_uuid": process_uuid,
-				"cmd": data['command']
+				"command": data['command']
 			}
 		
 		for agent in self._agents:
@@ -163,6 +170,21 @@ class agent_server:
 				to=self._agents[agent]['sid']
 				)
 
+	def _process_terminal_snapshot_request(self, channel, method, properties, body):
+		data=loads(body.decode('utf8'))
+		process_uuid=data['process_uuid']
+
+		
+		for agent in self._agents:
+			print("sid", self._agents[agent]['sid'])
+
+			self.socketio.emit(
+				'process_terminal_snapshot_request',
+					{
+					"process_uuid": self._processes[process_uuid]['process_uuid'],
+					},
+				to=self._agents[agent]['sid']
+				)
 
 	def _command_execution_request(self, channel, method, properties, body):
 		data=loads(body.decode('utf8'))
@@ -202,12 +224,24 @@ class agent_server:
 				}
 			)
 
+	def _process_terminal_snapshot_response(self, data):
+		print(data)
+		self._events.event(
+			event_name="terminal_snapshot",
+			event_data={
+				"process_uuid": data['process_uuid'],
+				"command": data['command'],
+				"terminal_snapshot": data['terminal_snapshot']
+				}
+			)
+
 	def bind_socketio_events(self):
 		self.socketio.on_event('connect', self._connect, namespace="/")
 
 		self.socketio.on_event('agent_connect', self._agent_connect, namespace="/")
 		self.socketio.on_event('agent_ping', self._ping, namespace="/")
 		self.socketio.on_event('command_response', self._command_response, namespace="/")
+		self.socketio.on_event('process_terminal_snapshot_response', self._process_terminal_snapshot_response, namespace="/")
 
 
 
