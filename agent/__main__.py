@@ -30,7 +30,7 @@ class sicken_agent:
 
 		self._socketio=socketio.Client(logger=False, engineio_logger=False)
 		self._socketio.on('command_request', namespace="/", handler=self._execute_command)
-		self._socketio.on('spawn_process_request', namespace="/", handler=self._spawn_process)
+		self._socketio.on('spawn_process_request', namespace="/", handler=self.spawn_process)
 
 
 		self._processes={}
