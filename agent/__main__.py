@@ -79,18 +79,19 @@ class sicken_agent:
 
 
 	def _terminal_updater_thread(self):
-		for process_uuid in self._processes:
-			process=self._processes[process_uuid]
+		while True:
+			for process_uuid in self._processes:
+				process=self._processes[process_uuid]
 
-			with process['terminal_lock']:
-				r, _, _ = select([process['pty_master_fd']], [], [], 0.1)
+				with process['terminal_lock']:
+					r, _, _ = select([process['pty_master_fd']], [], [], 0.1)
 
-				if process['pty_master_fd'] in r:
-					data=read(process['pty_master_fd'], 4096)
-					if not data:
-						continue
+					if process['pty_master_fd'] in r:
+						data=read(process['pty_master_fd'], 4096)
+						if not data:
+							continue
 
-					process['terminal_stream'].feed(data.decode(errors='ignore'))
+						process['terminal_stream'].feed(data.decode(errors='ignore'))
 
 
 	def process_terminal_snapshot_request(self, data):
