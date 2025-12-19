@@ -97,7 +97,7 @@ class agent_server:
 							with self._sid2agent_uuid_lock:
 								del self._sid2agent_uuid[self._agents[agent]['sid']]
 
-							with self._clients_lock:
+							with self._agents_lock:
 								del self._agents[agent]['sid']
 
 				self.socketio.sleep(0.1)

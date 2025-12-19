@@ -259,8 +259,9 @@ class OpenAI_LLM:
 						prompt=prompt
 						)
 					if not response.function_call:
-						response=loads(response.content)
-						self._log.debug(response)
+						response=response.content
+						self._log.warning(response)
+						response=loads(response)
 
 						self._db.add_chat_message(
 							chat_uuid=message['chat_uuid'],
