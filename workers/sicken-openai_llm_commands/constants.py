@@ -59,7 +59,7 @@ FUNCTIONS = [
     },
     {
         "name": "spawn_process",
-        "description": "This tool allows Sicken to execute interactive and long running commands in the VM. This command is useful to execute a interactive commands. to see the output of the process started with this command use the ",
+        "description": "This tool allows Sicken to execute interactive and long running commands in the VM. This command is useful to execute a interactive commands. to see the output of the process started with this command use the process_lookup tool.",
         "parameters": {
             "type": "object",
             "properties": {

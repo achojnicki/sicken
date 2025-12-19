@@ -68,7 +68,7 @@ sicken-agent_server:
       
   terminal_snapshot:
     sicken-agent_terminal_snapshot_response:
-      process_uuid: command_uuid
+      process_uuid: process_uuid
       command: command
       terminal_snapshot: terminal_snapshot
 
@@ -77,11 +77,19 @@ sicken-openai_llm_commands:
     sicken-agent_command_execution_requests:
       command_uuid: command_uuid
       command: command
-
   command_feedback:
     sicken-gui_commands_feedback:
       message: message
-      
+           
+  spawn_process:
+    sicken-agent_spawn_proceses_requests:
+      process_uuid: process_uuid
+      command: command
+
+  lookup_process:
+    sicken-agent_terminal_snapshot_requests:
+      process_uuid: process_uuid
+
   request_responded:
     sicken-speech_requests:
       response_uuid: response_uuid
