@@ -7,7 +7,7 @@ from sicken.memories import Memories
 from sicken.knowledge import Knowledge
 from sicken.exceptions import ChatNotFoundException
 
-from constants import SYSTEM_MESSAGE, FUNCTIONS, COMMAND_FEEDBACK
+from constants import SYSTEM_MESSAGE, FUNCTIONS, COMMAND_EXECUTE_FEEDBACK, SPAWN_PROCESS_FEEDBACK, PROCESS_LOOKUP_FEEDBACK
 
 from openai import OpenAI
 from pika import BlockingConnection, PlainCredentials, ConnectionParameters
@@ -78,6 +78,13 @@ class OpenAI_LLM:
 			on_message_callback=self._command_handler
 		)
 
+		self._agent_terminal_snapshot_response_channel = self._threaded_rabbitmq_conn.channel()
+		self._agent_terminal_snapshot_response_channel.basic_consume(
+			queue='sicken-agent_terminal_snapshot_response',
+			auto_ack=True,
+			on_message_callback=self._snapshot_handler
+		)
+
 
 		self._db=DB(self)
 		self._events=events(self)
@@ -92,8 +99,10 @@ class OpenAI_LLM:
 		self._knowledge=Knowledge(self)
 
 		self._commands={}
-
 		self._commands_lock=Lock()
+
+		self._processes={}
+		self._processes_lock=Lock()
 
 
 	def _command_handler(self, channel, method, properties, body):
@@ -107,6 +116,15 @@ class OpenAI_LLM:
 				self._commands[command_uuid]['stdout']=message['stdout']
 				self._commands[command_uuid]['stderr']=message['stderr']
 
+	def _snapshot_handler(self, channel, method, properties, body):
+		message=loads(body)
+		process_uuid=message['process_uuid']
+
+		with self._processes_lock:
+			if process_uuid in self._processes:
+				self._processes[process_uuid]['received']=True
+				self._processes[process_uuid]['terminal_snapshot']=message['terminal_snapshot']
+				
 
 	def _introduction(self, channel, method, properties, body):
 		try:
@@ -210,7 +228,7 @@ class OpenAI_LLM:
 			raise
 
 
-	def _execute_command(self, chat_uuid, command): 
+	def _execute_command(self, command): 
 		command_uuid=str(uuid4())
 		with self._commands_lock:
 			self._commands[command_uuid]={
@@ -237,6 +255,54 @@ class OpenAI_LLM:
 			sleep(0.1)
 
 		return self._commands[command_uuid]
+
+	def _spawn_process(self, command):
+		process_uuid=str(uuid4())
+
+		with self._processes_lock:
+			self._processes[process_uuid]={
+				"process_uuid": process_uuid,
+				"command": command,
+				"received": False,
+				"terminal_snapshot": None
+			}
+
+		self._events.event(
+			event_name="spawn_process",
+			event_data={
+				"process_uuid": process_uuid,
+				"command": command
+				}
+			)
+		return {"process_uuid": process_uuid}
+
+	def _lookup_process(self, process_uuid): 
+		with self._processes_lock:
+			self._processes[process_uuid]["received"]=False
+			self._processes[process_uuid]["terminal_snapshot"]=None 
+
+
+		self._events.event(
+			event_name="lookup_process",
+			event_data={
+				"process_uuid": process_uuid,
+				}
+			)
+
+		while True:
+			if self._processes[process_uuid]['received']:
+				process=self._processes[process_uuid].copy()
+				break
+			print('waiting')
+
+			sleep(0.1)
+
+		with self._processes_lock:
+			self._processes[process_uuid]["received"]=False
+			self._processes[process_uuid]["terminal_snapshot"]=None 
+		return process
+
+	
 
 	def _response_request(self, channel, method, properties, body):
 		try:		
@@ -278,11 +344,40 @@ class OpenAI_LLM:
 
 						if func_name=="execute_command":
 							result=self._execute_command(
-								chat_uuid=message['chat_uuid'],
 								command=func_args['command']
 								)
 
-							self._db.add_chat_message(
+
+							self._events.event(
+								event_name="command_feedback",
+								event_data={
+									"message": COMMAND_EXECUTE_FEEDBACK.format(**result)
+									}
+								)
+						elif func_name=="spawn_process":
+							result=self._spawn_process(
+								command=func_args['command']
+								)
+
+							self._events.event(
+								event_name="command_feedback",
+								event_data={
+									"message": SPAWN_PROCESS_FEEDBACK.format(command=func_args['command'], **result)
+									}
+								)
+						elif func_name=="lookup_process":
+							result=self._lookup_process(
+								process_uuid=func_args['process_uuid']
+								)
+
+							self._events.event(
+								event_name="command_feedback",
+								event_data={
+									"message": PROCESS_LOOKUP_FEEDBACK
+									}
+								)
+
+						self._db.add_chat_message(
 								chat_uuid=message['chat_uuid'],
 								message_author='function',
 								message_source=None,
@@ -290,13 +385,7 @@ class OpenAI_LLM:
 								func_name=func_name
 								)
 
-							self._events.event(
-								event_name="command_feedback",
-								event_data={
-									"message": COMMAND_FEEDBACK.format(**result)
-									}
-								)
-							prompt=self._build_prompt(chat_uuid=message['chat_uuid'])
+						prompt=self._build_prompt(chat_uuid=message['chat_uuid'])
 
 
 				self._events.event(
@@ -317,9 +406,10 @@ class OpenAI_LLM:
 
 
 	def start(self):
-		t=Thread(target=self._agent_command_execution_response_channel.start_consuming, args=[])
+		t=Thread(target=self._agent_terminal_snapshot_response_channel.start_consuming, args=[])
 		t.daemon=True
 		t.start()
+
 		self._introduction_channel.start_consuming()
 		
 
