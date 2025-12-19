@@ -54,8 +54,8 @@ class sicken_agent:
 		process=Popen(
 		    [cmd],
 		    env={
-		    	"COLS": COLS,
-		    	"ROWS": ROWS
+		    	"COLS": str(COLS),
+		    	"ROWS": str(ROWS)
 		    },
 		    shell=True,
 		    stdin=slave_fd,
@@ -100,10 +100,7 @@ class sicken_agent:
 
 	def process_terminal_snapshot_request(self, data):
 		process=self._processes[data['process_uuid']]
-
 		snapshot=self._screen_snapshot(data['process_uuid'])
-		
-
 
 		self._socketio.emit(
 			'terminal_snapshot_response',
