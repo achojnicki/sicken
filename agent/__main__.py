@@ -47,7 +47,7 @@ class sicken_agent:
 		master_fd, slave_fd = pty.openpty()
 
 		terminal=pyte.Screen(COLS, ROWS)
-		stream=pyte.Stream(screen)
+		stream=pyte.Stream(terminal)
 
 		process=Popen(
 		    [cmd],
