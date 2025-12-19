@@ -53,6 +53,10 @@ class sicken_agent:
 
 		process=Popen(
 		    [cmd],
+		    env={
+		    	"COLS": COLS,
+		    	"ROWS": ROWS
+		    },
 		    shell=True,
 		    stdin=slave_fd,
 		    stdout=slave_fd,
