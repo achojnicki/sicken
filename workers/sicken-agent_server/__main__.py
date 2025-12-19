@@ -79,9 +79,9 @@ class agent_server:
 			on_message_callback=self._spawn_process_request
 		)
 
-		self.agent_process_terminal_snapshot_request_channel = self.rabbitmq_conn.channel()
-		self.agent_process_terminal_snapshot_request_channel.basic_consume(
-			queue='sicken-agent_process_terminal_snapshot_requests',
+		self.agent_terminal_snapshot_request_channel = self.rabbitmq_conn.channel()
+		self.agent_terminal_snapshot_request_channel.basic_consume(
+			queue='sicken-agent_terminal_snapshot_requests',
 			auto_ack=True,
 			on_message_callback=self._process_terminal_snapshot_request
 		)
@@ -179,7 +179,7 @@ class agent_server:
 			print("sid", self._agents[agent]['sid'])
 
 			self.socketio.emit(
-				'process_terminal_snapshot_request',
+				'terminal_snapshot_request',
 					{
 					"process_uuid": self._processes[process_uuid]['process_uuid'],
 					},
@@ -241,7 +241,7 @@ class agent_server:
 		self.socketio.on_event('agent_connect', self._agent_connect, namespace="/")
 		self.socketio.on_event('agent_ping', self._ping, namespace="/")
 		self.socketio.on_event('command_response', self._command_response, namespace="/")
-		self.socketio.on_event('process_terminal_snapshot_response', self._process_terminal_snapshot_response, namespace="/")
+		self.socketio.on_event('terminal_snapshot_response', self._process_terminal_snapshot_response, namespace="/")
 
 
 

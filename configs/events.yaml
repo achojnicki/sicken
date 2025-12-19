@@ -65,6 +65,12 @@ sicken-agent_server:
       exit_code: exit_code
       stdout: stdout
       stderr: stderr
+      
+  terminal_snapshot:
+    sicken-agent_terminal_snapshot_response:
+      process_uuid: command_uuid
+      command: command
+      terminal_snapshot: terminal_snapshot
 
 sicken-openai_llm_commands:
   execute_command:
