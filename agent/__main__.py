@@ -69,7 +69,7 @@ class sicken_agent:
 			self._processes[process_uuid]={
 				"process_uuid": process_uuid,
 				"command": cmd,
-				"process": p,
+				"process": process,
 				"pty_master_fd": master_fd,
 				"pty_slave_fd": slave_fd,
 				"terminal": terminal,
