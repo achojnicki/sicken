@@ -101,7 +101,7 @@ class sicken_agent:
 
 
 		self._socketio.emit(
-			'process_terminal_snapshot_response',
+			'terminal_snapshot_response',
 			{
 				"process_uuid": process['process_uuid'],
 				"command": process['command'],

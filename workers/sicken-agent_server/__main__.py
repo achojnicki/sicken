@@ -83,7 +83,7 @@ class agent_server:
 		self.agent_terminal_snapshot_request_channel.basic_consume(
 			queue='sicken-agent_terminal_snapshot_requests',
 			auto_ack=True,
-			on_message_callback=self._process_terminal_snapshot_request
+			on_message_callback=self._terminal_snapshot_request
 		)
 
 	
@@ -170,7 +170,7 @@ class agent_server:
 				to=self._agents[agent]['sid']
 				)
 
-	def _process_terminal_snapshot_request(self, channel, method, properties, body):
+	def _terminal_snapshot_request(self, channel, method, properties, body):
 		data=loads(body.decode('utf8'))
 		process_uuid=data['process_uuid']
 
@@ -185,6 +185,17 @@ class agent_server:
 					},
 				to=self._agents[agent]['sid']
 				)
+
+	def _process_terminal_snapshot_response(self, data):
+		print(data)
+		self._events.event(
+			event_name="terminal_snapshot",
+			event_data={
+				"process_uuid": data['process_uuid'],
+				"command": data['command'],
+				"terminal_snapshot": data['terminal_snapshot']
+				}
+			)
 
 	def _command_execution_request(self, channel, method, properties, body):
 		data=loads(body.decode('utf8'))
@@ -221,17 +232,6 @@ class agent_server:
 				"stdout": data['stdout'],
 				"stderr": data['stderr']
 				
-				}
-			)
-
-	def _process_terminal_snapshot_response(self, data):
-		print(data)
-		self._events.event(
-			event_name="terminal_snapshot",
-			event_data={
-				"process_uuid": data['process_uuid'],
-				"command": data['command'],
-				"terminal_snapshot": data['terminal_snapshot']
 				}
 			)
 
