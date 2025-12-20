@@ -15,7 +15,6 @@ import pty
 
 SOCKETIO_URL='ws://{server_addr}:{server_port}/socket.io/'
 
-COLS, ROWS= 80, 24
 
 class sicken_agent:
 	def __init__(self, ):
@@ -48,14 +47,15 @@ class sicken_agent:
 	def _spawn_process(self,process_uuid, cmd):
 		master_fd, slave_fd = pty.openpty()
 
-		terminal=pyte.Screen(COLS, ROWS)
+		terminal=pyte.Screen(self._config.terminal.cols, self._config.terminal.rows)
 		stream=pyte.Stream(terminal)
 
 		process=Popen(
 		    [cmd],
 		    env={
-		    	"COLS": str(COLS),
-		    	"ROWS": str(ROWS)
+		    	"TERM": "linux",
+		    	"COLS": str(self._config.terminal.cols),
+		    	"ROWS": str(self._config.terminal.rows)
 		    },
 		    shell=True,
 		    stdin=slave_fd,

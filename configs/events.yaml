@@ -77,6 +77,7 @@ sicken-openai_llm_commands:
     sicken-agent_command_execution_requests:
       command_uuid: command_uuid
       command: command
+
   command_feedback:
     sicken-gui_commands_feedback:
       message: message

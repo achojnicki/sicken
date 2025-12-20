@@ -1,3 +1,7 @@
 sicken_agent:
   server_addr: 10.1.1.1
   server_port: 9999
+
+terminal:
+  cols: 160
+  rows: 70
