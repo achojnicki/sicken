@@ -9,11 +9,9 @@ An AI VTuber based on OpenAI, XAI, or DeepSeek.
 ✌️ **Guestures** - Sicken supports gestures.  
 🍎 **Multi Platform** - Sicken is a multi-platform application, supporting all the major PC and Mac platforms.  
 📝 **Knowledge Base** - Sicken has a built-in knowledge base system, allowing it to define its knowledge base in a categorised manner.  
-🔄️ **Model Template System** - Sicken has a built-in system of templates for models that allows extending the base of the models supported by Sicken by creating two files for each supported model. Generation of model parameters and a list of supported gestures is on a per-model basis.  
-
-## Ongoing Features
-⚙️ **Standalone Live2D support in Sicken app** - Work is currently underway to add support for a native, standalone avatar directly to the Sicken app, allowing her to react to touch, and follow the cursor.  
-🎬 **Actions** - There is a plan to add support for actions, which Sicken would do. E.g., interacting with the host computer.  
+🔄️ **Model Template System** - Sicken has a built-in system of templates for models that allows extending the base of the models supported by Sicken by creating two files for each supported model. Generation of model parameters and a list of supported gestures is on a per-model basis.
+⚙️ **A VM Agent** - Sicken supports execution of commands in a VM with it's agent installed. Non-interactive commands are supported as well as the interactive ones running through the terminal emulator made especially for the AI(built-in in the agent).
+ 
 
 ## Installation
 

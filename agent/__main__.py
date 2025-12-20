@@ -7,11 +7,14 @@ from subprocess import Popen, PIPE
 from os import getpid, kill, read, close
 from signal import SIGTERM
 from select import select
+from platform import system
+
 
 import socketio
 import socket
 import pyte
-import pty
+if system()=='Linux' or system()=='Darwin':
+	import pty
 
 SOCKETIO_URL='ws://{server_addr}:{server_port}/socket.io/'
 
@@ -118,10 +121,7 @@ class sicken_agent:
 			return process['terminal'].display
 
 	def connect(self):
-		self._log.info('Connecting to the agent server at:', SOCKETIO_URL.format(
-			server_addr=self._config.sicken_agent.server_addr,
-			server_port=self._config.sicken_agent.server_port)
-		)
+		self._log.info(f'Connecting to the agent server at:{SOCKETIO_URL.format(server_addr=self._config.sicken_agent.server_addr,server_port=self._config.sicken_agent.server_port)}')
 		self._socketio.connect(
 			SOCKETIO_URL.format(
 				server_addr=self._config.sicken_agent.server_addr,

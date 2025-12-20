@@ -3,5 +3,5 @@ sicken_agent:
   server_port: 9999
 
 terminal:
-  cols: 160
-  rows: 70
+  cols: 80
+  rows: 24
