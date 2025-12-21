@@ -81,7 +81,9 @@ class sicken_agent:
 				"pty_slave_fd": slave_fd,
 				"terminal": terminal,
 				"terminal_stream": stream,
-				"terminal_lock": stdout_lock
+				"terminal_lock": stdout_lock,
+				"status": "Running",
+				"exit_code": False
 			}
 
 
@@ -94,12 +96,18 @@ class sicken_agent:
 					r, _, _ = select([process['pty_master_fd']], [], [], 0.1)
 
 					if process['pty_master_fd'] in r:
-						data=read(process['pty_master_fd'], 4096)
-						if not data:
-							continue
+						try:
+							data=read(process['pty_master_fd'], 4096)
+							if not data:
+								continue
 
-						process['terminal_stream'].feed(data.decode(errors='ignore'))
+							process['terminal_stream'].feed(data.decode(errors='ignore'))
+						except OSERROR:
+							process['status']="Exitted"
+							process['exit_code']=p.returncode
 
+
+			sleep(0.01)
 
 	def process_terminal_snapshot_request(self, data):
 		process=self._processes[data['process_uuid']]
@@ -110,7 +118,9 @@ class sicken_agent:
 			{
 				"process_uuid": process['process_uuid'],
 				"command": process['command'],
-				"terminal_snapshot": snapshot
+				"terminal_snapshot": snapshot,
+				"status": process['status'],
+				"exit_code": process['exit_code']
 			},
 			namespace="/")
 

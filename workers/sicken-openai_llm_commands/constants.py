@@ -45,7 +45,7 @@ Have fun Sicken 😊
 FUNCTIONS = [
     {
         "name": "execute_command",
-        "description": "This tool allows Sicken to execute commands in the VM. This command is useful to execute a non-interactive commands.",
+        "description": "This tool allows Sicken to execute commands in the VM. This command is useful to execute a non-interactive commands. This tool is perfect for using commands like ls, cat. lscpu, lspci and others where you need the whole output.",
         "parameters": {
             "type": "object",
             "properties": {
@@ -59,7 +59,7 @@ FUNCTIONS = [
     },
     {
         "name": "spawn_process",
-        "description": "This tool allows Sicken to execute interactive and long running commands in the VM. This command is useful to execute a interactive commands. to see the output of the process started with this command use the process_lookup tool.",
+        "description": "This tool allows Sicken to execute interactive and long running commands in the VM. This command is useful to execute a interactive commands. To see the output of the process started with this command use the process_lookup tool. Useful for monitoring live commands like top, htop, bmon. Do not use this one for obtaining informations that don't update in time, as there is a risk that due to the terminal size, some informations may be truncated",
         "parameters": {
             "type": "object",
             "properties": {

@@ -193,7 +193,9 @@ class agent_server:
 			event_data={
 				"process_uuid": data['process_uuid'],
 				"command": data['command'],
-				"terminal_snapshot": data['terminal_snapshot']
+				"terminal_snapshot": data['terminal_snapshot'],
+				"status": data['status'],
+				"exit_code": data['exit_code']
 				}
 			)
 
