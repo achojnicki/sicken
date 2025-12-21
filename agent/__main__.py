@@ -104,7 +104,7 @@ class sicken_agent:
 							process['terminal_stream'].feed(data.decode(errors='ignore'))
 						except OSError:
 							process['status']="Exitted"
-							process['exit_code']=p.returncode
+							process['exit_code']=process['process'].returncode
 
 
 			sleep(0.01)
