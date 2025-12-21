@@ -70,7 +70,7 @@ sicken-agent_server:
     sicken-agent_terminal_snapshot_response:
       process_uuid: process_uuid
       command: command
-      terminal_snapshot: terminal_snapshot,
+      terminal_snapshot: terminal_snapshot
       status: status
       exit_code: exit_code
 
