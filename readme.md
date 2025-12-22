@@ -88,5 +88,21 @@ Below are a few videos of Sicken in action.
 		<td>
 			<a href="https://www.youtube.com/watch?v=YxmQ3sJWp4Q"><img src="https://github.com/achojnicki/sicken/blob/main/docs/img/Sicken_mac.png?raw=true"></a>
 		</td>
+		<td>
+			<a href="https://www.youtube.com/watch?v=ABzlS1dK3RY"><img src="https://github.com/achojnicki/sicken/blob/main/docs/img/Sicken_internet_troubleshoot.png?raw=true"></a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://www.youtube.com/watch?v=q7B6ed3dzgo"><img src="https://github.com/achojnicki/sicken/blob/main/docs/img/Sicken_commands.png?raw=true"></a>
+		</td>
+		<td>
+			<a href="https://www.youtube.com/watch?v=x8zqPQhl_AY"><img src="https://github.com/achojnicki/sicken/blob/main/docs/img/Sicken_bandwidth.png?raw=true"></a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://www.youtube.com/watch?v=1IxvRef8ONg"><img src="https://github.com/achojnicki/sicken/blob/main/docs/img/Sicken_htop.png?raw=true"></a>
+		</td>
 	</tr>
 </table>

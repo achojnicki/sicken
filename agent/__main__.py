@@ -56,7 +56,7 @@ class sicken_agent:
 		process=Popen(
 		    [cmd],
 		    env={
-		    	"TERM": "linux",
+		    	"TERM": "vt100",
 		    	"COLS": str(self._config.terminal.cols),
 		    	"ROWS": str(self._config.terminal.rows)
 		    },
@@ -105,7 +105,7 @@ class sicken_agent:
 						except OSError:
 							if process['process'].poll()!=None:
 
-								process['status']="Exitted"
+								process['status']="Exited"
 								process['exit_code']=process['process'].returncode
 
 

@@ -173,7 +173,7 @@ class OpenAI_LLM:
 						{"role": "assistant", "content": dumps(message)}
 						)
 
-				elif message['message_author'] == 'function':
+				elif message['message_author'] == 'function_tool_output':
 					prompt.append(
 						{"role": "function", "name": message['func_name'], "content": dumps(message['message'])}
 						)
@@ -211,8 +211,6 @@ class OpenAI_LLM:
 			completion=self._openai.chat.completions.create(
 				model=self._config.sicken.model,
 				seed=self._config.sicken.seed,
-				frequency_penalty=self._config.sicken.frequency_penalty,
-				presence_penalty=self._config.sicken.presence_penalty,
 				top_p=self._config.sicken.top_p,
 				top_logprobs=self._config.sicken.top_logprobs,
 				messages=prompt,
