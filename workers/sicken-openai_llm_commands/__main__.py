@@ -7,7 +7,7 @@ from sicken.memories import Memories
 from sicken.knowledge import Knowledge
 from sicken.exceptions import ChatNotFoundException
 
-from constants import SYSTEM_MESSAGE, FUNCTIONS, COMMAND_EXECUTE_FEEDBACK, SPAWN_PROCESS_FEEDBACK, PROCESS_LOOKUP_FEEDBACK
+from constants import SYSTEM_MESSAGE, FUNCTIONS, TOOLS, COMMAND_EXECUTE_FEEDBACK, SPAWN_PROCESS_FEEDBACK, PROCESS_LOOKUP_FEEDBACK
 
 from openai import OpenAI
 from pika import BlockingConnection, PlainCredentials, ConnectionParameters
@@ -16,6 +16,8 @@ from pathlib import Path
 from uuid import uuid4
 from time import time, sleep
 from threading import Thread, Lock
+
+from IPython import embed
 
 
 
@@ -173,12 +175,22 @@ class OpenAI_LLM:
 						{"role": "assistant", "content": dumps(message)}
 						)
 
-				elif message['message_author'] == 'function_tool_output':
+				elif message['message_author'] == 'function':
+					m={
+						"role": "tool" if 'gpt-5' in self._config.sicken.model.lower() else "function",
+						"name": message['func_name'],
+						"content": dumps(message['message'])
+					}
+					if 'gpt-5' in self._config.sicken.model.lower():
+						m['type']='function_tool_output'
+						m['tool_call_id']=message['call_id']
+					prompt.append(m)
+
+				elif message['message_author']=='tool_calls':
 					prompt.append(
-						{"role": "function", "name": message['func_name'], "content": dumps(message['message'])}
+						{"role": "assistant", "content": None, "tool_calls": message['tool_calls']}
 						)
 
-				
 				else:
 					prompt.append(
 						{"role": "user", "content": dumps(message)}
@@ -208,15 +220,21 @@ class OpenAI_LLM:
 	def _get_model_response(self, prompt):
 		try:
 			self._log.info('Calling an OpenAi LLM for response')
-			completion=self._openai.chat.completions.create(
-				model=self._config.sicken.model,
-				seed=self._config.sicken.seed,
-				top_p=self._config.sicken.top_p,
-				top_logprobs=self._config.sicken.top_logprobs,
-				messages=prompt,
-				functions=FUNCTIONS,
-				function_call="auto"
-			)
+
+			args={
+				"model":self._config.sicken.model,
+				"seed":self._config.sicken.seed,
+				"top_p":self._config.sicken.top_p,
+				"top_logprobs":self._config.sicken.top_logprobs,
+				"messages": prompt,
+			}
+			if 'gpt-5' in self._config.sicken.model.lower():
+				args['tools']=TOOLS
+			else:
+				args['functions']=FUNCTIONS
+				args['function_call']="auto"
+
+			completion=self._openai.chat.completions.create(**args)
 			self._log.success('Received response')
 		   
 			resp=completion.choices[0].message
@@ -300,7 +318,42 @@ class OpenAI_LLM:
 			self._processes[process_uuid]["terminal_snapshot"]=None 
 		return process
 
-	
+	def _exec_function(self, func_name, func_args):
+		if func_name=="execute_command":
+			result=self._execute_command(
+				command=func_args['command']
+				)
+
+
+			self._events.event(
+				event_name="command_feedback",
+				event_data={
+					"message": COMMAND_EXECUTE_FEEDBACK.format(**result)
+					}
+				)
+		elif func_name=="spawn_process":
+			result=self._spawn_process(
+				command=func_args['command']
+				)
+
+			self._events.event(
+				event_name="command_feedback",
+				event_data={
+					"message": SPAWN_PROCESS_FEEDBACK.format(command=func_args['command'], **result)
+					}
+				)
+		elif func_name=="lookup_process":
+			result=self._lookup_process(
+				process_uuid=func_args['process_uuid']
+				)
+
+			self._events.event(
+				event_name="command_feedback",
+				event_data={
+					"message": PROCESS_LOOKUP_FEEDBACK
+					}
+				)
+		return result
 
 	def _response_request(self, channel, method, properties, body):
 		try:		
@@ -318,13 +371,17 @@ class OpenAI_LLM:
 				prompt=self._build_prompt(chat_uuid=message['chat_uuid'],msg=message)
 				while True:
 					self._log.debug(prompt)
-
+					self._log.warning(prompt)
 					response=self._get_model_response(
 						prompt=prompt
 						)
-					if not response.function_call:
+					self._log.warning(response.dict())
+					self._log.warning(response.content)
+
+					#embed()
+
+					if not response.function_call and not response.tool_calls:
 						response=response.content
-						self._log.warning(response)
 						response=loads(response)
 
 						self._db.add_chat_message(
@@ -336,53 +393,42 @@ class OpenAI_LLM:
 							)
 						break
 
-					else:
+					elif response.function_call:
 						func_name = response.function_call.name
 						func_args = loads(response.function_call.arguments)
 
-						if func_name=="execute_command":
-							result=self._execute_command(
-								command=func_args['command']
-								)
-
-
-							self._events.event(
-								event_name="command_feedback",
-								event_data={
-									"message": COMMAND_EXECUTE_FEEDBACK.format(**result)
-									}
-								)
-						elif func_name=="spawn_process":
-							result=self._spawn_process(
-								command=func_args['command']
-								)
-
-							self._events.event(
-								event_name="command_feedback",
-								event_data={
-									"message": SPAWN_PROCESS_FEEDBACK.format(command=func_args['command'], **result)
-									}
-								)
-						elif func_name=="lookup_process":
-							result=self._lookup_process(
-								process_uuid=func_args['process_uuid']
-								)
-
-							self._events.event(
-								event_name="command_feedback",
-								event_data={
-									"message": PROCESS_LOOKUP_FEEDBACK
-									}
-								)
+						result=self._exec_function(func_name, func_args)
 
 						self._db.add_chat_message(
 								chat_uuid=message['chat_uuid'],
 								message_author='function',
 								message_source=None,
 								msg=result,
-								func_name=func_name
+								func_name=func_name,
+								)
+						prompt=self._build_prompt(chat_uuid=message['chat_uuid'])
+
+					elif response.tool_calls:
+						self._db.add_chat_message(
+								chat_uuid=message['chat_uuid'],
+								message_author='tool_calls',
+								message_source=None,
+								tool_calls=response.dict()['tool_calls']
 								)
 
+						for tool_call in response.tool_calls:
+							func_name=tool_call.function.name
+							func_args=loads(tool_call.function.arguments)
+							result=self._exec_function(func_name, func_args)
+
+							self._db.add_chat_message(
+								chat_uuid=message['chat_uuid'],
+								message_author='function',
+								message_source=None,
+								msg=result,
+								func_name=func_name,
+								call_id=tool_call.id
+								)
 						prompt=self._build_prompt(chat_uuid=message['chat_uuid'])
 
 

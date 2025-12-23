@@ -87,6 +87,60 @@ FUNCTIONS = [
     },
 ]
 
+TOOLS = [
+    {
+    	"type": "function",
+    	"function": {
+	        "name": "execute_command",
+	        "description": "This tool allows Sicken to execute commands in the VM. This command is useful to execute a non-interactive commands. This tool is perfect for using commands like ls, cat. lscpu, lspci and others where you need the whole output.",
+	        "parameters": {
+	            "type": "object",
+	            "properties": {
+	                "command": {
+	                    "type": "string",
+	                    "description": "A command to execute."
+	                },
+	            },
+	            "required": ["command"]
+	        }
+	    }
+	},
+
+    {
+    	"type": "function",
+    	"function": {
+	        "name": "spawn_process",
+	        "description": "This tool allows Sicken to execute interactive and long running commands in the VM. This command is useful to execute a interactive commands. To see the output of the process started with this command use the process_lookup tool. Useful for monitoring live commands like top, htop, bmon. Do not use this one for obtaining informations that don't update in time, as there is a risk that due to the terminal size, some informations may be truncated",
+	        "parameters": {
+	            "type": "object",
+	            "properties": {
+	                "command": {
+	                    "type": "string",
+	                    "description": "A command to execute."
+	                },
+	            },
+	            "required": ["command"]
+	        }
+	    }
+    },
+    {
+    	"type": "function",
+    	"function": {
+	        "name": "lookup_process",
+	        "description": "This tools allows Sicken to get a current snapshot of the running process' terminal session.",
+	        "parameters": {
+	            "type": "object",
+	            "properties": {
+	                "process_uuid": {
+	                    "type": "string",
+	                    "description": "A process uuid of the command spawned with a spawn_process tool to lookup."
+	                },
+	            },
+	            "required": ["process_uuid"]
+	        }
+	    }
+    },
+]
 
 COMMAND_EXECUTE_FEEDBACK="Command executed.<br>Command: {command}<br>Exit Code: {exit_code}<br>STDOUT: {stdout}<br>STDERR: {stderr}"
 SPAWN_PROCESS_FEEDBACK="A new process spawned.<br>command: {command}<br>process_uuid: {process_uuid}"
