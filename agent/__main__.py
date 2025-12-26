@@ -41,7 +41,7 @@ class sicken_agent:
 
 
 	def spawn_process(self, data):
-		self._log.info(f'Spawning new process. process_uuid: {data['process_uuid']}, command: {data['command']}')
+		self._log.info(f'Spawning new process. process_uuid: {data["process_uuid"]}, command: {data["command"]}')
 		self._spawn_process(
 			process_uuid=data['process_uuid'],
 			cmd=data['command']
@@ -115,7 +115,7 @@ class sicken_agent:
 		process=self._processes[data['process_uuid']]
 		snapshot=self._screen_snapshot(data['process_uuid'])
 
-		self._log.info(f'Sicken requested a snapshot of the terminal. process_uuid: {process['process_uuid']}')
+		self._log.info(f'Sicken requested a snapshot of the terminal. process_uuid: {process["process_uuid"]}')
 		self._socketio.emit(
 			'terminal_snapshot_response',
 			{
