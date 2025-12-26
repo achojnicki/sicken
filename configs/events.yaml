@@ -83,6 +83,7 @@ sicken-openai_llm_commands:
   command_feedback:
     sicken-gui_commands_feedback:
       message: message
+      escape: escape
            
   spawn_process:
     sicken-agent_spawn_proceses_requests:
@@ -456,11 +457,13 @@ sicken-vtube_plugin:
   command_feedback:
     sicken-command_feedback:
       message: message
+      escape: escape
 
 sicken-commands:
   command_feedback:
     sicken-gui_commands_feedback:
       message: message
+      escape: escape
 
   load_model:
     sicken-vtube_plugin_load_model_requests:

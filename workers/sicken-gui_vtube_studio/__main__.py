@@ -80,7 +80,7 @@ class Sicken:
 	def _command_feedback(self, channel, method, properties, body):
 		message=loads(body.decode('utf8'))
 		if message and message['message']:
-			self._sicken_gui._chat_page.add_system_message(message['message'], esc=False)
+			self._sicken_gui._chat_page.add_system_message(message['message'], esc=message['escape'])
 
 	def _logs(self, channel, method, properties, body):
 		message=loads(body.decode('utf8'))

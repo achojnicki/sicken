@@ -7,7 +7,7 @@ from sicken.memories import Memories
 from sicken.knowledge import Knowledge
 from sicken.exceptions import ChatNotFoundException
 
-from constants import SYSTEM_MESSAGE, FUNCTIONS, TOOLS, COMMAND_EXECUTE_FEEDBACK, SPAWN_PROCESS_FEEDBACK, PROCESS_LOOKUP_FEEDBACK
+from constants import SYSTEM_MESSAGE, FUNCTIONS, TOOLS,COMMAND_EXECUTE_REQUEST, COMMAND_EXECUTE_FEEDBACK, SPAWN_PROCESS_FEEDBACK, PROCESS_LOOKUP_FEEDBACK
 
 from openai import OpenAI
 from pika import BlockingConnection, PlainCredentials, ConnectionParameters
@@ -320,6 +320,13 @@ class OpenAI_LLM:
 
 	def _exec_function(self, func_name, func_args):
 		if func_name=="execute_command":
+			self._events.event(
+				event_name="command_feedback",
+				event_data={
+					"message": COMMAND_EXECUTE_REQUEST.format(command=func_args['command']),
+					"escape": True
+					}
+				)
 			result=self._execute_command(
 				command=func_args['command']
 				)
@@ -328,7 +335,8 @@ class OpenAI_LLM:
 			self._events.event(
 				event_name="command_feedback",
 				event_data={
-					"message": COMMAND_EXECUTE_FEEDBACK.format(**result)
+					"message": COMMAND_EXECUTE_FEEDBACK.format(**result),
+					"escape": True
 					}
 				)
 		elif func_name=="spawn_process":
@@ -339,7 +347,8 @@ class OpenAI_LLM:
 			self._events.event(
 				event_name="command_feedback",
 				event_data={
-					"message": SPAWN_PROCESS_FEEDBACK.format(command=func_args['command'], **result)
+					"message": SPAWN_PROCESS_FEEDBACK.format(command=func_args['command'], **result),
+					"escape": False
 					}
 				)
 		elif func_name=="lookup_process":
@@ -350,7 +359,8 @@ class OpenAI_LLM:
 			self._events.event(
 				event_name="command_feedback",
 				event_data={
-					"message": PROCESS_LOOKUP_FEEDBACK
+					"message": PROCESS_LOOKUP_FEEDBACK,
+					"escape": False
 					}
 				)
 		return result

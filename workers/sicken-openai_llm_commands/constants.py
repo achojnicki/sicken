@@ -45,7 +45,7 @@ Have fun Sicken 😊
 FUNCTIONS = [
     {
         "name": "execute_command",
-        "description": "This tool allows Sicken to execute commands in the VM. This command is useful to execute a non-interactive commands. This tool is perfect for using commands like ls, cat. lscpu, lspci and others where you need the whole output.",
+        "description": "This tool allows Sicken to execute commands in the VM. This command is useful to execute a non-interactive commands. This tool is perfect for using commands like ls, cat. lscpu, lspci and others where you need the whole output. Works with all operating systems",
         "parameters": {
             "type": "object",
             "properties": {
@@ -59,7 +59,7 @@ FUNCTIONS = [
     },
     {
         "name": "spawn_process",
-        "description": "This tool allows Sicken to execute interactive and long running commands in the VM. This command is useful to execute a interactive commands. To see the output of the process started with this command use the process_lookup tool. Useful for monitoring live commands like top, htop, bmon. Do not use this one for obtaining informations that don't update in time, as there is a risk that due to the terminal size, some informations may be truncated",
+        "description": "This tool allows Sicken to execute interactive commands in the VM. This command is useful to execute a interactive commands. To see the output of the process started with this command use the process_lookup tool. Useful for monitoring live commands like top, htop, bmon. Do not use this one for obtaining informations that don't update in time, as there is a risk that due to the terminal size, some informations may be truncated. Works with POSIX operating systems only.",
         "parameters": {
             "type": "object",
             "properties": {
@@ -92,7 +92,7 @@ TOOLS = [
     	"type": "function",
     	"function": {
 	        "name": "execute_command",
-	        "description": "This tool allows Sicken to execute commands in the VM. This command is useful to execute a non-interactive commands. This tool is perfect for using commands like ls, cat. lscpu, lspci and others where you need the whole output.",
+	        "description": "This tool allows Sicken to execute commands in the VM. This command is useful to execute a non-interactive commands. This tool is perfect for using commands like ls, cat. lscpu, lspci and others where you need the whole output. Works with all operating systems.",
 	        "parameters": {
 	            "type": "object",
 	            "properties": {
@@ -110,7 +110,7 @@ TOOLS = [
     	"type": "function",
     	"function": {
 	        "name": "spawn_process",
-	        "description": "This tool allows Sicken to execute interactive and long running commands in the VM. This command is useful to execute a interactive commands. To see the output of the process started with this command use the process_lookup tool. Useful for monitoring live commands like top, htop, bmon. Do not use this one for obtaining informations that don't update in time, as there is a risk that due to the terminal size, some informations may be truncated",
+	        "description": "This tool allows Sicken to execute interactive commands in the VM. This command is useful to execute a interactive commands. To see the output of the process started with this command use the process_lookup tool. Useful for monitoring live commands like top, htop, bmon. Do not use this one for obtaining informations that don't update in time, as there is a risk that due to the terminal size, some informations may be truncated. Works with POSIX operating systems only.",
 	        "parameters": {
 	            "type": "object",
 	            "properties": {
@@ -141,7 +141,7 @@ TOOLS = [
 	    }
     },
 ]
-
-COMMAND_EXECUTE_FEEDBACK="Command executed.<br>Command: {command}<br>Exit Code: {exit_code}<br>STDOUT: {stdout}<br>STDERR: {stderr}"
+COMMAND_EXECUTE_REQUEST="Sicken requested execution of command.\nCommand: {command}"
+COMMAND_EXECUTE_FEEDBACK="Execution of command finished. \nCommand: {command}\nExit Code: {exit_code}\n\nSTDOUT: {stdout}\n\nSTDERR:{stderr}"
 SPAWN_PROCESS_FEEDBACK="A new process spawned.<br>command: {command}<br>process_uuid: {process_uuid}"
 PROCESS_LOOKUP_FEEDBACK="Sicken looked on a process' terminal"

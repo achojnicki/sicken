@@ -88,7 +88,7 @@ class Chat_Page(wx.Panel):
         
         if esc:
             message=escape(message)
-        message=message.replace('\n','<br>')
+        message=message.replace('\n','')
 
         s='add_sickens_message("{0}");'.format(message)
         #print(s)
@@ -100,12 +100,12 @@ class Chat_Page(wx.Panel):
         
         if esc:
             message=escape(message)
-            message=message.replace('\n','<br>')
-        else:
-            message=message.replace('\n','')
+            message=message.replace('\\',"&#92;")
+
+        message=message.replace('\n','<br>')
 
         s='add_system_message("{0}");'.format(message)
-        #print(s)
+        print(s)
         wx.CallAfter(self.html.RunScript, s)
 
 

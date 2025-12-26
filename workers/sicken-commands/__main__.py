@@ -93,7 +93,7 @@ class Commands:
 		return HELP_MESSAGE_ITEM.format(
 			command=command,
 			args=_args,
-			message=message)
+			message=message,)
 
 	def _get_help_message(self):
 		items=""
@@ -122,7 +122,8 @@ class Commands:
 				self._events.event(
 					event_name='command_feedback',
 					event_data={
-						"message": message['message']
+						"message": message['message'],
+						"escape": False
 						}
 				)
 		except:
@@ -138,14 +139,16 @@ class Commands:
 					self._events.event(
 						event_name='command_feedback',
 						event_data={
-							"message": self._get_help_message()
+							"message": self._get_help_message(),
+							"escape": False
 							}
 						)
 				elif len(message['args']) == 1:
 					self._events.event(
 						event_name='command_feedback',
 						event_data={
-							"message": self._get_single_help_message(message['args'][0])
+							"message": self._get_single_help_message(message['args'][0]),
+							"escape": False
 							}
 						)
 			if message['cmd'] == 'credits' or message['cmd'] == 'credit':
@@ -153,7 +156,8 @@ class Commands:
 					self._events.event(
 						event_name="command_feedback",
 						event_data={
-							"message": "Sicken App by Adrian Chojnicki.<br>Live2D model by Introvert Studio Limited.<br>Sicken is based on an Open Source software."
+							"message": "Sicken App by Adrian Chojnicki.<br>Live2D model by Introvert Studio Limited.<br>Sicken is based on an Open Source software.",
+							"escape": False
 						})
 			if message['cmd'] == 'load_model':
 				if len(message['args'])==1:

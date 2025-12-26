@@ -115,3 +115,9 @@ sicken-commands:
   workers_count: 1
   uid: 7676
   gid: 7676
+
+sicken-agent_server:
+  enable: true
+  workers_count: 1
+  uid: 7676
+  gid: 7676
