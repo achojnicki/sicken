@@ -27,7 +27,7 @@ class sicken_agent:
 		self._log=adislog(
 			project_name='sicken-agent',
 			backends=['terminal_colorful'],
-			debug=True
+			debug=False
 			)
 
 		self._socketio=socketio.Client(logger=False, engineio_logger=False)
@@ -41,7 +41,7 @@ class sicken_agent:
 
 
 	def spawn_process(self, data):
-
+		self._log.info(f'Spawning new process. process_uuid: {data['process_uuid']}, command: {data['command']}')
 		self._spawn_process(
 			process_uuid=data['process_uuid'],
 			cmd=data['command']
@@ -115,6 +115,7 @@ class sicken_agent:
 		process=self._processes[data['process_uuid']]
 		snapshot=self._screen_snapshot(data['process_uuid'])
 
+		self._log.info(f'Sicken requested a snapshot of the terminal. process_uuid: {process['process_uuid']}')
 		self._socketio.emit(
 			'terminal_snapshot_response',
 			{
@@ -180,17 +181,13 @@ class sicken_agent:
                 stdout=PIPE,
                 stderr=PIPE,
                 )
-		self._log.info('Execution request received')
-		self._log.info(f"command_uuid: {command_uuid}")
-		self._log.info(f'cmd: {cmd}')
+		self._log.info(f'Execution request received. command_uuid: {command_uuid}, cmd: {cmd} ')
 		stdout, stderr=p.communicate()
 		exit_code=p.returncode
 		if exit_code==0:
-			self._log.success(f"exit_code: {exit_code}")
+			self._log.success(f"Execution of command succeeded. exit_code: {exit_code}, stdout: {stdout}, stderr: {stderr}")
 		else:
-			self._log.warning(f"exit_code: {exit_code}")
-		self._log.info(f"stdout: {stdout}")
-		self._log.info(f"stderr: {stderr}")
+			self._log.warning(f"A non-zero exit code: {exit_code}. exit_code: {exit_code}, stdout: {stdout}, stderr: {stderr}")
 
 		self._socketio.emit(
 			'command_response',
