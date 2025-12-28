@@ -57,8 +57,8 @@ class sicken_agent:
 		    [cmd],
 		    env={
 		    	"TERM": "vt100",
-		    	"COLS": str(self._config.terminal.cols),
-		    	"ROWS": str(self._config.terminal.rows)
+		    	"COLUMNS": str(self._config.terminal.cols),
+		    	"LINES": str(self._config.terminal.rows)
 		    },
 		    shell=True,
 		    stdin=slave_fd,
