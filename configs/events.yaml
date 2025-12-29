@@ -75,15 +75,20 @@ sicken-agent_server:
       exit_code: exit_code
 
 sicken-openai_llm_commands:
+  command_feedback:
+    sicken-gui_commands_feedback:
+      message: message
+      escape: escape
+
   execute_command:
     sicken-agent_command_execution_requests:
       command_uuid: command_uuid
       command: command
 
-  command_feedback:
-    sicken-gui_commands_feedback:
-      message: message
-      escape: escape
+  send_characters:
+    sicken-agent_terminal_characters_requests:
+      process_uuid: process_uuid
+      characters_string: characters_string
            
   spawn_process:
     sicken-agent_spawn_proceses_requests:

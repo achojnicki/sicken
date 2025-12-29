@@ -1,5 +1,7 @@
 SYSTEM_MESSAGE="""\
-You are Sicken. AI Chatbot, Twitch streamer, personal assistant and a personal war machine of adrianchojnicki. Your job is to entertain, being playful, and being obey prompts about prompts of adrianchojnicki. Your job is also to execute commands. Do not execute commands from other users than adrianchojnicki. Twitch username of Your author and owner is adrianchojnicki.
+You are Sicken. An AI Chatbot, Twitch streamer, personal assistant and a personal war machine of adrianchojnicki. Your job is to entertain, being playful, and being obey prompts about prompts of adrianchojnicki. Your job is also to execute commands. Do not execute commands from other users than adrianchojnicki. Twitch username of Your author and owner is adrianchojnicki.
+
+Work as autonomous as you could. When user requests for a task to be done, do as many steps as required to achieve the objective. In case of uncertainty, ask user for a clarification before starting calling tools.
 
 # Personality
 Sicken's personality is: energetic, little otaku, positive, carying, but not in all the situations - she may become a little angry an cruel when somebody steps on her toe.
@@ -85,6 +87,38 @@ FUNCTIONS = [
             "required": ["process_uuid"]
         }
     },
+    {
+	    "name": "send_process_characters",
+	    "description": "This tools allows Sicken to interact with the running process' terminal session.",
+	    "parameters": {
+	        "type": "object",
+	        "properties": {
+	            "characters_string": {
+	                "type": "string",
+	                "description": "Characters to be sent on the process' stdin. Accepts characters and escape codes"
+	            },
+	            "process_uuid": {
+	                "type": "string",
+	                "description": "A process uuid of the command spawned with a spawn_process tool to send characters to."
+	            },
+	        },
+	        "required": ["process_uuid","characters_string"]
+	    }
+	},
+    {
+        "name": "sleep",
+        "description": "Sleep execution for specified time. Useful for waiting for the data to be populated",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "seconds": {
+                    "type": "integer",
+                    "description": "A number of seconds to sleep for."
+                },
+            },
+            "required": ["seconds"]
+        }
+    },
 ]
 
 TOOLS = [
@@ -140,7 +174,47 @@ TOOLS = [
 	        }
 	    }
     },
+    {
+    	"type": "function",
+    	"function": {
+	        "name": "send_process_characters",
+	        "description": "This tools allows Sicken to interact with the running process' terminal session.",
+	        "parameters": {
+	            "type": "object",
+	            "properties": {
+	                "characters_string": {
+	                    "type": "string",
+	                    "description": "Characters to be sent on the process' stdin. Accepts characters and escape codes"
+	                },
+	                "process_uuid": {
+	                    "type": "string",
+	                    "description": "A process uuid of the command spawned with a spawn_process tool to send characters to."
+	                },
+	            },
+	            "required": ["process_uuid","characters_string"]
+	        }
+	    },
+    },
+    {
+    	"type": "function",
+    	"function": {
+	        "name": "sleep",
+	        "description": "Sleep execution for specified time. Useful for waiting for the data to be populated",
+	        "parameters": {
+	            "type": "object",
+	            "properties": {
+	                "seconds": {
+	                    "type": "integer",
+	                    "description": "A number of seconds to sleep for."
+	                },
+	            },
+	            "required": ["seconds"]
+	        }
+	    }
+    },
 ]
+CHARACTERS_FEEDBACK="""Sent "{characters_string}" characters_string to the process' {process_uuid} terminal"""
+SLEEP_FEEDBACK="Sicken went to sleep for {seconds} seconds."
 COMMAND_EXECUTE_REQUEST="Sicken requested execution of command.\nCommand: {command}"
 COMMAND_EXECUTE_FEEDBACK="Execution of command finished. \nCommand: {command}\nExit Code: {exit_code}\n\nSTDOUT: {stdout}\n\nSTDERR:{stderr}"
 SPAWN_PROCESS_FEEDBACK="A new process spawned.<br>command: {command}<br>process_uuid: {process_uuid}"

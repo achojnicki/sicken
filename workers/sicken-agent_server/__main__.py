@@ -86,10 +86,17 @@ class agent_server:
 			on_message_callback=self._terminal_snapshot_request
 		)
 
+		self.agent_terminal_characters_request_channel = self.rabbitmq_conn.channel()
+		self.agent_terminal_characters_request_channel.basic_consume(
+			queue='sicken-agent_terminal_characters_requests',
+			auto_ack=True,
+			on_message_callback=self._terminal_characters_request
+		)
+
 	
 	def start(self):
 		try:
-			self.socketio.start_background_task(target=self.agent_spawn_proceses_requests_channel.start_consuming)
+			self.socketio.start_background_task(target=self.agent_terminal_characters_request_channel.start_consuming)
 			self.socketio.start_background_task(target=self._agents_checker)
 
 			self.socketio.run(self.application, host=self._config.agent_server.host, port=self._config.agent_server.port)
@@ -182,6 +189,24 @@ class agent_server:
 				'terminal_snapshot_request',
 					{
 					"process_uuid": self._processes[process_uuid]['process_uuid'],
+					},
+				to=self._agents[agent]['sid']
+				)
+
+	def _terminal_characters_request(self, channel, method, properties, body):
+		data=loads(body.decode('utf8'))
+		process_uuid=data['process_uuid']
+		characters_string=data['characters_string']
+
+		
+		for agent in self._agents:
+			print("sid", self._agents[agent]['sid'])
+
+			self.socketio.emit(
+				'terminal_characters_request',
+					{
+					"process_uuid": self._processes[process_uuid]['process_uuid'],
+					"characters_string": characters_string
 					},
 				to=self._agents[agent]['sid']
 				)

@@ -7,7 +7,7 @@ from sicken.memories import Memories
 from sicken.knowledge import Knowledge
 from sicken.exceptions import ChatNotFoundException
 
-from constants import SYSTEM_MESSAGE, FUNCTIONS, TOOLS,COMMAND_EXECUTE_REQUEST, COMMAND_EXECUTE_FEEDBACK, SPAWN_PROCESS_FEEDBACK, PROCESS_LOOKUP_FEEDBACK
+from constants import SYSTEM_MESSAGE, FUNCTIONS, TOOLS,COMMAND_EXECUTE_REQUEST, COMMAND_EXECUTE_FEEDBACK, SPAWN_PROCESS_FEEDBACK, PROCESS_LOOKUP_FEEDBACK, SLEEP_FEEDBACK, CHARACTERS_FEEDBACK
 
 from openai import OpenAI
 from pika import BlockingConnection, PlainCredentials, ConnectionParameters
@@ -292,6 +292,17 @@ class OpenAI_LLM:
 			)
 		return {"process_uuid": process_uuid}
 
+	def _send_characters(self, characters_string, process_uuid):
+
+		if process_uuid in self._processes:
+			self._events.event(
+				event_name="send_characters",
+				event_data={
+					"process_uuid": process_uuid,
+					"characters_string": characters_string
+					}
+				)
+
 	def _lookup_process(self, process_uuid): 
 		with self._processes_lock:
 			self._processes[process_uuid]["received"]=False
@@ -363,6 +374,19 @@ class OpenAI_LLM:
 					"escape": False
 					}
 				)
+
+		elif func_name=="sleep":
+			result=SLEEP_FEEDBACK.format(seconds=func_args['seconds'])
+			self._events.event(
+				event_name="command_feedback",
+				event_data={
+					"message": SLEEP_FEEDBACK.format(seconds=func_args['seconds']),
+					"escape": False
+					}
+				)
+
+			sleep(func_args['seconds'])
+		
 		return result
 
 	def _response_request(self, channel, method, properties, body):

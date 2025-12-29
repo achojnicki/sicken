@@ -79,6 +79,7 @@ class Chat_Page(wx.Panel):
                         )
             
     def add_user_message(self, message):
+        message=message.replace('\\',"&#92;")
         message=escape(message)
         self.html.RunScript('add_user_message("{0}");'.format(message))
 
@@ -88,7 +89,8 @@ class Chat_Page(wx.Panel):
         
         if esc:
             message=escape(message)
-        message=message.replace('\n','')
+        message=message.replace('\n','<br>')
+        message=message.replace('\\',"&#92;")
 
         s='add_sickens_message("{0}");'.format(message)
         #print(s)
