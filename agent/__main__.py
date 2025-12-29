@@ -90,7 +90,7 @@ class sicken_agent:
 
 	def _terminal_updater_thread(self):
 		while True:
-			for process_uuid in self._processes:
+			for process_uuid in dict(self._processes):
 				process=self._processes[process_uuid]
 
 				with process['terminal_lock']:
@@ -108,7 +108,6 @@ class sicken_agent:
 
 								process['status']="Exited"
 								process['exit_code']=process['process'].returncode
-
 
 			sleep(0.01)
 	

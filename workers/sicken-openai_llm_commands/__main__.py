@@ -39,6 +39,7 @@ class OpenAI_LLM:
 
 		self._rabbitmq_conn = BlockingConnection(
 			ConnectionParameters(
+				heartbeat=0,
 				host=self._config.rabbitmq.host,
 				port=self._config.rabbitmq.port,
 				credentials=PlainCredentials(
@@ -50,6 +51,7 @@ class OpenAI_LLM:
 
 		self._threaded_rabbitmq_conn = BlockingConnection(
 			ConnectionParameters(
+				heartbeat=0,
 				host=self._config.rabbitmq.host,
 				port=self._config.rabbitmq.port,
 				credentials=PlainCredentials(
