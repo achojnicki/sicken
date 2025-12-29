@@ -401,7 +401,7 @@ class OpenAI_LLM:
 				event_name="command_feedback",
 				event_data={
 					"message": CHARACTERS_FEEDBACK.format(characters_string=func_args['characters_string'], process_uuid=func_args['process_uuid']),
-					"escape": False
+					"escape": True
 					}
 				)
 
