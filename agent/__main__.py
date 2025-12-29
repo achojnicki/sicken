@@ -121,7 +121,7 @@ class sicken_agent:
 
 	def _send_string(self, process_uuid, characters_string):
 		if process_uuid in self._processes:
-			process=self._processes[data['process_uuid']]
+			process=self._processes[process_uuid]
 			characters_string=characters_string.encode('utf-8')
 			with process['terminal_lock']:
 				write(process['pty_master_fd'], characters_string)

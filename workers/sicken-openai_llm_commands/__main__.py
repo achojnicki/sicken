@@ -362,6 +362,7 @@ class OpenAI_LLM:
 					"escape": False
 					}
 				)
+
 		elif func_name=="lookup_process":
 			result=self._lookup_process(
 				process_uuid=func_args['process_uuid']
@@ -386,6 +387,24 @@ class OpenAI_LLM:
 				)
 
 			sleep(func_args['seconds'])
+
+
+		elif func_name=="send_process_characters":
+			self._send_characters(
+				process_uuid=func_args['process_uuid'],
+				characters_string=func_args['characters_string']
+				)
+
+			result=CHARACTERS_FEEDBACK.format(characters_string=func_args['characters_string'], process_uuid=func_args['process_uuid'])
+			
+			self._events.event(
+				event_name="command_feedback",
+				event_data={
+					"message": CHARACTERS_FEEDBACK.format(characters_string=func_args['characters_string'], process_uuid=func_args['process_uuid']),
+					"escape": False
+					}
+				)
+
 		
 		return result
 
