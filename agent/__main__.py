@@ -59,7 +59,9 @@ class sicken_agent:
 		    env={
 		    	"TERM": "vt100",
 		    	"COLUMNS": str(self._config.terminal.cols),
-		    	"LINES": str(self._config.terminal.rows)
+		    	"LINES": str(self._config.terminal.rows),
+		    	"HOME": "/home/sicken",
+		    	"PATH": "/bin:/usr/bin:/usr/local/bin"
 		    },
 		    shell=True,
 		    stdin=slave_fd,
