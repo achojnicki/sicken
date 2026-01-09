@@ -61,7 +61,7 @@ run 'curl -sSL https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py'
 run 'python3.11 /tmp/get-pip.py'
 
 print "2nd stage installation of dependencies(may take a while)"
-run "python3.11 -m pip install numpy openai pydub flask flask-socketio python-socketio psutil tabulate colored pymongo pyyaml pika uwsgi websockets twitchapi wxpython"
+run "python3.11 -m pip install numpy openai pydub flask flask-socketio python-socketio psutil tabulate colored pymongo eventlet pyyaml pika uwsgi websockets twitchapi wxpython"
 
 
 print "Downloading and instaling MongoDB key"

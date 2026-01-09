@@ -49,7 +49,7 @@ run "winget install -e --id ffmpeg --disable-interactivity --accept-package-agre
 
 print "2nd stage installation of dependencies(may take a while)"
 run "py -3.12 -m pip install --upgrade setuptools wheel"
-run "py -3.12 -m pip install --break-system-packages numpy openai pydub flask flask-socketio python-socketio psutil tabulate colored pymongo pyyaml pika websockets twitchapi wxpython websocket-client"
+run "py -3.12 -m pip install --break-system-packages numpy openai eventlet pydub flask flask-socketio python-socketio psutil tabulate colored pymongo pyyaml pika websockets twitchapi wxpython websocket-client"
 
 print "Installing MongoDB database"
 run "winget install -e --id MongoDB.Server --disable-interactivity --accept-package-agreements --scope machine"

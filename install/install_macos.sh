@@ -50,7 +50,7 @@ print "1st stage installation of dependencies"
 run "brew install python@3.12 ollama ffmpeg"
 
 print "2nd stage installation of dependencies"
-run "/usr/local/bin/python3.12 -m pip install --break-system-packages numpy openai pydub flask flask-socketio python-socketio psutil tabulate colored pymongo pyyaml pika uwsgi websockets pyobjc twitchapi wxpython ollama"
+run "/usr/local/bin/python3.12 -m pip install --break-system-packages numpy eventlet openai pydub flask flask-socketio python-socketio psutil tabulate colored pymongo pyyaml pika uwsgi websockets pyobjc twitchapi wxpython ollama"
 
 
 print "Installing MongoDB database"
