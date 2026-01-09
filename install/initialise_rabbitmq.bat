@@ -76,6 +76,7 @@ py ./create_queue.py sicken-response_requests
 py ./create_queue.py sicken-speech_requests
 py ./create_queue.py sicken-vtube_plugin_speech_generation_finished
 py ./create_queue.py sicken-vtube_plugin_speech_requests
+py ./create_queue.py sicken-vtube_plugin_load_model_requests
 py ./create_queue.py sicken-standalone_speech_generation_finished
 py ./create_queue.py sicken-standalone_speech_requests
 py ./create_queue.py sicken-model_introduction
@@ -92,7 +93,9 @@ py ./create_queue.py sicken-command_feedback
 py ./create_queue.py sicken-gui_commands_feedback
 py ./create_queue.py sicken-agent_command_execution_requests
 py ./create_queue.py sicken-agent_command_execution_response
-
+py ./create_queue.py sicken-agent_spawn_proceses_requests
+py ./create_queue.py sicken-agent_terminal_characters_requests
+py ./create_queue.py sicken-agent_terminal_snapshot_response
 
 echo 'Enable RabbitMQ Managment plugin'
 call rabbitmq-plugins.bat enable rabbitmq_management

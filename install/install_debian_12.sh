@@ -54,10 +54,10 @@ print "Updating local APT cache"
 run "apt-get update"
 
 print "1st stage installation of dependencies(may take a while)"
-run "apt-get install curl gnupg apt-transport-https python3 python3-pip nginx curl dpkg-dev build-essential libjpeg-dev libtiff-dev libsdl1.2-dev libgstreamer-plugins-base1.0-dev libnotify-dev freeglut3-dev libsm-dev libgtk-3-dev libwebkit2gtk-4.0-dev libxtst-dev libsdl2-dev -y"
+run "apt-get install curl gnupg apt-transport-https python3 python3-pip nginx curl dpkg-dev build-essential libjpeg-dev libtiff-dev libsdl1.2-dev libgstreamer-plugins-base1.0-dev libnotify-dev freeglut3-dev libsm-dev libgtk-3-dev libwebkit2gtk-4.0-dev libxtst-dev libsdl2-dev ffmpeg -y"
 
 print "2nd stage installation of dependencies(may take a while)"
-run "pip3 install --break-system-packages numpy openai playsound flask flask-socketio python-socketio psutil tabulate colored pymongo pyyaml pika uwsgi websockets twitchapi wxpython ollama"
+run "python3.11 -m pip install numpy openai pydub flask flask-socketio python-socketio psutil tabulate colored pymongo pyyaml pika uwsgi websockets twitchapi wxpython"
 
 print "Downloading and instaling MongoDB key"
 curl -fsSL https://www.mongodb.org/static/pgp/server-8.0.asc | gpg --dearmor -o /usr/share/keyrings/mongodb-server-8.0.gpg
@@ -187,6 +187,7 @@ run 'create_queue.py sicken-response_requests'
 run 'create_queue.py sicken-speech_requests'
 run 'create_queue.py sicken-vtube_plugin_speech_generation_finished'
 run 'create_queue.py sicken-vtube_plugin_speech_requests'
+run 'create_queue.py sicken-vtube_plugin_load_model_requests'
 run 'create_queue.py sicken-standalone_speech_generation_finished'
 run 'create_queue.py sicken-standalone_speech_requests'
 run 'create_queue.py sicken-model_introduction'
@@ -201,7 +202,11 @@ run 'create_queue.py sicken-classification_requests'
 run 'create_queue.py sicken-command_requests'
 run 'create_queue.py sicken-command_feedback'
 run 'create_queue.py sicken-gui_commands_feedback'
-
+run 'create_queue.py sicken-agent_command_execution_requests'
+run 'create_queue.py sicken-agent_command_execution_response'
+run 'create_queue.py sicken-agent_spawn_proceses_requests'
+run 'create_queue.py sicken-agent_terminal_characters_requests'
+run 'create_queue.py sicken-agent_terminal_snapshot_response'
 
 
 

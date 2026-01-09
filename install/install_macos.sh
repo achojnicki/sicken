@@ -47,10 +47,10 @@ export PATH=$PATH:/usr/local/bin:/usr/local/sbin:/opt/sicken/install
 
 
 print "1st stage installation of dependencies"
-run "brew install python@3.12 ollama"
+run "brew install python@3.12 ollama ffmpeg"
 
 print "2nd stage installation of dependencies"
-run "/usr/local/bin/python3.12 -m pip install --break-system-packages numpy openai playsound flask flask-socketio python-socketio psutil tabulate colored pymongo pyyaml pika uwsgi websockets pyobjc twitchapi wxpython ollama"
+run "/usr/local/bin/python3.12 -m pip install --break-system-packages numpy openai pydub flask flask-socketio python-socketio psutil tabulate colored pymongo pyyaml pika uwsgi websockets pyobjc twitchapi wxpython ollama"
 
 
 print "Installing MongoDB database"
@@ -136,6 +136,7 @@ run '/usr/local/bin/python3.12 create_queue.py sicken-events'
 run '/usr/local/bin/python3.12 create_queue.py sicken-logs'
 run '/usr/local/bin/python3.12 create_queue.py sicken-response_requests'
 run '/usr/local/bin/python3.12 create_queue.py sicken-speech_requests'
+run '/usr/local/bin/python3.12 create_queue.py sicken-vtube_plugin_load_model_requests'
 run '/usr/local/bin/python3.12 create_queue.py sicken-vtube_plugin_speech_generation_finished'
 run '/usr/local/bin/python3.12 create_queue.py sicken-vtube_plugin_speech_requests'
 run '/usr/local/bin/python3.12 create_queue.py sicken-standalone_speech_generation_finished'
@@ -152,6 +153,11 @@ run '/usr/local/bin/python3.12 create_queue.py sicken-classification_requests'
 run '/usr/local/bin/python3.12 create_queue.py sicken-command_requests'
 run '/usr/local/bin/python3.12 create_queue.py sicken-command_feedback'
 run '/usr/local/bin/python3.12 create_queue.py sicken-gui_commands_feedback'
+run '/usr/local/bin/python3.12 create_queue.py sicken-agent_command_execution_requests'
+run '/usr/local/bin/python3.12 create_queue.py sicken-agent_command_execution_response'
+run '/usr/local/bin/python3.12 create_queue.py sicken-agent_spawn_proceses_requests'
+run '/usr/local/bin/python3.12 create_queue.py sicken-agent_terminal_characters_requests'
+run '/usr/local/bin/python3.12 create_queue.py sicken-agent_terminal_snapshot_response'
 
 print "Enable RabbitMQ Managment plugin"
 run "rabbitmq-plugins enable rabbitmq_management"

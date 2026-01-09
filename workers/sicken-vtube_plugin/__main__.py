@@ -11,7 +11,8 @@ from time import sleep
 from json import loads
 from pathlib import Path
 from threading import Thread
-from playsound import playsound
+from pydub import AudioSegment
+from pydub.playback import play
 from yaml import safe_load
 from platform import system
 
@@ -81,7 +82,8 @@ class Sicken_VTube_Plugin:
 		)
 
 	def _play_sound(self, file):
-		playsound(str(file))
+		song = AudioSegment.from_mp3(str(file))
+		play(song)
 
 	def play_sound(self, file):
 		t=Thread(target=self._play_sound, args=[file])
