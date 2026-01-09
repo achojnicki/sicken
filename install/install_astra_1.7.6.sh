@@ -54,10 +54,15 @@ print "Updating local APT cache"
 run "apt-get update"
 
 print "1st stage installation of dependencies(may take a while)"
-run "apt-get install curl gnupg apt-transport-https python3 python3-pip nginx curl dpkg-dev build-essential libjpeg-dev libtiff-dev libsdl1.2-dev libgstreamer-plugins-base1.0-dev libnotify-dev freeglut3-dev libsm-dev libgtk-3-dev libwebkit2gtk-4.0-dev libxtst-dev libsdl2-dev ffmpeg -y"
+run "apt-get install curl gnupg apt-transport-https python3.11 python3-pip curl dpkg-dev build-essential libjpeg-dev libtiff-dev libsdl1.2-dev libgstreamer-plugins-base1.0-dev libnotify-dev freeglut3-dev libsm-dev libgtk-3-dev libwebkit2gtk-4.0-dev libxtst-dev libsdl2-dev ffmpeg -y"
+
+print 'Downloading and installing modern pip3'
+run 'curl -sSL https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py'
+run 'python3.11 /tmp/get-pip.py'
 
 print "2nd stage installation of dependencies(may take a while)"
 run "python3.11 -m pip install numpy openai pydub flask flask-socketio python-socketio psutil tabulate colored pymongo pyyaml pika uwsgi websockets twitchapi wxpython"
+
 
 print "Downloading and instaling MongoDB key"
 curl -fsSL https://www.mongodb.org/static/pgp/server-4.2.asc | sudo apt-key add -
