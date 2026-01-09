@@ -60,10 +60,11 @@ print "2nd stage installation of dependencies(may take a while)"
 run "python3.11 -m pip install numpy openai pydub flask flask-socketio python-socketio psutil tabulate colored pymongo pyyaml pika uwsgi websockets twitchapi wxpython"
 
 print "Downloading and instaling MongoDB key"
-curl -fsSL https://www.mongodb.org/static/pgp/server-8.0.asc | gpg --dearmor -o /usr/share/keyrings/mongodb-server-8.0.gpg
+curl -fsSL https://www.mongodb.org/static/pgp/server-4.2.asc | sudo apt-key add -
 
 print "Adding MongoDB APT repository"
-echo  "deb [ signed-by=/usr/share/keyrings/mongodb-server-8.0.gpg ] http://repo.mongodb.org/apt/debian bookworm/mongodb-org/8.0 main" | tee /etc/apt/sources.list.d/mongodb-org-8.0.list >/dev/null
+sudo add-apt-repository 'deb https://repo.mongodb.org/apt/debian buster/mongodb-org/4.2 main'
+
 
 print "Updating local APT cache"
 run "apt-get update"
@@ -76,39 +77,6 @@ run "systemctl enable mongod.service"
 
 print "Staring MongoDB service"
 run "service mongod start"
-
-print "Downloading and installing RabbitMQ main signing key"
-curl -1sLf 'https://keys.openpgp.org/vks/v1/by-fingerprint/0A9AF2115F4687BD29803A206B73A36E6026DFCA' | gpg --dearmor | tee /usr/share/keyrings/com.rabbitmq.team.gpg >/dev/null
-
-print "Downloading and installing RabbitMQ 2nd key"
-curl -1sLf https://github.com/rabbitmq/signing-keys/releases/download/3.0/cloudsmith.rabbitmq-erlang.E495BB49CC4BBE5B.key | gpg --dearmor | tee /usr/share/keyrings/rabbitmq.E495BB49CC4BBE5B.gpg >/dev/null
-
-print "Downloading and installing RabbitMQ 3rd key"
-curl -1sLf https://github.com/rabbitmq/signing-keys/releases/download/3.0/cloudsmith.rabbitmq-server.9F4587F226208342.key | gpg --dearmor | tee /usr/share/keyrings/rabbitmq.9F4587F226208342.gpg> /dev/null
-
-print "Installing Erlang and RabbitmMQ Repositories"
-tee /etc/apt/sources.list.d/rabbitmq.list >/dev/null <<EOF
-## Provides modern Erlang/OTP releases
-##
-deb [arch=amd64 signed-by=/usr/share/keyrings/rabbitmq.E495BB49CC4BBE5B.gpg] https://ppa1.rabbitmq.com/rabbitmq/rabbitmq-erlang/deb/debian bookworm main
-deb-src [signed-by=/usr/share/keyrings/rabbitmq.E495BB49CC4BBE5B.gpg] https://ppa1.rabbitmq.com/rabbitmq/rabbitmq-erlang/deb/debian bookworm main
-
-# another mirror for redundancy
-deb [arch=amd64 signed-by=/usr/share/keyrings/rabbitmq.E495BB49CC4BBE5B.gpg] https://ppa2.rabbitmq.com/rabbitmq/rabbitmq-erlang/deb/debian bookworm main
-deb-src [signed-by=/usr/share/keyrings/rabbitmq.E495BB49CC4BBE5B.gpg] https://ppa2.rabbitmq.com/rabbitmq/rabbitmq-erlang/deb/debian bookworm main
-
-## Provides RabbitMQ
-##
-deb [arch=amd64 signed-by=/usr/share/keyrings/rabbitmq.9F4587F226208342.gpg] https://ppa1.rabbitmq.com/rabbitmq/rabbitmq-server/deb/debian bookworm main
-deb-src [signed-by=/usr/share/keyrings/rabbitmq.9F4587F226208342.gpg] https://ppa1.rabbitmq.com/rabbitmq/rabbitmq-server/deb/debian bookworm main
-
-# another mirror for redundancy
-deb [arch=amd64 signed-by=/usr/share/keyrings/rabbitmq.9F4587F226208342.gpg] https://ppa2.rabbitmq.com/rabbitmq/rabbitmq-server/deb/debian bookworm main
-deb-src [signed-by=/usr/share/keyrings/rabbitmq.9F4587F226208342.gpg] https://ppa2.rabbitmq.com/rabbitmq/rabbitmq-server/deb/debian bookworm main
-EOF
-
-print "Updating local APT cache"
-run "apt-get update"
 
 print "Installing Erlang"
 run "apt-get install -y erlang-base erlang-asn1 erlang-crypto erlang-eldap erlang-ftp erlang-inets erlang-mnesia erlang-os-mon erlang-parsetools erlang-public-key erlang-runtime-tools erlang-snmp erlang-ssl erlang-syntax-tools erlang-tftp erlang-tools erlang-xmerl"
@@ -181,32 +149,32 @@ rabbitmqctl set_topic_permissions sicken-commands "" ".*" ".*"
 rabbitmqctl set_topic_permissions admin "" ".*" ".*"
 
 print 'Creating RabbitMQ Queues'
-run 'create_queue.py sicken-events'
-run 'create_queue.py sicken-logs'
-run 'create_queue.py sicken-response_requests'
-run 'create_queue.py sicken-speech_requests'
-run 'create_queue.py sicken-vtube_plugin_speech_generation_finished'
-run 'create_queue.py sicken-vtube_plugin_speech_requests'
-run 'create_queue.py sicken-vtube_plugin_load_model_requests'
-run 'create_queue.py sicken-standalone_speech_generation_finished'
-run 'create_queue.py sicken-standalone_speech_requests'
-run 'create_queue.py sicken-model_introduction'
-run 'create_queue.py sicken-model_introduction_requests'
-run 'create_queue.py sicken-gui_responses'
-run 'create_queue.py sicken-twitch_responses'
-run 'create_queue.py sicken-gui_logs'
-run 'create_queue.py sicken-webchat_requests'
-run 'create_queue.py sicken-webchat_responses'
-run 'create_queue.py sicken-subtitles'
-run 'create_queue.py sicken-classification_requests'
-run 'create_queue.py sicken-command_requests'
-run 'create_queue.py sicken-command_feedback'
-run 'create_queue.py sicken-gui_commands_feedback'
-run 'create_queue.py sicken-agent_command_execution_requests'
-run 'create_queue.py sicken-agent_command_execution_response'
-run 'create_queue.py sicken-agent_spawn_proceses_requests'
-run 'create_queue.py sicken-agent_terminal_characters_requests'
-run 'create_queue.py sicken-agent_terminal_snapshot_response'
+run 'python3.11 ./create_queue_astra.py sicken-events'
+run 'python3.11 ./create_queue_astra.py sicken-logs'
+run 'python3.11 ./create_queue_astra.py sicken-response_requests'
+run 'python3.11 ./create_queue_astra.py sicken-speech_requests'
+run 'python3.11 ./create_queue_astra.py sicken-vtube_plugin_speech_generation_finished'
+run 'python3.11 ./create_queue_astra.py sicken-vtube_plugin_speech_requests'
+run 'python3.11 ./create_queue_astra.py sicken-vtube_plugin_load_model_requests'
+run 'python3.11 ./create_queue_astra.py sicken-standalone_speech_generation_finished'
+run 'python3.11 ./create_queue_astra.py sicken-standalone_speech_requests'
+run 'python3.11 ./create_queue_astra.py sicken-model_introduction'
+run 'python3.11 ./create_queue_astra.py sicken-model_introduction_requests'
+run 'python3.11 ./create_queue_astra.py sicken-gui_responses'
+run 'python3.11 ./create_queue_astra.py sicken-twitch_responses'
+run 'python3.11 ./create_queue_astra.py sicken-gui_logs'
+run 'python3.11 ./create_queue_astra.py sicken-webchat_requests'
+run 'python3.11 ./create_queue_astra.py sicken-webchat_responses'
+run 'python3.11 ./create_queue_astra.py sicken-subtitles'
+run 'python3.11 ./create_queue_astra.py sicken-classification_requests'
+run 'python3.11 ./create_queue_astra.py sicken-command_requests'
+run 'python3.11 ./create_queue_astra.py sicken-command_feedback'
+run 'python3.11 ./create_queue_astra.py sicken-gui_commands_feedback'
+run 'python3.11 ./create_queue_astra.py sicken-agent_command_execution_requests'
+run 'python3.11 ./create_queue_astra.py sicken-agent_command_execution_response'
+run 'python3.11 ./create_queue_astra.py sicken-agent_spawn_proceses_requests'
+run 'python3.11 ./create_queue_astra.py sicken-agent_terminal_characters_requests'
+run 'python3.11 ./create_queue_astra.py sicken-agent_terminal_snapshot_response'
 
 
 
@@ -243,8 +211,8 @@ run "mkdir /opt/sicken/logs"
 run "mkdir /opt/sicken/files"
 run "mkdir /opt/sicken/files/sicken"
 run "mkdir /opt/sicken/files/sicken/speech"
-run "chmod -R 777 /opt/sicken/bin "
+run "chmod -R 755 /opt/sicken/bin "
 run "touch /opt/sicken/logs/sicken-concurrent.log"
-run "chmod 777 /opt/sicken/logs/sicken-concurrent.log"
+run "chmod 664 /opt/sicken/logs/sicken-concurrent.log"
 
 print "Installation complete"   
