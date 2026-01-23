@@ -1,5 +1,7 @@
 # Sicken.ai
-<img src="https://github.com/achojnicki/sicken/blob/main/docs/img/Sicken.png?raw=true" width="100%">  
+<img src="https://github.com/achojnicki/sicken/blob/main/docs/img/Sicken.png?raw=true" width="100%">
+<a href='https://ko-fi.com/X8X71FY43J' target='_blank'><img height='24' style='border:0px;height:24px;' src='https://storage.ko-fi.com/cdn/kofi6.png?v=6' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+
 An AI VTuber based on OpenAI, XAI, or DeepSeek.
 
 ## Features
