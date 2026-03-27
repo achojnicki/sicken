@@ -1,3 +1,0 @@
-name: sicken-grok_llm
-exec: __DEFAULT_PYTHON_3__
-script: __main__.py
