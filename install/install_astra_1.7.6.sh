@@ -108,6 +108,7 @@ run "rabbitmqctl add_user sicken-chat_viewer password"
 run "rabbitmqctl add_user sicken-bottom_bar password"
 run "rabbitmqctl add_user sicken-tiktok_chat password"
 run "rabbitmqctl add_user sicken-commands password"
+run "rabbitmqctl add_user sicken-agent password"
 
 
 run "rabbitmqctl add_user admin sicken"
@@ -132,6 +133,7 @@ rabbitmqctl set_permissions -p / sicken-chat_viewer ".*" ".*" ".*"
 rabbitmqctl set_permissions -p / sicken-bottom_bar ".*" ".*" ".*"
 rabbitmqctl set_permissions -p / sicken-tiktok_chat ".*" ".*" ".*"
 rabbitmqctl set_permissions -p / sicken-commands ".*" ".*" ".*"
+rabbitmqctl set_permissions -p / sicken-agent ".*" ".*" ".*"
 rabbitmqctl set_permissions -p / admin ".*" ".*" ".*"
 
 rabbitmqctl set_topic_permissions sicken-logs "" ".*" ".*"
@@ -151,6 +153,8 @@ rabbitmqctl set_topic_permissions sicken-chat_viewer "" ".*" ".*"
 rabbitmqctl set_topic_permissions sicken-bottom_bar "" ".*" ".*"
 rabbitmqctl set_topic_permissions sicken-tiktok_chat "" ".*" ".*"
 rabbitmqctl set_topic_permissions sicken-commands "" ".*" ".*"
+rabbitmqctl set_topic_permissions sicken-agent "" ".*" ".*"
+
 rabbitmqctl set_topic_permissions admin "" ".*" ".*"
 
 print 'Creating RabbitMQ Queues'
@@ -179,6 +183,7 @@ run 'python3.11 ./create_queue_astra.py sicken-agent_command_execution_requests'
 run 'python3.11 ./create_queue_astra.py sicken-agent_command_execution_response'
 run 'python3.11 ./create_queue_astra.py sicken-agent_spawn_proceses_requests'
 run 'python3.11 ./create_queue_astra.py sicken-agent_terminal_characters_requests'
+run 'python3.11 ./create_queue_astra.py sicken-agent_terminal_snapshot_requests'
 run 'python3.11 ./create_queue_astra.py sicken-agent_terminal_snapshot_response'
 
 
@@ -216,7 +221,6 @@ run "mkdir /opt/sicken/logs"
 run "mkdir /opt/sicken/files"
 run "mkdir /opt/sicken/files/sicken"
 run "mkdir /opt/sicken/files/sicken/speech"
-run "chmod -R 755 /opt/sicken/bin "
 run "touch /opt/sicken/logs/sicken-concurrent.log"
 run "chmod 664 /opt/sicken/logs/sicken-concurrent.log"
 

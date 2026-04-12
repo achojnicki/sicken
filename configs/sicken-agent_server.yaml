@@ -14,5 +14,5 @@ mongo:
 rabbitmq:
   host: localhost
   port: 5672
-  user: sicken-chat_viewer
+  user: sicken-agent
   password: password
